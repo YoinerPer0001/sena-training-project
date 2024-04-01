@@ -1,0 +1,35 @@
+$azul-primario: #00324D;
+$verde-primario: #39A900;
+$font-medium: 500;
+
+.main {
+    margin: 1em auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .section_header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 1024px;
+    }
+    .section_courses {
+        padding: 3em 1em;
+        width: 100%;
+        background-color: $azul-primario;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .section_courses_container {
+            max-width: 1024px;
+            width: 100%;
+            display: grid;
+            justify-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            grid-gap: 10px;
+        }
+    }
+}
