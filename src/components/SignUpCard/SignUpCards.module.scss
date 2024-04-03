@@ -9,7 +9,7 @@
     cursor: pointer; 
 
     &:hover {
-        transform: translateY(0.8em);
+        transform: translateY(-0.8em);
     }
 
     .title_div {
@@ -33,7 +33,7 @@
         padding-right: 0.5rem; 
         border-radius: 9999px; 
         background-color: #000000;
-        box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.389);
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.651);
     }
 
     picture img {

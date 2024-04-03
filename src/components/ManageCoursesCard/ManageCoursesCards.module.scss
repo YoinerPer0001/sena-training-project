@@ -1,0 +1,89 @@
+$azul-primario: #00324D;
+
+
+.article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .left {
+        display: flex;
+        .picture {
+            width: 100px;
+            max-height: 100px;
+            max-width: 100px;
+            img {
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+        .title_div {
+            padding: 0.5rem; 
+            font-size: 1.125rem;
+            line-height: 1.75rem; 
+            font-weight: 700; 
+            text-align: center; 
+            color: #000000;
+            max-width: 400px;
+            min-width: 400px;
+            width: 100%;
+            div {
+                h3 {
+                    text-align: left;
+                    font-size: 1em;
+                    font-weight: 600;
+                    color: #000000;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis; 
+                }
+            }
+            .details {
+                font-size: 0.8em;
+                text-transform: capitalize;
+                font-weight: 500;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .category {
+                    background-color: #000;
+                    padding: 2px 5px;
+                    border-radius: 10px;
+                    color: #fff;
+                    font-weight: 500;
+                    text-transform: capitalize;
+                }
+            }
+        }
+    }
+    
+    .right {
+        button {
+            background-color: $azul-primario;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px !important;
+            color: #fff;
+            padding: 6px 7px;
+            border-radius: 12px;
+            transition: all .2s;
+            &:hover {
+                background-color: #000;
+            } 
+        }
+    }
+}
+@media (max-width: 960px){
+    .article {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .left {
+            .title_div {
+                max-width: 95%;
+            }
+        }
+    }
+}

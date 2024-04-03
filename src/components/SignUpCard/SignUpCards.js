@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { MdFavorite } from "react-icons/md";
 import { MdAccessTimeFilled } from "react-icons/md";
+import { AiFillHeart } from "react-icons/ai";
 import styles from './SignUpCards.module.scss'
 // import DarkButtons from '../DarkButtons';
 
@@ -19,7 +20,7 @@ export default function SignUpCards({score, title, img, category, href}) {
             <div className={styles.hr}></div>
             <div className={styles.bottom}>
                 <div>
-                    <MdFavorite color="red" fontSize="1.2em"/>
+                    <AiFillHeart color="red" fontSize="1.2em"/>
                     <span>678</span>
                 </div>
                 <div>

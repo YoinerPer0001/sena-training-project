@@ -1,0 +1,33 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+
+.container {
+    h3 {
+        padding: 0.5em 0.5em 0 0.5em;
+        text-align: center;
+        font-size: 2em;
+        font-weight: 700;
+    }
+    .container_button_add {
+        padding: 1em;
+        button {
+            display: inline-block;
+            background-color: $azul-primario;
+            color: #fff;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all .2s;
+            border-radius: 8px;
+            &:hover {
+                background-color: #000;
+            }
+        }
+    }
+    .container_cursos {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        gap: 1em;
+    }
+}
