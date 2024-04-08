@@ -9,11 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@nextui-org/react": "^2.2.10",
     "@reduxjs/toolkit": "^2.2.2",
+    "cookies-next": "^4.1.1",
+    "framer-motion": "^11.0.25",
     "jose": "^5.2.3",
     "jsonwebtoken": "^9.0.2",
     "next": "14.1.4",
     "react": "^18",
+    "react-data-table-component": "^7.6.2",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
     "react-icons": "^5.0.1",

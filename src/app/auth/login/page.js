@@ -5,11 +5,20 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import DangerMessage from '@/components/DangerMessage/DangerMessage';
 import styles from './Login.module.scss'
+import {useSelector, useDispatch} from 'react-redux'
+import {login, logout} from '@/features/auth/loginSlice'
 
 export default function Login() {
     const classInputs = "my-2 px-3 py-2 rounded-xl bg-[#f0f0f0] outline outline-[2px] outline-[#00324D] focus:outline-[#39A900] text-black"
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const authState = useSelector(state => state.auth)
     const router = useRouter()
+
+    const dispatch = useDispatch()
+
+    const handleSubmitTwo = () => {
+        dispatch(login())
+    }
     
     const onSubmit = handleSubmit (async (data, event) => {
         event.preventDefault();
@@ -17,7 +26,7 @@ export default function Login() {
         const dataJSON = {
             "Ema_User": data.Ema_User,
             "Pass_User": data.Pass_User,
-            "Dir_Ip": "198"
+            "Dir_Ip": "198.168.0.1"
         }
 
         const response = await fetch('http://localhost:3000/api/v1/login', {
@@ -32,10 +41,11 @@ export default function Login() {
         }
 
         const responseJSON = await response.json();
-        if(responseJSON.result.code == 200){
+        if(responseJSON.code == 200){
+            handleSubmitTwo()
             return router.push('/')
         }
-        else if (responseJSON.result.code == 108){
+        else if (responseJSON.code == 108){
             return 
         }
         // login(tokens.result.data.codigo)

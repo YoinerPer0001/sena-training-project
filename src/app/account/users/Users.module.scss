@@ -12,33 +12,11 @@ $naranja-primario: #FF6C20;
     overflow-y: auto;
     background-color: rgb(243, 243, 243);
 
-    .actions_table {
-        display: flex;
-        gap: 0.8em;
-        .edit_button_table {
-            background-color: $azul-primario;
-            color: #fff;
-            font-size: 1em;
-            padding: 7px;
-            border-radius: 7px;
-            transition: all .2s;
-            &:hover {
-                background-color: #000;
-            }
-        }
-        // .delete_button_table {
-        //     background-color: rgb(255, 60, 60);
-        //     color: #fff;
-        //     font-size: 1em;
-        //     padding: 7px;
-        //     border-radius: 7px;
-        // }
     }
     
     .container_button_add {
         text-align: center;
         background-color: rgb(243, 243, 243);
-        border-radius: 7px;
         width: 100%;
         padding: 1em;
         position: sticky;
@@ -50,7 +28,7 @@ $naranja-primario: #FF6C20;
             font-size: 2em;
             font-weight: 700;
         }
-        a {
+        button {
             display: inline-block;
             background-color: $azul-primario;
             color: #fff;
@@ -77,12 +55,14 @@ $naranja-primario: #FF6C20;
             }
             input{
                 padding: 5px 8px;
+                outline-color: $azul-primario;
                 border-radius: 7px;
-                outline: 2px solid $azul-primario;
+                outline: solid;
+                outline-width: 2px;
+                outline-color: $azul-primario;
                 &:focus {
-                    outline: 2px solid $naranja-primario
+                    outline: 2px solid $naranja-primario;
                 }
-                // min-width: 500px;
             }
             select {
                 padding: 5px 8px;
@@ -103,7 +83,7 @@ $naranja-primario: #FF6C20;
         padding: 1em;
         gap: 1em;
     }
-}
+
 
 @media (max-width: 960px) {
     .search{

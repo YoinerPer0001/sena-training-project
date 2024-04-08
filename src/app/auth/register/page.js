@@ -2,10 +2,12 @@
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import DangerMessage from "@/components/DangerMessage/DangerMessage";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const classInputs = "my-2 px-3 py-2 rounded-xl bg-[#f0f0f0] outline outline-[2px] outline-[#00324D] focus:outline-[#39A900] text-black"
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const router = useRouter()
 
     const onSubmit = handleSubmit(async (data) => {
 
@@ -24,9 +26,9 @@ export default function Register() {
             "Ape_User": data.Ape_User,
             "Ema_User": data.Ema_User,
             "Pass_User": data.Pass_User,
-            "Dir_Ip": "198"
+            "Dir_Ip": "198.168.0.1"
         }
-        const res = await fetch('http://127.0.0.1:3000/api/v1/register', {
+        const res = await fetch('http://localhost:3000/api/v1/register', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -34,13 +36,9 @@ export default function Register() {
         })
         const resJSON = await res.json()
         // console.log(resJSON)
-        if (resJSON.result.code == 200) {
+        if (resJSON.type == 'success') {
             alert('Te registraste correctamente')
-            // console.log(resJSON.result.data.InsertId)
-            window.localStorage.setItem('VALIDATE_ID_USER', JSON.stringify(resJSON.result.data.InsertId));
-            setTimeout(() => {
-                window.location.href = '/auth/validate';
-            }, 1600);
+            router.push('/')
         } else if (resJSON.result.code == 107){
             alert('Ese correo ya está')
         }

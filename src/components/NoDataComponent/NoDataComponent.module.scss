@@ -1,0 +1,19 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+
+.container {
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        svg {
+            color: #00324D;
+            font-size: 2em;
+        }
+    }
+    p {
+        font-size: 1em;
+        font-weight: 600;
+    }
+}
