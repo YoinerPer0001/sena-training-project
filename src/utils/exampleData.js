@@ -22,12 +22,13 @@ export const columnsContent = [
         sortable: true
     },
     {
+        "name": 'Estado',
+        selector: row => row.state,
+        sortable: true
+    },
+    {
         "name": '',
         selector: row => row.actions,
-        button: true,
-        cell: () => <div className={styles.actions_table}>
-            <button className={styles.edit_button_table}>Editar</button>
-        </div>,
     },
 ]
 export const columnsUsers = [

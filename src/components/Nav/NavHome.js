@@ -143,20 +143,18 @@ export const NavHome = () => {
                 startContent={icons.user}
               >
                 Cerrar sesión
-                
               </DropdownItem>
-              
             </DropdownMenu>
           </Dropdown>
           :
           <li className='text-base font-medium flex gap-2 items-center'>
-            <Link href="#" aria-current="page">
+            <Link href="/auth/login" aria-current="page">
               Log In
             </Link>
             |
-            <button href="#" aria-current="page" onClick={handleSubmit}>
+            <Link href="/auth/register" aria-current="page" onClick={handleSubmit}>
               Sign Up
-            </button>
+            </Link>
           </li>
           }
         </NavbarContent>

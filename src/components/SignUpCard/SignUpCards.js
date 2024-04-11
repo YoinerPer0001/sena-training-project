@@ -5,29 +5,31 @@ import { AiFillHeart } from "react-icons/ai";
 import styles from './SignUpCards.module.scss'
 // import DarkButtons from '../DarkButtons';
 
-export default function SignUpCards({score, title, img, category, href}) {
+export default function SignUpCards({ score, title, img, category, href }) {
     return (
-        <article className={styles.article}>
-            <div className={styles.category}>
-                <span className="font-semibold text-white text-xs text-center uppercase">{category}</span>
-            </div>
-            <picture>
-                <Image src={img} alt={title} width="261" height="200"/>
-            </picture>
-            <div className={styles.title_div}>
-                <h3 className="">{title}</h3>
-            </div>
-            <div className={styles.hr}></div>
-            <div className={styles.bottom}>
-                <div>
-                    <AiFillHeart color="red" fontSize="1.2em"/>
-                    <span>678</span>
+        <a href={href}>
+            <article className={styles.article}>
+                <div className={styles.category}>
+                    <span className="font-semibold text-white text-xs text-center uppercase">{category}</span>
                 </div>
-                <div>
-                    <MdAccessTimeFilled />
-                    <span>4 horas</span>
+                <picture>
+                    <Image src={img} alt={title} width="261" height="200" />
+                </picture>
+                <div className={styles.title_div}>
+                    <h3 className="">{title}</h3>
                 </div>
-            </div>
-        </article>
+                <div className={styles.hr}></div>
+                <div className={styles.bottom}>
+                    <div>
+                        <AiFillHeart color="red" fontSize="1.2em" />
+                        <span>678</span>
+                    </div>
+                    <div>
+                        <MdAccessTimeFilled />
+                        <span>4 horas</span>
+                    </div>
+                </div>
+            </article>
+        </a>
     )
 }

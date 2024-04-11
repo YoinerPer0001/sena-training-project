@@ -11,10 +11,6 @@ const work_sans = Work_Sans({ subsets: ["latin"], weight: ['300','400','500','60
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>  
-        <title>SENA Learn</title>
-        <meta name="description" content="Desarrolla, crea y aprende. Todo aquí, en SENA Learn"></meta>
-      </Head>
       <body className={work_sans.className}>
         <Providers>
           {children}

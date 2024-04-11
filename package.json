@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@nextui-org/react": "^2.2.10",
     "@reduxjs/toolkit": "^2.2.2",
+    "cloudinary": "^2.1.0",
     "cookies-next": "^4.1.1",
     "framer-motion": "^11.0.25",
     "jose": "^5.2.3",

@@ -2,7 +2,7 @@
 import SignUpCards from '@/components/SignUpCard/SignUpCards';
 import styles from './Content.module.scss'
 import ManageCoursesCard from '@/components/ManageCoursesCard/ManageCoursesCard';
-import DataTable, {defaultThemes} from 'react-data-table-component';
+import DataTable, { defaultThemes } from 'react-data-table-component';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@/components/Spinner/Spinner';
 import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
@@ -16,19 +16,23 @@ export default function Content() {
     useEffect(() => {
         try {
             fetch('http://localhost:3000/api/v1/cursos')
-            .then(data => data.json())
-            .then(data => {
-                console.log(data)
-                const cursos = data.data.map(curso => ({
-                    'names': curso.Nom_Cur,
-                    'categories': curso.Categoria.Nom_Cat,
-                    'instructors': curso.Instructor == null ? 'Sin instructor' : curso.Instructor.Nom_User,
-                    'createdAt': curso.Fech_Crea_Cur
-                }));
-                setRecords(cursos)
-                setFirstData(cursos)
-                setLoading(false)
-            })
+                .then(data => data.json())
+                .then(data => {
+                    console.log(data)
+                    const cursos = data.data.map(curso => ({
+                        'names': curso.Nom_Cur,
+                        'categories': curso.Categoria.Nom_Cat,
+                        'instructors': curso.Instructor == null ? 'Sin instructor' : curso.Instructor.Nom_User,
+                        'createdAt': curso.Fech_Crea_Cur,
+                        'state': curso.Est_Curso == 2 ? 'Publicado' : 'Creado',
+                        'actions': <div className={styles.actions_table}>
+                                        <Link className={styles.edit_button_table} href={`/account/content/courses/${curso.Id_Cur}`}>Editar</Link>
+                                    </div>
+                    }));
+                    setRecords(cursos)
+                    setFirstData(cursos)
+                    setLoading(false)
+                })
         } catch (error) {
             console.log(error)
         }
@@ -43,30 +47,30 @@ export default function Content() {
     }
     return (
         <section className={styles.container}>
-                <div className={styles.container_button_add}>
-                    <h3>Cursos</h3>
-                    <Link href={'/account/content/create'}>Añadir nuevo curso</Link>
-                    <hr />
-                    <div className={styles.search}>
-                        <div>
-                            <label>Nombre: </label>
-                            <input name='search_filter_courses' type="text" placeholder="Desarrollo de software" onChange={handleChange}/>
-                        </div>
+            <div className={styles.container_button_add}>
+                <h3>Cursos</h3>
+                <Link href={'/account/content/create'}>Crear nuevo curso</Link>
+                <hr />
+                <div className={styles.search}>
+                    <div>
+                        <label>Nombre: </label>
+                        <input name='search_filter_courses' type="text" placeholder="Desarrollo de software" onChange={handleChange} />
                     </div>
                 </div>
-                <div className={styles.container_cursos}>
-                    <DataTable 
-                        columns={columnsContent}
-                        data={records}
-                        selectableRows
-                        pagination
-                        fixedHeader
-                        progressPending={loading}
-                        progressComponent={<Spinner />}
-                        highlightOnHover
-                        noDataComponent={<NoDataComponent />}
-                    />
-                </div>
+            </div>
+            <div className={styles.container_cursos}>
+                <DataTable
+                    columns={columnsContent}
+                    data={records}
+                    // selectableRows
+                    pagination
+                    fixedHeader
+                    progressPending={loading}
+                    progressComponent={<Spinner />}
+                    highlightOnHover
+                    noDataComponent={<NoDataComponent />}
+                />
+            </div>
         </section>
     );
 }

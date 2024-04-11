@@ -4,9 +4,27 @@ import { NavHome } from '@/components/Nav/NavHome'
 import SignUpCards from '@/components/SignUpCard/SignUpCards'
 import styles from '@/styles/HomePage.module.scss'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 export default function Home() {
+  const [courses, setCourses] = useState([])
+
+  useEffect(() => {
+    try {
+      fetch('http://localhost:3000/api/v1/cursos')
+        .then(data => data.json())
+        .then(data => {
+          const content = [data[0], data[1], data[2]]
+          setCourses(content)
+          setTimeout(() => {
+            console.log(courses)
+          },3000)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
 
   return (
     <>
@@ -32,9 +50,11 @@ export default function Home() {
             <h2 className='text-white font-bold text-3xl'>Cursos populares</h2>
           </div>
           <div className={styles.section_courses_container}>
-            <SignUpCards score={"5"} title={"Desarrollo web con HTML, CSS Y JavaScript"} category={"sistemas"} img={"/image1.jpg"} />
-            <SignUpCards score={"5"} title={"Actividad física con balón retenido"} category={"deporte"} img={"/image6.jpg"} />
-            <SignUpCards score={"5"} title={"Base de datos con MySQL y PostgresSQL"} category={"sistemas"} img={"/image3.jpeg"} />
+            {/* {courses.map((course, index) =>{
+              return (
+                <SignUpCards title={course.Nom_Cur} category={course.Category.Nom_Cat} img={"/image1.jpg"} key={index} href={`/courses/${course.Nom_Cat}`}/>
+              )
+            })} */}
           </div>
         </section>
         <section className={styles.section_categories}>
