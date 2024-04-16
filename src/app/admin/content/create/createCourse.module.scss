@@ -1,0 +1,130 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+$azul-secundario: #6fccff;
+
+.container {
+    max-height: 100vh;
+    width: 100%;
+    border-radius: 1em;
+    padding: 1em;
+    padding-top: 0;
+    margin: 1em;
+    position: relative;
+    overflow-y: auto;
+    background-color: rgb(243, 243, 243);
+    .container_create{
+        height: 100%;
+        .select {
+            cursor: pointer;
+            width: 50%;
+            padding: 10px;
+            border-radius: 7px;
+            outline: none;
+            option {
+                text-transform: capitalize;
+            }
+        }
+        input[type=file]::file-selector-button {
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: .6em .8em;
+            background: $azul-primario;
+            cursor: pointer;
+            transition: all .2s;
+            margin-right: 1em;
+            &:hover {
+                background: #000;
+            }
+        }
+        .create_course {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            .create_course_title {
+                text-align: center;
+                background-color: rgb(243, 243, 243);
+                display: flex;
+                flex-direction: column;
+                gap: 2em;
+                border-radius: 7px;
+                width: 100%;
+                padding: 1em;
+                // h3 {
+                //     padding: 0.5em 0.5em 0 0.5em;
+                //     text-align: center;
+                //     font-size: 2em;
+                //     font-weight: 700;
+                // }
+                input {
+                    width: 50%;
+                    padding: 1em;
+                    border-radius: 11px;
+                    border: none;
+                    outline: 1px solid gray;
+                    font-weight: 500;
+                    &:focus {
+                        outline: 1px solid $azul-primario;
+                    }
+                }
+                @media (max-width: 1024px) {
+                    input {
+                        width: 100%;
+                    }
+                }
+                .form_image {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1em;
+                    button {
+                        background-color: $azul-primario;
+                        color: #fff;
+                        padding: 5px 7px;
+                        border-radius: 7px;
+                        min-width: 100px;
+                        min-height: 40px;
+                        transition: all 0.2s;
+                        &:hover {
+                            background-color: #000;
+                        }
+                    }
+                }
+            }
+            .create_course_button {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                justify-content: center;
+                gap: 1.2em;
+                align-items: center;
+
+                .pages_buttons {
+                    display: flex;
+                    gap: 1em;
+                    button {
+                        background-color: #00324D;
+                        color: #fff;
+                        padding: 0.7em 1em;
+                        border-radius: 7px;
+                        transition: all .2s;
+                        &:hover {
+                            background-color: #000;
+                        }
+                    }
+                    button[disabled] {
+                        background-color: gray;
+                        cursor: not-allowed;
+                        &:hover {
+                            background-color: gray;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}

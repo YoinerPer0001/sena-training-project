@@ -10,13 +10,13 @@ export default function SignUpCards({ score, title, img, category, href }) {
         <a href={href}>
             <article className={styles.article}>
                 <div className={styles.category}>
-                    <span className="font-semibold text-white text-xs text-center uppercase">{category}</span>
+                    <span className="font-semibold text-xs text-center uppercase">{category}</span>
                 </div>
                 <picture>
-                    <Image src={img} alt={title} width="261" height="200" />
+                    <Image src={img} alt={title} width="300" height="200" />
                 </picture>
                 <div className={styles.title_div}>
-                    <h3 className="">{title}</h3>
+                    <h3 className="p-1 line-clamp-1">{title}</h3>
                 </div>
                 <div className={styles.hr}></div>
                 <div className={styles.bottom}>

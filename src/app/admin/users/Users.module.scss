@@ -1,0 +1,99 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+
+.container {
+    max-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    border-radius: 1em;
+    padding: 1em;
+    padding-top: 0;
+    margin: 1em;
+    position: relative;
+    overflow-y: auto;
+    background-color: rgb(243, 243, 243);
+
+    }
+    
+    .container_button_add {
+        text-align: center;
+        background-color: rgb(243, 243, 243);
+        width: 100%;
+        padding: 1em;
+        position: sticky;
+        z-index: 20;
+        top: 0;
+        h3 {
+            padding: 0.5em 0.5em 0 0.5em;
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        button {
+            display: inline-block;
+            background-color: $azul-primario;
+            color: #fff;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all .2s;
+            border-radius: 8px;
+            margin-bottom: 1em;
+            text-align: left;
+            &:hover {
+                background-color: #000;
+            }
+        }
+        .search {
+            display: flex;
+            gap: 2em;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1em;
+            label {
+                // display: block;
+                font-weight: 500;
+            }
+            input{
+                padding: 5px 8px;
+                outline-color: $azul-primario;
+                border-radius: 7px;
+                outline: solid;
+                outline-width: 2px;
+                outline-color: $azul-primario;
+                &:focus {
+                    outline: 2px solid $naranja-primario;
+                }
+            }
+            select {
+                padding: 5px 8px;
+                outline-color: $azul-primario;
+                border-radius: 7px;
+            }
+        }
+    }
+    .container_cursos {
+        display: flex;
+        flex-direction: column;
+        min-height: 640px;
+        max-height: 640px;
+        // box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 7px;
+        margin-top: 1em;
+        padding: 1em;
+        gap: 1em;
+    }
+
+
+@media (max-width: 960px) {
+    .search{
+        input {
+            width: 100%;
+            min-width: 200px;
+        }
+    }
+}

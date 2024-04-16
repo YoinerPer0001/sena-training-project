@@ -1,0 +1,16 @@
+.main {
+    overflow-y: hidden;
+    display: flex;
+    .section {
+        margin: 1em;
+        overflow-y: hidden;
+        // background-color: bisque;
+        width: 100%;
+        padding: 1em;
+    }
+    @media (max-width: 767px) {
+        .section {
+            margin-left: 1em;
+        }
+    }
+}

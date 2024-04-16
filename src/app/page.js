@@ -2,6 +2,7 @@
 import { Footer } from '@/components/Footer/Footer'
 import { NavHome } from '@/components/Nav/NavHome'
 import SignUpCards from '@/components/SignUpCard/SignUpCards'
+import TopMessageHome from '@/components/TopMessageHome/TopMessageHome'
 import styles from '@/styles/HomePage.module.scss'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -17,9 +18,6 @@ export default function Home() {
         .then(data => {
           const content = [data[0], data[1], data[2]]
           setCourses(content)
-          setTimeout(() => {
-            console.log(courses)
-          },3000)
         })
     } catch (error) {
       console.log(error)
@@ -28,6 +26,7 @@ export default function Home() {
 
   return (
     <>
+      <TopMessageHome />
       <NavHome />
       <main className={styles.main}>
         <section className={styles.section_header}>
@@ -50,11 +49,9 @@ export default function Home() {
             <h2 className='text-white font-bold text-3xl'>Cursos populares</h2>
           </div>
           <div className={styles.section_courses_container}>
-            {/* {courses.map((course, index) =>{
-              return (
-                <SignUpCards title={course.Nom_Cur} category={course.Category.Nom_Cat} img={"/image1.jpg"} key={index} href={`/courses/${course.Nom_Cat}`}/>
-              )
-            })} */}
+            <SignUpCards title={"Aprende Adobe Photoshop desde cero"} category={'Artes gráficas'} img={"/port5.webp"} />
+            <SignUpCards title={"Desarrollo web con PHP y Laravel"} category={'Sistemas'} img={"/port1.webp"} />
+            <SignUpCards title={"Fotografía avanzada"} category={'Multimedia'} img={"/port4.webp"} />
           </div>
         </section>
         <section className={styles.section_categories}>
@@ -117,7 +114,7 @@ export default function Home() {
                   <div className="relative h-full rounded-lg">
                     <div className="flex items-center -mt-1 p-5 pb-0">
                       <Image src={'/svg-bd.svg'} alt='icon' width={40} height={40} />
-                      <h3 class="my-2 ml-3 text-lg font-bold">Bases de datos</h3>
+                      <h3 className="my-2 ml-3 text-lg font-bold">Bases de datos</h3>
                     </div>
                     <hr className="mt-3 mb-3 text-xs font-medium uppercase" />
                     <p className="mb-2 px-5">Bot development frameworks were created as advanced software tools

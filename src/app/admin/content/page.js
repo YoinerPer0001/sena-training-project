@@ -1,25 +1,100 @@
-import SignUpCards from '@/components/SignUpCard/SignUpCards';
+'use client'
 import styles from './Content.module.scss'
-import ManageCoursesCard from '@/components/ManageCoursesCard/ManageCoursesCard';
+import DataTable, { defaultThemes } from 'react-data-table-component';
+import { useState, useEffect } from 'react';
+import { Spinner } from '@/components/Spinner/Spinner';
+import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
+import { columnsContent, dataContent } from '@/utils/exampleData';
+import Link from 'next/link'
+import { Filter, FileInput, CirclePlus } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export default function Content() {
+    const [firstData, setFirstData] = useState([])
+    const [records, setRecords] = useState([])
+    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        try {
+            fetch('http://localhost:3000/api/v1/cursos')
+                .then(data => data.json())
+                .then(data => {
+                    const cursos = data.data.map(curso => ({
+                        'names': curso.Nom_Cur,
+                        'categories': curso.Categoria.Nom_Cat,
+                        'instructors': curso.Instructor == null ? 'Sin instructor' : curso.Instructor.Nom_User,
+                        'createdAt': curso.Fech_Crea_Cur,
+                        'state': curso.Est_Curso == 2 ? <span className='bg-green-300 text-green-600 p-1 rounded'>Publicado</span> : <span className='bg-green-300 text-green-600 p-2 rounded-lg'>Creado</span>,
+                        'actions': <div className={styles.actions_table}>
+                            <Link className={styles.edit_button_table} href={`/admin/content/manage/${curso.Id_Cur}`}>Editar</Link>
+                        </div>
+                    }));
+                    setRecords(cursos)
+                    setFirstData(cursos)
+                    setLoading(false)
+                })
+        } catch (error) {
+            console.log(error)
+        }
+    }, [])
+
+
+    const handleChange = (e) => {
+        const filteredRecords = firstData.filter(record => {
+            return record.names.toLowerCase().includes(e.target.value.toLowerCase())
+        })
+        setRecords(filteredRecords)
+    }
+
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
+
+    // const downloadPDF = async () => {
+    //     const capture = document.querySelector('.sc-fLseNd')
+    //     html2canvas(capture).then((canvas) => {
+    //         const imgData = canvas.toDataURL('img/png')
+    //         const doc = new jsPDF('p', 'mm', 'a4');
+    //         const componentWidth = doc.internal.pageSize.getWidth()
+    //         const componentHeight = doc.internal.pageSize.getHeight()
+    //         doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+    //         doc.save('Cursos.pdf');
+    //     });
+    // }
+
     return (
         <section className={styles.container}>
-            <h3>Cursos</h3>
             <div className={styles.container_button_add}>
-                <button>Añadir nuevo curso</button>
+                <h3>Cursos</h3>
+                <hr />
+                <div className={styles.search}>
+                    <div className={styles.filter}>
+                        <Filter />
+                        <input name='search_filter_courses' type="text" placeholder="Filtrar por nombre" onChange={handleChange} />
+                    </div>
+                    <div className={styles.export}>
+                        <Link href={'/admin/content/export'}><FileInput />Exportar PDF</Link>
+                        <Link href={'/admin/content/create'}><CirclePlus />Crear nuevo curso</Link>
+                    </div>
+                </div>
             </div>
-            <hr />
             <div className={styles.container_cursos}>
-              <ManageCoursesCard title={"Desarrollo web con HTML, CSS Y JavaScript con arquitectura  CleanUp" } category={"sistemas"} img={"/image1.jpg"}/>
-              <hr />
-              <ManageCoursesCard title={"Actividad física con balón retenido" } category={"deportes"} img={"/image1.jpg"}/>
-              <hr />
-              <ManageCoursesCard title={"Base de datos con MySQL y PostgresSQL" } category={"sistemas"} img={"/image1.jpg"}/>
-              <hr />
-              <ManageCoursesCard title={"Actividad física con balón retenido" } category={"deportes"} img={"/image1.jpg"}/>
-              <hr />
-              <ManageCoursesCard title={"Desarrollo web con HTML, CSS Y JavaScript con arquitectura  CleanUp" } category={"sistemas"} img={"/image1.jpg"}/>
+                <DataTable
+                    columns={columnsContent}
+                    data={records}
+                    // selectableRows
+                    pagination
+                    fixedHeader
+                    progressPending={loading}
+                    progressComponent={<Spinner />}
+                    highlightOnHover
+                    noDataComponent={<NoDataComponent />}
+                    paginationComponentOptions={paginationComponentOptions}
+                    id="my-table"
+                />
             </div>
         </section>
     );
