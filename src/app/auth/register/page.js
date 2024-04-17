@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Register() {
-    const classInputs = "my-2 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
+    const classInputs = "my-1 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
     const { register, handleSubmit, formState: { errors } } = useForm()
     const router = useRouter()
 
@@ -47,15 +47,15 @@ export default function Register() {
 
     return (
         <main className="w-full h-screen flex justify-center items-center bg-[#00324D] lg:bg-[#00324D]" >
-            <section className="lg:w-2/4 lg:h-full hidden lg:flex w-full flex-col items-center gap-2 mx-auto justify-center p-10 text-center border-r-[16px] border-[#39A900]">
-                <h3 className="text-3xl font-bold text-white">¿Ya tienes una cuenta?</h3>
+            <section className="lg:w-2/4 h-full hidden lg:flex w-full flex-col items-center gap-2 mx-auto justify-center p-10 text-center border-r-[16px] border-[#39A900]">
+                <h3 className="text-xl font-bold text-white">¿Ya tienes una cuenta?</h3>
                 <span className="text-white">Inicia sesión para acceder a los cursos.</span>
-                <Link href="./login" id="desktop-register-btn" className="bg-white text-[#00324D] py-2 px-3 rounded-xl text-xl font-semibold mx-3 hover:scale-110 transition-all duration-200 hover:shadow-lg">Iniciar sesión</Link>
+                <Link href="./login" id="desktop-register-btn" className="bg-white text-[#00324D] py-2 px-3 rounded-xl text-base font-semibold mx-3 hover:bg-[#39A900] hover:text-white transition-all duration-150 hover:shadow-lg">Iniciar sesión</Link>
             </section>
-            <section className="bg-[#00324D] mx-auto lg:bg-white w-full lg:w-3/4 lg:h-full flex-col items-center justify-center gap-2 flex text-center">
+            <section className="bg-[#00324D] mx-auto overflow-y-auto lg:bg-white w-full lg:w-3/4 lg:h-full flex-col items-center justify-center gap-2 flex text-center">
                 <Image src={'/logo-senalearn-(white).png'} alt="Logo SENA Learn blanco" width={40} height={40} className="my-4 block lg:hidden"/>
                 <Image src={'/logo-naranja.svg'} alt="Logo SENA Learn blanco" width={40} height={40} className="my-4 hidden lg:block" />
-                <h2 className="text-3xl lg:text-3xl font-bold text-white lg:text-[#00324D]">Registro</h2>
+                <h2 className="text-2xl lg:text-3xl font-bold text-white lg:text-[#00324D]">Registro</h2>
                 {/* Formulario de registro */}
                 <form className="flex flex-col w-3/4 sm:w-2/4" onSubmit={onSubmit}>
                     <input placeholder="Nombre" type="text" className={classInputs} {...(register("Nom_User", {
@@ -94,7 +94,7 @@ export default function Register() {
                     }))} />
                     {errors.confirmPassword && <DangerMessage>{errors.confirmPassword.message}</DangerMessage>}
                     <div className="flex items-center flex-col mt-2">
-                        <button className="inline-block lg:text-white lg:bg-[#00324D] text-white bg-[#39A900] py-2 px-3 rounded-xl text-base sm:text-xl font-semibold hover:bg-black transition-all duration-200 bg-greensena" type="submit">Registrarse</button>
+                        <button className="inline-block lg:text-white lg:bg-[#00324D] text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena" type="submit">Registrarse</button>
                     </div>
                     {/* Botones de registro e iniciar sesión */}
                     <div className="lg:hidden flex flex-col sm:flew-row my-3">

@@ -58,7 +58,7 @@ export default function Login() {
                 <div>
                     <Image src="/logo-naranja.svg" alt="" width={50} height={50} />
                 </div>
-                <h2 className="text-3xl lg:text-4xl font-semibold text-white lg:text-[#00324D]">Inicio de sesión</h2>
+                <h2 className="text-2xl lg:text-3xl font-bold text-white lg:text-[#00324D]">Inicio de sesión</h2>
                 <form className="flex flex-col w-full lg:w-3/4 xl:w-2/4" onSubmit={onSubmit}>
                     <input placeholder="Email" type="text" {...(register("Ema_User", {
                         required: {
@@ -75,7 +75,7 @@ export default function Login() {
                     }))} />
                     {errors.Ema_User && <DangerMessage>{errors.Ema_User.message}</DangerMessage>}
                     <div className="mt-2">
-                        <button type="submit" className="inline-block bg-[#39A900] lg:text-white lg:bg-[#00324D] text-white  py-2 px-3 rounded-xl text-base sm:text-lg font-semibold hover:bg-black transition-all duration-200 cursor-pointer">Iniciar sesión</button>
+                        <button type="submit" className="inline-block bg-[#39A900] lg:text-white lg:bg-[#00324D] text-white  py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 cursor-pointer">Iniciar sesión</button>
                     </div>
                 </form>
                 {/* Olvidó su contraseña? */}
@@ -107,7 +107,7 @@ export default function Login() {
                 </div>
             </section>
             <section className={styles.section_aside}>
-                <h3>¿No tienes una cuenta?</h3>
+                <h3 className='text-xl font-semibold text-white'>¿No tienes una cuenta?</h3>
                 <span className="text-white">No te preocupes, crea una en instantes</span>
                 <Link href="./register" id="desktop-register-btn">Registrarse</Link>
             </section>

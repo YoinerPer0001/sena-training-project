@@ -9,13 +9,15 @@ $naranja-primario: #FF6C20;
     flex-direction: column; 
     align-items: center; 
     border-radius: 0.75rem;
-    border: 1px solid rgb(188, 188, 188); 
+    color: rgb(0, 0, 0);
+    // border: 1px solid rgb(188, 188, 188); 
     background-color: #ffffff; 
-    transition: all .2s ease-in-out;
+    transition: all .15s ease-in-out;
     cursor: pointer; 
+    outline: 2px solid #d7d7d7;
 
     &:hover {
-        background-color: #f0f0f0;
+        outline: 2px solid $azul-secundario;
     }
 
     .title_div {
@@ -25,7 +27,6 @@ $naranja-primario: #FF6C20;
         line-clamp: 1; 
         font-weight: 600; 
         text-align: center; 
-        color: #000000; 
         max-width: 250px;
     }
     .category {

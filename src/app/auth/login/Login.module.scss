@@ -20,11 +20,7 @@ $font-medium: 500;
         text-align: center;
         margin: 0 auto;
         gap: 8px;
-
-        h2 {
-            font-size: 1.8em;
-            color: #000;
-        }
+        
         @media (max-width: 1024px) {
             h2 {
                 color: #fff;
@@ -38,7 +34,6 @@ $font-medium: 500;
             justify-content: center;
 
             input {
-                margin: 8px 0;
                 width: 75%;
                 padding: 8px 12px;
                 border-radius: 12px;
@@ -91,11 +86,11 @@ $font-medium: 500;
         align-items: center;
         gap: 8px;
 
-        h3 {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #fff;
-        }
+        // h3 {
+        //     font-size: 1.8em;
+        //     font-weight: 700;
+        //     color: #fff;
+        // }
 
         a {
             cursor: pointer;

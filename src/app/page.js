@@ -33,7 +33,7 @@ export default function Home() {
           <div className={styles.header_top}>
             <div className="flex flex-col justify-end w-2/4 mb-3">
               <h4 className="text-5xl font-bold">Descrubre</h4>
-              <h4 className="text-5xl font-bold text-[#FF6C20] relative left-16">Desarrolla</h4>
+              <h4 className="text-5xl font-bold text-[#39a900] relative left-16">Desarrolla</h4>
               <h4 className="text-5xl font-bold">Domina</h4>
             </div>
             <div className="w-3/4 font-medium">

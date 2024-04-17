@@ -31,17 +31,17 @@ export const NavHome = () => {
       </NavbarBrand>
       <NavbarContent className="hidden md:flex gap-4" justify="center">
         <NavbarItem>
-          <Link isBlock color="foreground" href="/courses/explore">
+          <Link className='font-semibold' isBlock color="foreground" href="/courses/explore">
             Explorar
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link isBlock color="foreground" href="#">
+          <Link className='font-semibold' isBlock color="foreground" href="#">
             Customers
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link isBlock color="foreground" href="#">
+          <Link className='font-semibold' isBlock color="foreground" href="#">
             FAQS
           </Link>
         </NavbarItem>
