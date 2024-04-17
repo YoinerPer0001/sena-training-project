@@ -63,7 +63,7 @@ export const NavHome = () => {
             </div>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="settings" href='/account/profile'>Configuración</DropdownItem>
+            <DropdownItem key="settings" href='/admin/profile'>Configuración</DropdownItem>
             <DropdownItem key="logout" color="danger">
               Cerrar sesión
             </DropdownItem>

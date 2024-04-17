@@ -24,7 +24,7 @@ export default function Content() {
                         'categories': curso.Categoria.Nom_Cat,
                         'instructors': curso.Instructor == null ? 'Sin instructor' : curso.Instructor.Nom_User,
                         'createdAt': curso.Fech_Crea_Cur,
-                        'state': curso.Est_Curso == 2 ? <span className='bg-green-300 text-green-600 p-1 rounded'>Publicado</span> : <span className='bg-green-300 text-green-600 p-2 rounded-lg'>Creado</span>,
+                        'state': curso.Est_Cur == 2 ? <div className='bg-green-100 text-green-700 p-2 rounded-full font-semibold'>Publicado</div> : <div className='bg-gray-100 text-gray-600 p-2 rounded-full font-semibold'>Creado</div>,
                         'actions': <div className={styles.actions_table}>
                             <Link className={styles.edit_button_table} href={`/admin/content/manage/${curso.Id_Cur}`}>Editar</Link>
                         </div>

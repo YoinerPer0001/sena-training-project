@@ -4,21 +4,22 @@ import { useForm } from "react-hook-form"
 import DangerMessage from "@/components/DangerMessage/DangerMessage";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import CircleSpinner from "@/components/CircleSpinner/CircleSpinner";
 
 export default function Register() {
     const classInputs = "my-1 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
     const { register, handleSubmit, formState: { errors } } = useForm()
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
 
     const onSubmit = handleSubmit(async (data) => {
-
+        setLoading(true);
         if(data.Pass_User !== data.confirmPassword){
             return (
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Las contraseñas no coinciden, intentalo de nuevo",
-                  })
+                toast.error('Las contraseñas no coinciden')
+                // setLoading(false)
             )
         }
 
@@ -36,12 +37,17 @@ export default function Register() {
             body: JSON.stringify(dataJSON)
         })
         const resJSON = await res.json()
-        // console.log(resJSON)
+        console.log(resJSON.code)
         if (resJSON.type == 'success') {
-            alert('Te registraste correctamente')
+            toast.success('Registro completado correctamente')
+            setLoading(false);
             router.push('/')
-        } else if (resJSON.result.code == 107){
-            alert('Ese correo ya está')
+        } else if (resJSON.code == 107){
+            toast.error('Ese correo ya existe')
+            setLoading(false);
+        } else if (resJSON.code == 403){
+            toast.error('Las contraseñas deben tener mínimo 8 caracteres')
+            setLoading(false);
         }
     })
 
@@ -94,7 +100,7 @@ export default function Register() {
                     }))} />
                     {errors.confirmPassword && <DangerMessage>{errors.confirmPassword.message}</DangerMessage>}
                     <div className="flex items-center flex-col mt-2">
-                        <button className="inline-block lg:text-white lg:bg-[#00324D] text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena" type="submit">Registrarse</button>
+                        <button className={`flex min-w-[100px] justify-center items-center lg:text-white  ${loading ? "lg:bg-[#47a7db]" : "lg:bg-[#00324D]"} text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena`} type="submit">{loading ? <CircleSpinner /> : "Registrarse" } </button>
                     </div>
                     {/* Botones de registro e iniciar sesión */}
                     <div className="lg:hidden flex flex-col sm:flew-row my-3">

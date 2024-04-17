@@ -4,12 +4,11 @@ import { Progress } from "@nextui-org/react";
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
-import { Steps } from 'primereact/steps';
 import { ImagePlus, Pencil, ArrowLeftToLine } from 'lucide-react';
-import { Toast } from 'primereact/toast';
+import toast from "react-hot-toast";
 
 export default function CreateCourse() {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklkX1VzZXIiOiI2c3M2bmdsdXA1YmFibiIsIk5vbV9Vc2VyIjoiU3RldmVuIiwiQXBlX1VzZXIiOiJDdWVudGFzIiwiRW1hX1VzZXIiOiJzdGV2ZW4wODEwbWlndWVsQG91dGxvb2suZXMiLCJJZF9Sb2xfRksiOjJ9LCJpYXQiOjE3MTI5NjUxMjcsImV4cCI6MTcxMzA1MTUyN30.NmJkQvePFzI2iPejJ7By_3sCwaj0-OSOplJD89AAfTY'
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklkX1VzZXIiOiI2c3M2bmdsdXA1YmFibiIsIk5vbV9Vc2VyIjoiU3RldmVuIiwiQXBlX1VzZXIiOiJDdWVudGFzIiwiRW1hX1VzZXIiOiJzdGV2ZW4wODEwbWlndWVsQG91dGxvb2suZXMiLCJJZF9Sb2xfRksiOjJ9LCJpYXQiOjE3MTMzNDA5NjQsImV4cCI6MTcxMzQyNzM2NH0.UQq5xlwa39I2JrYz3LQaJmlyV4o3UAhmjM01k-NWwfg'
   const router = useRouter()
   const [categories, setCategories] = useState([])
   const [file, setFile] = useState()
@@ -18,9 +17,9 @@ export default function CreateCourse() {
     "Nom_Cur": null,
     "Des_Cur": null,
     "Hor_Cont_Total": 4,
-    "Fech_Crea_Cur": null,
+    "Fech_Crea_Cur": new Date(Date.now()),
     "Id_Cat_FK": null,
-    "Fot_Cur": '',
+    "Fot_Cur": 'https://res.cloudinary.com/dla5djfdc/image/upload/v1713337504/portada-por-defecto-videos_jytqt0.png',
   })
   const [pages, setPages] = useState(0)
   const nextPage = () => {
@@ -118,7 +117,8 @@ export default function CreateCourse() {
 
       const response = await create.json()
       if (response.type === 'success') {
-        router.push('/account/content')
+        // toast.success('Curso creado correctamente')
+        router.push('/admin/content')
       }
     } catch (e) {
       console.log(e)
@@ -128,7 +128,7 @@ export default function CreateCourse() {
   return (
     <section className={styles.container}>
       <div className='absolute top-4 hidden lg:flex'>
-        <Link href="/account/content" className='transition-all duration-200 flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg'>
+        <Link href="/admin/content" className='transition-all duration-200 flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg'>
           <ArrowLeftToLine /> Volver
         </Link>
       </div>
@@ -158,7 +158,7 @@ export default function CreateCourse() {
                   <p className='text-sm md:text-base'>No te preocupes, después podrás modificarlo.</p>
                 </div>
                 <div>
-                  <input className='text-sm md:text-base' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur} />
+                  <input className='text-sm md:text-base' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur ? dataCourse.Nom_Cur : ''} />
 
                 </div> </> : ''}
             {pages == 1 ? <>
@@ -167,7 +167,7 @@ export default function CreateCourse() {
                 <p className='text-sm md:text-base'>No te preocupes, después podrás modificarlo.</p>
               </div>
               <div>
-                <input name='create_course_title' type="text" placeholder="Ejemplo: Este curso está diseñado para brindar a los participantes una sól" maxLength="100" onChange={handleChangeDes} value={dataCourse.Des_Cur} />
+                <input name='create_course_title' type="text" placeholder="Ejemplo: Este curso está diseñado para brindar a los participantes una sól" maxLength="100" onChange={handleChangeDes} value={dataCourse.Des_Cur ? dataCourse.Des_Cur : ''} />
               </div>
             </> : ''}
             {pages == 2 ? <>
@@ -226,7 +226,7 @@ export default function CreateCourse() {
               {pages != 2 ? <button onClick={nextPage} className={styles.nextButton} disabled={pages == 0 && dataCourse.Nom_Cur == null || dataCourse.Nom_Cur == '' || pages == 1 && dataCourse.Des_Cur == null || dataCourse.Des_Cur == ''}>Siguiente</button> : <button onClick={createCourse} className={styles.nextButton}>Finalizar</button>}
             </div>
             <div className='flex lg:hidden'>
-              <Link href="/account/content" className='flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg transition-all duration-200'>
+              <Link href="/admin/content" className='flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg transition-all duration-200'>
                 <ArrowLeftToLine /> Volver
               </Link>
             </div>
