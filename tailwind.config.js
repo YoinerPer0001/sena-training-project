@@ -10,7 +10,15 @@ module.exports = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'verdeSena': '#39a900',
+        'verdeSecundario': '#dbffc9',
+        'azulSena': '#00324D',
+        'azulSecundarioSena': '#6fccff',
+        'naranjaSena': '#FF6C20',
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui()],

@@ -7,8 +7,6 @@ import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
 import { columnsContent, dataContent } from '@/utils/exampleData';
 import Link from 'next/link'
 import { Filter, FileInput, CirclePlus } from 'lucide-react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 export default function Content() {
     const [firstData, setFirstData] = useState([])
@@ -53,17 +51,6 @@ export default function Content() {
         selectAllRowsItemText: 'Todos',
     };
 
-    // const downloadPDF = async () => {
-    //     const capture = document.querySelector('.sc-fLseNd')
-    //     html2canvas(capture).then((canvas) => {
-    //         const imgData = canvas.toDataURL('img/png')
-    //         const doc = new jsPDF('p', 'mm', 'a4');
-    //         const componentWidth = doc.internal.pageSize.getWidth()
-    //         const componentHeight = doc.internal.pageSize.getHeight()
-    //         doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
-    //         doc.save('Cursos.pdf');
-    //     });
-    // }
 
     return (
         <section className={styles.container}>
@@ -93,7 +80,6 @@ export default function Content() {
                     highlightOnHover
                     noDataComponent={<NoDataComponent />}
                     paginationComponentOptions={paginationComponentOptions}
-                    id="my-table"
                 />
             </div>
         </section>

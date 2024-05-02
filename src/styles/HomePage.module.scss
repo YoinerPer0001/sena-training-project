@@ -1,5 +1,7 @@
 $azul-primario: #00324D;
-$verde-primario: #39A900;
+$azul-secundario: #6fccff;
+$naranja-primario: #FF6C20;
+$verde-primario: #39a900;
 $font-medium: 500;
 
 .main {
@@ -86,20 +88,11 @@ $font-medium: 500;
             flex-direction: column;
         }
 
-        article {
-            width: 100%;
-            color: #0f0f0f;
-            border: 2.5px solid $azul-primario; 
+        article { 
             transition-property: all;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 300ms; 
             transition-duration: 150ms; 
-            cursor: pointer;
-            border-radius: 8px;
-            &:hover {
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-                transform: translateY(-0.5em);
-            } 
 
         }
         @media (min-width: 640px) { 

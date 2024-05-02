@@ -1,4 +1,5 @@
 'use client'
+import CardCategories from '@/components/CardCategories/CardCategories'
 import { Footer } from '@/components/Footer/Footer'
 import { NavHome } from '@/components/Nav/NavHome'
 import SignUpCards from '@/components/SignUpCard/SignUpCards'
@@ -58,70 +59,13 @@ export default function Home() {
           <h2>Categorias destacadas</h2>
           <div className={styles.categories_container}>
             <div className={styles.categories_top}>
-              <article>
-                <div className="relative h-full ml-0 mr-0 ">
-                  <div className="relative h-full rounded-lg">
-                    <div className="flex items-center p-5 pb-0 -mt-1">
-                      <Image src={'/svg-desarrollo.svg'} alt='icon' width={40} height={40} />
-                      <h3 className="my-2 ml-3 text-lg font-bold ">Sistemas</h3>
-                    </div>
-                    <hr className="mt-3 mb-3 text-xs font-medium text-blue-900 uppercase" />
-                    <p className="mb-2 px-5">Aprende a dominar el arte del desarrollo web, desde el diseño visual hasta la implementación del lado del servidor. Este curso exhaustivo te guiará a través de todas las etapas del desarrollo web, cubriendo tanto el frontend como el backend.</p>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div className="relative h-full ml-0">
-                  <div className="relative h-full rounded-lg">
-                    <div className="flex items-center p-5 pb-0 -mt-1">
-                      <Image src={'/svg-gestion.svg'} alt='icon' width={40} height={40} />
-                      <h3 className="my-2 ml-3 text-lg font-bold ">Gestión</h3>
-                    </div>
-                    <hr className="mt-3 mb-3 text-xs font-medium  uppercase" />
-                    <p className="mb-2 px-5">Domina los principios fundamentales de gestión y liderazgo para alcanzar el éxito en cualquier entorno profesional.</p>
-                  </div>
-                </div>
-              </article>
+              <CardCategories title={"Sistemas"} img={'/svg-desarrollo.svg'} description={'Aprende a dominar el arte del desarrollo web, desde el diseño visual hasta la implementación del lado del servidor. Este curso exhaustivo te guiará a través de todas las etapas del desarrollo web, cubriendo tanto el frontend como el backend.'}/>
+              <CardCategories title={"Gestión"} img={'/svg-gestion.svg'} description={'Domina los principios fundamentales de gestión y liderazgo para alcanzar el éxito en cualquier entorno profesional.'}/>
             </div>
-            <div className={styles.categories_bottom}>
-              <article>
-                <div className="relative h-full ml-0 mr-0">
-                  <div className="relative h-full rounded-lg">
-                    <div className="flex items-center p-5 pb-0 -mt-1">
-                      <Image src={'/svg-automotriz.svg'} alt='icon' width={40} height={40} />
-                      <h3 className="my-2 ml-3 text-lg font-bold ">Automotriz</h3>
-                    </div>
-                    <hr className="mt-3 mb-3 text-xs font-medium  uppercase" />
-                    <p className="mb-2 px-5">Sumérgete en el fascinante mundo de la industria automotriz con este curso. Explora los fundamentos esenciales de la ingeniería, tecnología y negocios que sustentan el sector. </p>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div className="relative h-full ml-0 mr-0">
-                  <div className="relative h-full rounded-lg">
-                    <div className="flex items-center -mt-1 p-5 pb-0">
-                      <Image src={'/svg-multimedia.svg'} alt='icon' width={40} height={40} />
-                      <h3 className="my-2 ml-3 text-lg font-bold ">Multimedia</h3>
-                    </div>
-                    <hr className="mt-3 mb-3 text-xs font-medium  uppercase" />
-                    <p className="mb-2 px-5">Descubre el mundo de la multimedia con clases de edición de video, diseño gráfico y más. Aprende las habilidades esenciales para crear contenido multimedia impactante y cautivador.
-                    </p>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div className="relative h-full ml-0">
-                  <div className="relative h-full rounded-lg">
-                    <div className="flex items-center -mt-1 p-5 pb-0">
-                      <Image src={'/svg-bd.svg'} alt='icon' width={40} height={40} />
-                      <h3 className="my-2 ml-3 text-lg font-bold">Bases de datos</h3>
-                    </div>
-                    <hr className="mt-3 mb-3 text-xs font-medium uppercase" />
-                    <p className="mb-2 px-5">Bot development frameworks were created as advanced software tools
-                      that eliminate a large amount of manual work and accelerate the development process.</p>
-                  </div>
-                </div>
-              </article>
+            <div className={styles.categories_bottom}>          
+              <CardCategories title={"Automotriz"} img={'/svg-automotriz.svg'} description={'Sumérgete en el fascinante mundo de la industria automotriz con este curso. Explora los fundamentos esenciales de la ingeniería, tecnología y negocios que sustentan el sector.'}/>
+              <CardCategories title={"Multimedia"} img={'/svg-multimedia.svg'} description={'Descubre el mundo de la multimedia con clases de edición de video, diseño gráfico y más. Aprende las habilidades esenciales para crear contenido multimedia impactante y cautivador.'}/>
+              <CardCategories title={"Bases de datos"} img={'/svg-bd.svg'} description={'Bot development frameworks were created as advanced software tools that eliminate a large amount of manual work and accelerate the development process.'}/>
             </div>
           </div>
         </section>

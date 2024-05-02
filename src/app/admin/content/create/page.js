@@ -201,7 +201,6 @@ export default function CreateCourse() {
               </div>
               <div>
                 <div className={styles.create_course_price}>
-                  <Toast ref={toast} />
                   <form onSubmit={formSubmit} className={styles.form_image}>
                     <input type='file'
                       onChange={(e) => {

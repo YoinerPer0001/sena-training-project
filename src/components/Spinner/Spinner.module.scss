@@ -1,5 +1,6 @@
 $azul-primario: #00324D;
 $naranja-primario: #FF6C20;
+$verde-primario: #39a900;
 
 .container_spinner {
     display: flex;
@@ -28,7 +29,7 @@ $naranja-primario: #FF6C20;
             animation: 1s spin linear infinite;
         }
         &:after {
-            color: $naranja-primario;
+            color: $verde-primario;
             transform: rotateY(70deg);
             animation-delay: .4s;
         }

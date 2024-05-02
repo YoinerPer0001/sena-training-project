@@ -7,12 +7,18 @@ import DangerMessage from '@/components/DangerMessage/DangerMessage';
 import styles from './Login.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '@/features/auth/loginSlice'
+import { CircleX } from 'lucide-react';
+import { useState } from 'react';
+import { getCookie, setCookie } from 'cookies-next';
 
 export default function Login() {
     const classInputs = "my-2 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
     const { register, handleSubmit, formState: { errors } } = useForm()
     const authState = useSelector(state => state.auth)
     const router = useRouter()
+    
+
+    const [msgError, setErrorMsg] = useState({state: false, msg: ''})
 
     const dispatch = useDispatch()
 
@@ -36,17 +42,19 @@ export default function Login() {
             body: JSON.stringify(dataJSON)
         })
 
-        if (!response.ok) {
-            return console.log("Error")
-        }
-
         const responseJSON = await response.json();
         if (responseJSON.code == 200) {
+            localStorage.setItem('sessionToken', responseJSON.data);
+            setCookie('sessionToken', responseJSON.data);
             handleSubmitTwo()
             return router.push('/')
         }
         else if (responseJSON.code == 108) {
             return
+        } else if(responseJSON.code == 401) {
+            setErrorMsg({state: true, msg: 'Contraseña incorrecta, intenta nuevamente.'})
+        } else if(responseJSON.code == 500) {
+            setErrorMsg({state: true, msg: 'Ese correo no está registrado'})
         }
         // login(tokens.result.data.codigo)
 
@@ -74,6 +82,9 @@ export default function Login() {
                         },
                     }))} />
                     {errors.Ema_User && <DangerMessage>{errors.Ema_User.message}</DangerMessage>}
+                    <div className={`bg-red-200 ${msgError.state == true ? 'flex' : 'hidden'} transition-all duration-150 text-red-600 p-2 rounded-lg text-sm items-center gap-1 mt-1 font-medium`}>
+                        <CircleX size={18}/> {msgError.state == true ? msgError.msg : ''}
+                    </div>
                     <div className="mt-2">
                         <button type="submit" className="inline-block bg-[#39A900] lg:text-white lg:bg-[#00324D] text-white  py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 cursor-pointer">Iniciar sesión</button>
                     </div>

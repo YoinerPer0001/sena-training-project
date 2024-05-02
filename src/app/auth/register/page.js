@@ -7,6 +7,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import CircleSpinner from "@/components/CircleSpinner/CircleSpinner";
+import { CircleX } from "lucide-react";
 
 export default function Register() {
     const classInputs = "my-1 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
@@ -14,11 +15,13 @@ export default function Register() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
 
+    const [msgError, setErrorMsg] = useState({state: false, msg: ''})
+
     const onSubmit = handleSubmit(async (data) => {
         setLoading(true);
         if(data.Pass_User !== data.confirmPassword){
             return (
-                toast.error('Las contraseñas no coinciden')
+                setErrorMsg({state: true, msg: 'Las contraseñas no coinciden.'})
                 // setLoading(false)
             )
         }
@@ -43,10 +46,10 @@ export default function Register() {
             setLoading(false);
             router.push('/')
         } else if (resJSON.code == 107){
-            toast.error('Ese correo ya existe')
+            setErrorMsg({state: true, msg: 'Ese correo ya está registrado.'})
             setLoading(false);
         } else if (resJSON.code == 403){
-            toast.error('Las contraseñas deben tener mínimo 8 caracteres')
+            setErrorMsg({state: true, msg: 'Las contraseñas deben tener mínimo 8 caracteres.'})
             setLoading(false);
         }
     })
@@ -99,6 +102,9 @@ export default function Register() {
                         },
                     }))} />
                     {errors.confirmPassword && <DangerMessage>{errors.confirmPassword.message}</DangerMessage>}
+                    <div className={`bg-red-200 ${msgError.state == true ? 'flex' : 'hidden'} transition-all duration-150 text-red-600 p-2 rounded-lg text-sm items-center gap-1 mt-1 font-medium`}>
+                        <CircleX size={18}/> {msgError.state == true ? msgError.msg : ''}
+                    </div>
                     <div className="flex items-center flex-col mt-2">
                         <button className={`flex min-w-[100px] justify-center items-center lg:text-white  ${loading ? "lg:bg-[#47a7db]" : "lg:bg-[#00324D]"} text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena`} type="submit">{loading ? <CircleSpinner /> : "Registrarse" } </button>
                     </div>

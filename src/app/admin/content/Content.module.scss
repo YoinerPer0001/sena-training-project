@@ -110,17 +110,17 @@ $naranja-primario: #FF6C20;
                     display: flex;
                     align-items: center;
                     gap: 0.3em;
-                    background-color: $azul-secundario;
-                    color: $azul-primario;
+                    background-color: $azul-primario;
+                    color: #fff;
                     padding: 8px 12px;
                     font-size: 0.9em;
                     font-weight: 600;
                     transition: all .2s;
                     border-radius: 8px;
                     text-align: left;
-
                     &:hover {
-                        background-color: $azul-secundario;
+                        color: white;
+                        background-color: black;
                     }
                 }
             }

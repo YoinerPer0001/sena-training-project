@@ -1,6 +1,7 @@
 $azul-primario: #00324D;
 $azul-secundario: #6fccff;
 $naranja-primario: #FF6C20;
+$verde-primario: #39a900;
 
 .article {
     display: flex; 
@@ -12,12 +13,12 @@ $naranja-primario: #FF6C20;
     color: rgb(0, 0, 0);
     // border: 1px solid rgb(188, 188, 188); 
     background-color: #ffffff; 
-    transition: all .15s ease-in-out;
+    transition: all .2s ease-in-out;
     cursor: pointer; 
     outline: 2px solid #d7d7d7;
 
     &:hover {
-        outline: 2px solid $azul-secundario;
+        outline: 2px solid $azul-primario;
     }
 
     .title_div {
@@ -26,8 +27,8 @@ $naranja-primario: #FF6C20;
         line-height: 1.75rem;
         line-clamp: 1; 
         font-weight: 600; 
-        text-align: center; 
-        max-width: 250px;
+        text-align: left; 
+        width: 100%;
     }
     .category {
         position: absolute; 
@@ -73,5 +74,14 @@ $naranja-primario: #FF6C20;
             gap: 0.5rem; 
             align-items: center;    
         }
+    }
+
+    .chapters {
+        font-size: 0.9em;
+        font-weight: 600;
+        background-color: $azul-secundario;
+        color: $azul-primario;
+        padding: 2px 7px;
+        border-radius: 10px;
     }
 }

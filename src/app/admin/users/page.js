@@ -7,13 +7,14 @@ import { useState, useEffect } from 'react';
 import { Spinner } from '@/components/Spinner/Spinner';
 import { columnsUsers, dataUsers } from '@/utils/exampleData';
 import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
+import { getCookie } from 'cookies-next';
 
 export default function Users() {
 
     const [firstData, setFirstData] = useState([])
     const [records, setRecords] = useState([])
     const [loading, setLoading] = useState(true)
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklkX1VzZXIiOiI2c3M2bmdsdXA1YmFibiIsIk5vbV9Vc2VyIjoiU3RldmVuIiwiQXBlX1VzZXIiOiJDdWVudGFzIiwiRW1hX1VzZXIiOiJzdGV2ZW4wODEwbWlndWVsQG91dGxvb2suZXMiLCJJZF9Sb2xfRksiOjJ9LCJpYXQiOjE3MTI4ODA3NjEsImV4cCI6MTcxMjk2NzE2MX0.DdUxuv9c7prvcW9fol47z6R2MlDVpx9nJ-zqiLaBsOU'
+    const token = getCookie('sessionToken')
     useEffect(() => {
         try {
             fetch('http://localhost:3000/api/v1/users', {
