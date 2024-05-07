@@ -20,9 +20,9 @@ export default function Register() {
     const onSubmit = handleSubmit(async (data) => {
         setLoading(true);
         if(data.Pass_User !== data.confirmPassword){
+            setLoading(false)
             return (
                 setErrorMsg({state: true, msg: 'Las contraseñas no coinciden.'})
-                // setLoading(false)
             )
         }
 

@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 import { ImagePlus, Pencil, ArrowLeftToLine } from 'lucide-react';
 import toast from "react-hot-toast";
+import { getCookie } from 'cookies-next';
 
 export default function CreateCourse() {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7IklkX1VzZXIiOiI2c3M2bmdsdXA1YmFibiIsIk5vbV9Vc2VyIjoiU3RldmVuIiwiQXBlX1VzZXIiOiJDdWVudGFzIiwiRW1hX1VzZXIiOiJzdGV2ZW4wODEwbWlndWVsQG91dGxvb2suZXMiLCJJZF9Sb2xfRksiOjJ9LCJpYXQiOjE3MTMzNDA5NjQsImV4cCI6MTcxMzQyNzM2NH0.UQq5xlwa39I2JrYz3LQaJmlyV4o3UAhmjM01k-NWwfg'
+  const token = getCookie('sessionToken')
   const router = useRouter()
   const [categories, setCategories] = useState([])
   const [file, setFile] = useState()
@@ -16,10 +17,7 @@ export default function CreateCourse() {
   const [dataCourse, setDataCourse] = useState({
     "Nom_Cur": null,
     "Des_Cur": null,
-    "Hor_Cont_Total": 4,
-    "Fech_Crea_Cur": new Date(Date.now()),
     "Id_Cat_FK": null,
-    "Fot_Cur": 'https://res.cloudinary.com/dla5djfdc/image/upload/v1713337504/portada-por-defecto-videos_jytqt0.png',
   })
   const [pages, setPages] = useState(0)
   const nextPage = () => {
@@ -66,36 +64,36 @@ export default function CreateCourse() {
     }))
   }
 
-  const formSubmit = async (e) => {
-    setUploading(true)
-    e.preventDefault()
-    if (!file) {
-      return
-    }
+  // const formSubmit = async (e) => {
+  //   setUploading(true)
+  //   e.preventDefault()
+  //   if (!file) {
+  //     return
+  //   }
 
-    const form = new FormData()
-    form.set('file', file)
+  //   const form = new FormData()
+  //   form.set('file', file)
 
-    // Sending file
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: form,
-      })
+  //   // Sending file
+  //   try {
+  //     const res = await fetch('/api/upload', {
+  //       method: 'POST',
+  //       body: form,
+  //     })
 
-      const data = await res.json()
-      console.log(data)
-      setDataCourse(prevState => ({
-        ...prevState,  // Mantener las propiedades existentes
-        Fot_Cur: data.url,
-        Fech_Crea_Cur: new Date(Date.now())
-      }))
-      setUploading(false)
-      show()
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  //     const data = await res.json()
+  //     console.log(data)
+  //     setDataCourse(prevState => ({
+  //       ...prevState,  // Mantener las propiedades existentes
+  //       Fot_Cur: data.url,
+  //       Fech_Crea_Cur: new Date(Date.now())
+  //     }))
+  //     setUploading(false)
+  //     show()
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
 
   const toast = useRef(null);
 

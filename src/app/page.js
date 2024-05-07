@@ -27,7 +27,6 @@ export default function Home() {
 
   return (
     <>
-      <TopMessageHome />
       <NavHome />
       <main className={styles.main}>
         <section className={styles.section_header}>
