@@ -1,10 +1,79 @@
+'use client'
 import { BadgeCheck, Clapperboard, Pencil, Trash2, VideoOff } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
 
 export default function Profile() {
+    const [dataUser, setDataUser] = useState({});
+    const [editData, setEditData] = useState({});
+
+    const token = getCookie('sessionToken')
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('name'));
+        if (user) {
+            console.log(user)
+            setDataUser(user);
+        } else {
+            console.log('User not found');
+        }
+    }, [])
+
+
+    const handleChangeEmail = e => {
+        setEditData(prevState => ({
+            ...prevState, // Mantener las propiedades existentes
+            Ema_User: e.target.value,
+        }));
+        console.log(editData);
+    };
+
+    const handleChangeNombre = e => {
+        setEditData(prevState => ({
+            ...prevState, // Mantener las propiedades existentes
+            Nom_User: e.target.value,
+        }));
+        console.log(editData);
+    };
+
+    const handleChangeApellido = e => {
+        setEditData(prevState => ({
+            ...prevState, // Mantener las propiedades existentes
+            Ape_User: e.target.value,
+        }));
+        console.log(editData);
+    };
+
+    const handleChangeTel = e => {
+        setEditData(prevState => ({
+            ...prevState, // Mantener las propiedades existentes
+            Tel_User: e.target.value,
+        }));
+        console.log(editData);
+    };
+
+
+    const editFunction = () => {
+        try {
+            fetch(`http://localhost:3000/api/v1/users/update/${dataUser.Id_User}`,{
+                method: 'PUT',
+                headers: {
+                    'Authorization': "Bearer " + token
+                },
+                body: JSON.stringify(editData)
+            })
+            .then(response => response.json())
+            .then(response => {console.log(response)})
+        } catch (err) {
+            console.log("Error: "+err);
+        }
+    };
+
+
     return (
         <section className="w-full h-screen max-h-screen p-4 rounded-lg box-border">
-            <div className="bg-gray-100 flex flex-col h-full items-center gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
+            <div className="bg-gray-100 flex flex-col h-full justify-center items-center gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
                 <div className="flex items-center gap-2">
                     <div className="bg-white w-[300px] flex flex-col items-center p-3 rounded-xl justify-center">
                         <picture className="relative flex w-full items-center justify-center">
@@ -20,17 +89,19 @@ export default function Profile() {
                             Actualizar foto
                         </button>
                     </div>
-                    <div className="bg-white w-[300px] flex flex-col items-center p-3 rounded-xl">
+                    <div className="bg-white flex flex-col items-center justify-items-center  p-4 rounded-xl">
                         <h4 className="p-2 font-bold text-xl">Mi cuenta</h4>
-                        <form className="flex flex-col gap-2">
+                        <form className="grid grid-cols-2 gap-2 items-center">
                             <div>
                                 <label className="text-sm font-semibold">
                                     Nombres:
                                 </label>
                                 <input
+                                    onChange={handleChangeNombre}
+                                    name={"Nom_User"}
                                     type="text"
-                                    placeholder="Steven"
-                                    className="outline-none border-1 border-azulSena px-2 py-1 rounded-lg w-full"
+                                    defaultValue={dataUser.Nom_User}
+                                    className="outline-none border-1 font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                 />
                             </div>
                             <div>
@@ -38,19 +109,11 @@ export default function Profile() {
                                     Apellidos:
                                 </label>
                                 <input
+                                    onChange={handleChangeApellido}
+                                    name={"Ape_User"}
                                     type="text"
-                                    placeholder="Gonzalez"
-                                    className="outline-none border-1 border-azulSena px-2 py-1 rounded-lg w-full"
-                                />
-                            </div>
-                            <div>
-                                <label className="text-sm font-semibold">
-                                    Nombres:
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Steven"
-                                    className="outline-none border-1 border-azulSena px-2 py-1 rounded-lg w-full"
+                                    defaultValue={dataUser.Ape_User}
+                                    className="outline-none border-1 font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -58,9 +121,11 @@ export default function Profile() {
                                     Email:
                                 </label>
                                 <input
+                                    onChange={handleChangeEmail}
+                                    name={"Ema_User"}
                                     type="email"
-                                    placeholder="ejemplo@gmail.com"
-                                    className="outline-none border-1 border-azulSena px-2 py-1 rounded-lg w-full"
+                                    defaultValue={dataUser.Ema_User}
+                                    className="outline-none border-1 font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                 />
                             </div>
                             <div>
@@ -68,15 +133,17 @@ export default function Profile() {
                                     Telefono:
                                 </label>
                                 <input
-                                    type="text"
-                                    placeholder="+57 3017403956"
-                                    className="outline-none border-1 border-azulSena px-2 py-1 rounded-lg w-full"
+                                    onChange={handleChangeTel}
+                                    name={"Tel_User"}
+                                    type="tel"
+                                    defaultValue={dataUser.Tel_User ? dataUser.Tel_User : ''}
+                                    className="outline-none border-1 font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                 />
                             </div>
-                            <button className="bg-azulSena hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2">
-                                Actualizar perfil
-                            </button>
                         </form>
+                        <button onClick={editFunction} className="bg-azulSena hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2">
+                            Actualizar perfil
+                        </button>
                     </div>
                 </div>
                 <hr className="w-full" />

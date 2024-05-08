@@ -16,6 +16,18 @@ export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const authState = useSelector(state => state.auth)
     const router = useRouter()
+
+    // Decencriptar token
+    function parseJwt(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        const data = JSON.parse(jsonPayload)
+        return localStorage.setItem('name', JSON.stringify(data.user));
+    }
     
 
     const [msgError, setErrorMsg] = useState({state: false, msg: ''})
@@ -47,6 +59,7 @@ export default function Login() {
             localStorage.setItem('sessionToken', responseJSON.data);
             setCookie('sessionToken', responseJSON.data);
             handleSubmitTwo()
+            parseJwt(responseJSON.data)
             return router.push('/')
         }
         else if (responseJSON.code == 108) {
