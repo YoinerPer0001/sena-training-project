@@ -14,7 +14,7 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      fetch('http://localhost:3000/api/v1/cursos')
+      fetch('http://localhost:3000/api/v1/courses')
         .then(data => data.json())
         .then(data => {
           const content = [data[0], data[1], data[2]]

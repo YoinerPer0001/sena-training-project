@@ -12,7 +12,7 @@ function Page() {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     try {
-      fetch('http://localhost:3000/api/v1/cursos')
+      fetch('http://localhost:3000/api/v1/courses')
         .then(data => data.json())
         .then(data => {
           setCourses(data.data)

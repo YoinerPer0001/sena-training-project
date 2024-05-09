@@ -24,7 +24,7 @@ export default function CourseDetails() {
     const params = useParams()
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/v1/cursos/${params.courseName}`)
+        fetch(`http://localhost:3000/api/v1/courses/${params.courseName}`)
             .then(data => data.json())
             .then(data => {
                 setLoading(false)
@@ -62,47 +62,6 @@ export default function CourseDetails() {
                                     <div className=" bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base"><Clock size={20} /> <p>Duración: <span>10h 24m</span></p></div>
 
                                 </div>
-                                {/* <div className="flex flex-col gap-2">
-                                    <h4 className="text-base font-semibold">Lo que aprenderas:</h4>
-                                    <ScrollShadow className={`flex flex-col gap-2 max-h-[150px] overflow-y-auto`} hideScrollBar>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Des_Cur}</p>
-                                        </li>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Nom_Cur}</p>
-                                        </li>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Nom_Cur}</p>
-                                        </li>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Nom_Cur}</p>
-                                        </li>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Nom_Cur}</p>
-                                        </li>
-                                        <li className="flex text-sm md:text-base gap-2 items-start">
-                                            <div>
-                                                <CircleCheckBig size={20} />
-                                            </div>
-                                            <p className="">{dataCourse.Nom_Cur}</p>
-                                        </li>
-                                    </ScrollShadow>
-                                </div> */}
                             </div>
                         </div>
                         <div className="hidden md:block">

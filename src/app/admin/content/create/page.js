@@ -119,7 +119,7 @@ export default function CreateCourse() {
   }
 
   return (
-    <section className={styles.container}>
+    <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto relative">
       <div className='absolute top-4 hidden lg:flex'>
         <Link href="/admin/content" className='transition-all duration-200 flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg'>
           <ArrowLeftToLine /> Volver
@@ -146,13 +146,12 @@ export default function CreateCourse() {
             </div>
             {pages == 0 ?
               <>
-                <div>
+                <div className='mt-6 flex justify-center flex-col items-center'>
                   <h3 className='text-xl md:text-3xl p-2 pb-0 text-center font-bold'>Escoge un título para el curso.</h3>
                   <p className='text-sm md:text-base'>No te preocupes, después podrás modificarlo.</p>
                 </div>
-                <div>
-                  <input className='text-sm md:text-base' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur ? dataCourse.Nom_Cur : ''} />
-
+                <div className='flex justify-center mt-2'>
+                  <input className='text-sm md:text-base p-2 border-1 border-gray-300 rounded-lg w-2/4' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur ? dataCourse.Nom_Cur : ''} />
                 </div> </> : ''}
             {pages == 1 ? <>
               <div>
@@ -225,6 +224,6 @@ export default function CreateCourse() {
           </footer>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
