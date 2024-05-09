@@ -55,7 +55,7 @@ export default function Login() {
         })
 
         const responseJSON = await response.json();
-        if (responseJSON.code == 200) {
+        if (responseJSON.type == 'success') {
             localStorage.setItem('sessionToken', responseJSON.data);
             setCookie('sessionToken', responseJSON.data);
             handleSubmitTwo()
@@ -64,8 +64,8 @@ export default function Login() {
         }
         else if (responseJSON.code == 108) {
             return
-        } else if(responseJSON.code == 401) {
-            setErrorMsg({state: true, msg: 'Contraseña incorrecta, intenta nuevamente.'})
+        } else if(responseJSON.code == 403) {
+            setErrorMsg({state: true, msg: 'Usuario o contraseña incorrecta.'})
         } else if(responseJSON.code == 500) {
             setErrorMsg({state: true, msg: 'Ese correo no está registrado'})
         }

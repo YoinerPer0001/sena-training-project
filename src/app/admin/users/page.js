@@ -58,18 +58,18 @@ export default function Users() {
         selectAllRowsItemText: 'Todos',
     };
     return (
-        <section className={styles.container}>
+        <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
             <div className={styles.container_button_add}>
                 <h3>Usuarios</h3>
                 <hr />
-                <div className={styles.search}>
+                <div className='flex gap-2 my-4 justify-center items-center'>
                     <div>
                         <label>Nombre: </label>
-                        <input name='users_filter' type="text" placeholder="Steven Gonzalez" onChange={handleChange} />
+                        <input className='p-2 rounded-lg border-1 border-gray-200' name='users_filter' type="text" placeholder="Steven Gonzalez" onChange={handleChange} />
                     </div>
                 </div>
             </div>
-            <div className={styles.container_cursos}>
+            <div className='rounded-lg'>
                 <DataTable
                     columns={columnsUsers}
                     data={records}
@@ -81,8 +81,9 @@ export default function Users() {
                     highlightOnHover
                     noDataComponent={<NoDataComponent />}
                     paginationComponentOptions={paginationComponentOptions}
+                    className='border-1 border-gray-200'
                 />
             </div>
-        </section>
+        </div>
     );
 }

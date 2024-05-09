@@ -95,29 +95,24 @@ export default function CreateCourse() {
   //   }
   // }
 
-  const toast = useRef(null);
-
-  const show = () => {
-    toast.current.show({ severity: 'info', summary: 'Info', detail: 'Imagen subida correctamente' });
-  };
-
   const createCourse = async () => {
     try {
-      const create = await fetch('http://localhost:3000/api/v1/cursos/new', {
+      fetch('http://localhost:3000/api/v1/courses/new', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': "Bearer " + token,
         },
         body: JSON.stringify(dataCourse)
       })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.type === 'success') {
+          toast.success('Curso creado correctamente')
+          router.push(`/admin/content/manage/${response.data.InsertedId}`)
+        }
+      });
 
-      const response = await create.json()
-      if (response.type === 'success') {
-        // toast.success('Curso creado correctamente')
-        router.push('/admin/content')
-      }
     } catch (e) {
       console.log(e)
     }

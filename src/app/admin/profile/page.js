@@ -72,7 +72,7 @@ export default function Profile() {
 
 
     return (
-        <section className="w-full h-screen max-h-screen p-4 rounded-lg box-border">
+        
             <div className="bg-gray-100 flex flex-col h-full justify-center items-center gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
                 <div className="flex items-center gap-2">
                     <div className="bg-white w-[300px] flex flex-col items-center p-3 rounded-xl justify-center">
@@ -130,7 +130,7 @@ export default function Profile() {
                             </div>
                             <div>
                                 <label className="text-sm font-semibold">
-                                    Telefono:
+                                    Teléfono:
                                 </label>
                                 <input
                                     onChange={handleChangeTel}
@@ -207,6 +207,5 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
-        </section>
     );
 }
