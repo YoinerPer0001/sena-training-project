@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ArrowLeftToLine, Plus, Save, Trash2, X } from "lucide-react";
 import Link from "next/link";
-import Dropzone from "react-dropzone";
 import { Spinner } from "@/components/Spinner/Spinner";
 
 export default function ManageCourses() {
@@ -270,7 +269,7 @@ export default function ManageCourses() {
                                                             )
                                                         }
                                                     >
-                                                        <X />
+                                                        <Trash2 />
                                                     </button>
                                                 )}
                                             </div>
@@ -295,9 +294,7 @@ export default function ManageCourses() {
                                             menos 1 objetivo.
                                         </p>
                                     </div>
-                                    <div
-                                        className="w-full flex flex-col gap-2 items-start"
-                                    >
+                                    <div className="w-full flex flex-col gap-2 items-start">
                                         {objetivos.map((objetivo, index) => (
                                             <div
                                                 key={index}

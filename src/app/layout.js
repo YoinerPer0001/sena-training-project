@@ -12,7 +12,7 @@ const work_sans = Work_Sans({ subsets: ["latin"], weight: ['300','400','500','60
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={work_sans.className}>
+      <body className={`${work_sans.className} overflow-x-hidden`}>
         <Providers>
           <ToasterProvider />
           {children}
