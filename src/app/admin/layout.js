@@ -16,7 +16,7 @@ export default function AccountLayout({ children }) {
       <div className={styles.aside}>
         <header>
           <picture>
-            <Image src={'/logo-senalearn-(white).png'} alt='logo' width={50} height={50} />
+            <Image priority={true} src={'/logo-senalearn-(white).png'} alt='logo' width={50} height={50} />
           </picture>
         </header>
         <ul>

@@ -23,15 +23,17 @@ $verde-primario: #39a900;
             align-items: center;
             justify-content: space-between;
             gap: 1em;
+            li {
+                &:hover {
+                    background-color: #00000051;
+                }
+            }
             a {
                 border-bottom: 1px solid transparent !important;
                 transition: all .2s;
                 padding: 7px;
                 border-radius: 10px;
                 box-sizing: content-box;
-                &:hover {
-                    background-color: #00000051;
-                }
             }
             svg {
                 font-size: 1.3em;

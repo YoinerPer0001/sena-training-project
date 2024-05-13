@@ -33,7 +33,7 @@ export const NavHome = () => {
   return (
     <Navbar isBlurred={false} className='p-3 bg-azulSena'>
       <NavbarBrand >
-        <Image src={'/logo-senalearn-(white).png'} alt='Logo de SENA Learn' width={50} height={50} />
+        <Image priority={true} src={'/logo-senalearn-(white).png'} alt='Logo de SENA Learn' width={50} height={50} />
       </NavbarBrand>
       <NavbarContent className="hidden md:flex gap-4" justify="center">
         <NavbarItem>

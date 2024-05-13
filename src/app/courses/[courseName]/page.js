@@ -74,6 +74,8 @@ export default function CourseDetails() {
                 <div className="w-full flex justify-center items center">
                     <button className="w-full md:w-[200px] p-3 text-white rounded-lg font-semibold bg-[#00324D] hover:bg-black transition-all duration-200">¡Inscribirse!</button>
                 </div>
+
+                {/* CONTENIDO DEL CURSO */}
                 <div className="w-full mt-8">
                     <div className="mb-4">
                         <h3 className="text-center text-2xl font-bold">Contenido del curso</h3>
@@ -116,6 +118,21 @@ export default function CourseDetails() {
                         </Accordion>
                     </div>
                 </div>
+
+                {/* OBJETIVOS DEL CURSO */}
+                <div className="w-full mt-8">
+                    <div className="mb-4">
+                        <h3 className="text-center text-2xl font-bold">Objetivos del curso</h3>
+                    </div>
+                    <div className="w-full border-1 border-azulSena rounded-lg">
+                        <ul className="font-medium text-sm p-4 w-full grid grid-cols-2 gap-4">
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Aprender a utilizar Figma, desde 0 a experto</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Aprender a diseñar una página web responsive</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Realizar un proyecto práctico para diseñar una página web, para tu portfolio y futuros proyectos</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Entender cómo adaptar un diseño a los diferentes dispositivos</li>
+                        </ul>
+                    </div>
+                </div>  
             </section>
         </main>
     )

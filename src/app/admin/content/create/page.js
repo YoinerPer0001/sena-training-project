@@ -64,36 +64,36 @@ export default function CreateCourse() {
     }))
   }
 
-  // const formSubmit = async (e) => {
-  //   setUploading(true)
-  //   e.preventDefault()
-  //   if (!file) {
-  //     return
-  //   }
+  const formSubmit = async (e) => {
+    setUploading(true)
+    e.preventDefault()
+    if (!file) {
+      return
+    }
 
-  //   const form = new FormData()
-  //   form.set('file', file)
+    const form = new FormData()
+    form.set('file', file)
 
-  //   // Sending file
-  //   try {
-  //     const res = await fetch('/api/upload', {
-  //       method: 'POST',
-  //       body: form,
-  //     })
+    // Sending file
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: form,
+      })
 
-  //     const data = await res.json()
-  //     console.log(data)
-  //     setDataCourse(prevState => ({
-  //       ...prevState,  // Mantener las propiedades existentes
-  //       Fot_Cur: data.url,
-  //       Fech_Crea_Cur: new Date(Date.now())
-  //     }))
-  //     setUploading(false)
-  //     show()
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
+      const data = await res.json()
+      console.log(data)
+      setDataCourse(prevState => ({
+        ...prevState,  // Mantener las propiedades existentes
+        Fot_Cur: data.url,
+        Fech_Crea_Cur: new Date(Date.now())
+      }))
+      setUploading(false)
+      show()
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   const createCourse = async () => {
     try {

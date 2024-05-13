@@ -25,7 +25,7 @@ export const Footer = () => {
         </div>
         <div className={styles.footer_bottom}>
           <div>© Copyright SENA Learn 2024</div>
-          <Image src={'/logo-senalearn.png'} alt='logo' width={24} height={24}/>
+          <Image src={'/logo-senalearn-(white).png'} alt='logo' width={24} height={24}/>
         </div>
       </footer>
   )

@@ -5,6 +5,7 @@ import { NavHome } from "@/components/Nav/NavHome";
 import { NavCourses } from "@/components/NavCourses/NavCourses";
 import TopMessageHome from "@/components/TopMessageHome/TopMessageHome";
 import styles from './LayoutCourses.module.scss'
+import { Footer } from "@/components/Footer/Footer";
 
 export default function inscriptionsLayout({ children }) {
 
@@ -16,6 +17,7 @@ export default function inscriptionsLayout({ children }) {
                     {children}
                 </section>
             </main>
+            <Footer />
         </>
     );
 }

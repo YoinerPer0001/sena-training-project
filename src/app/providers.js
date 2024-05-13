@@ -11,7 +11,7 @@ export function Providers({ children }) {
   };
   return (
     <Provider store={store}>
-      <PrimeReactProvider value={value}>
+      <PrimeReactProvider>
         <NextUIProvider>
           {children}
         </NextUIProvider>
