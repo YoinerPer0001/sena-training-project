@@ -10,14 +10,10 @@ import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { FileUpload } from 'primereact/fileupload';
 import { ProgressBar } from 'primereact/progressbar';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export default function ManageCourses() {
-
-
-
-
-
 
     const pathname = usePathname();
     const router = useRouter();
@@ -34,7 +30,12 @@ export default function ManageCourses() {
     useEffect(() => {
         // FETCH CATEGORÍAS
         fetch("http://localhost:3000/api/v1/categories")
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 const categories = data.data.map(category => ({
                     id: category.Id_Cat,
@@ -42,16 +43,60 @@ export default function ManageCourses() {
                 }));
                 setCategories(categories);
             })
-            .then(
-                // FETCH INFORMACIÓN DEL CURSO
-                fetch(`http://localhost:3000/api/v1/courses/${idCourse}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const course = data.data;
-                        setDataCourse(course);
-                        setLoading(false);
+            .catch(error => console.error('Error fetching categories:', error));
+
+        // FETCH INFORMACIÓN DEL CURSO
+        fetch(`http://localhost:3000/api/v1/courses/${idCourse}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const course = data.data;
+                setDataCourse(course);
+            })
+            .catch(error => console.error('Error fetching course:', error));
+
+        // OBJETIVOS DEL CURSO
+        fetch(`http://localhost:3000/api/v1/obj_cursos/${idCourse}`)
+            .then(response => response.json())
+            .then(response => {
+                const data = response.data;
+                if (data.length > 0) {
+                    const objCursos = data.map(obj => {
+                        return {
+                            "IdObj": obj.Id_Objetivo,
+                            "Desc_Objetivo": obj.Desc_Objetivo
+                        }
                     })
-            );
+                    setObjetivos(objCursos)
+                    setLoading(false);
+                } else {
+                    setObjetivos([{ "IdObj": uuidv4(), "Desc_Objetivo": '' }])
+                    setLoading(false);
+                }
+            })
+
+        // fetch(`http://localhost:3000/api/v1/curso/req-previos/${idCourse}`)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         const data = response.data;
+        //         if (data.length > 0) {
+        //             console.log(data)
+        //             const reqCurso = data.map(obj => {
+        //                 return {
+        //                     "Desc_Objetivo": obj.Desc_Objetivo
+        //                 }
+        //             })
+        //             setObjetivos(reqCurso)
+        //             setLoading(false);
+        //         } else {
+        //             setObjetivos([{ "IdObj": uuidv4(), "Desc_Objetivo": '' }])
+        //             setLoading(false);
+        //         }
+        //     })
     }, []);
 
     const handleClickPage1 = () => {
@@ -114,15 +159,15 @@ export default function ManageCourses() {
     };
 
     // AGREGAR REQUISITO
-    const [requisitos, setRequisitos] = useState([""]); // Estado inicial con un campo de entrada
+    const [requisitos, setRequisitos] = useState([]); // Estado inicial con un campo de entrada
 
     const agregarRequisito = () => {
-        setRequisitos([...requisitos, ""]); // Agrega un nuevo campo de entrada vacío al arreglo de requisitos
+        setRequisitos([...requisitos, { "IdObj": uuidv4(), "Desc_Req": "" }]); // Agrega un nuevo campo de entrada vacío al arreglo de requisitos
     };
 
     const handleChange = (index, value) => {
         const nuevosRequisitos = [...requisitos];
-        nuevosRequisitos[index] = value;
+        nuevosRequisitos[index] = { "Desc_Req": value };
         setRequisitos(nuevosRequisitos);
     };
 
@@ -132,33 +177,9 @@ export default function ManageCourses() {
         setRequisitos(nuevosRequisitos);
     };
 
-    // AGREGAR OBJETIVOS
-
-    const [objetivos, setObjetivos] = useState([{ "Desc_Objetivo": "" }]);
-
-    const agregarObjetivo = () => {
-        setObjetivos([...objetivos, { "Desc_Objetivo": "" }]);
-    };
-
-    const handleChangeObj = (index, value) => {
-        const nuevosObjetivos = [...objetivos];
-        nuevosObjetivos[index] = { "Desc_Objetivo": value };
-        setObjetivos(nuevosObjetivos);
-    };
-
-    const eliminarObjetivo = index => {
-        if (objetivos.length > 1 || objetivos.length === 2) {
-            const nuevosObjetivos = [...objetivos];
-            nuevosObjetivos.splice(index, 1);
-            setObjetivos(nuevosObjetivos);
-        } else {
-            alert("Debe haber al menos 1 objetivo.");
-        }
-    };
-
-    const fetchAgregarObjetivos = () => {
+    const fetchAgregarRequisitos = () => {
         try {
-            if (objetivos.length > 1 || objetivos[0].Desc_Objetivo === "") {
+            if (requisitos.length > 1 || requisitos[0].Desc_Objetivo === "") {
                 return;
             }
             fetch('http://localhost:3000/api/v1/obj_cursos/create', {
@@ -168,6 +189,60 @@ export default function ManageCourses() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ 'objetivos': objetivos, 'Id_Cur': idCourse }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+        } catch (e) {
+            console.log("Error: " + e);
+        }
+    };
+
+    // AGREGAR OBJETIVOS
+
+    const [objetivos, setObjetivos] = useState([]);
+
+    const agregarObjetivo = () => {
+        setObjetivos([...objetivos, { "IdObj": uuidv4(), "Desc_Objetivo": "" }]);
+        console.log(objetivos);
+    };
+
+    const handleChangeObj = (index, value) => {
+        const nuevosObjetivos = [...objetivos];
+        nuevosObjetivos[index].Desc_Objetivo = value;
+        setObjetivos(nuevosObjetivos);
+    };
+
+    const eliminarObjetivo = index => {
+        if (objetivos.length > 1 || objetivos.length === 2) {
+            const objetivoAEliminar = objetivos[index]; // Obtenemos el objetivo a eliminar por su índice
+            const nuevosObjetivos = objetivos.filter(objetivo => objetivo.IdObj !== objetivoAEliminar.IdObj); // Filtramos los objetivos para excluir el objetivo a eliminar
+            setObjetivos(nuevosObjetivos);
+        } else {
+            toast.error("Debe haber al menos 1 objetivo.");
+        }
+    };
+
+    const fetchAgregarObjetivos = () => {
+        try {
+            const objetivosNoVacios = objetivos.filter(objetivo => objetivo.Desc_Objetivo.trim() !== "");
+
+            // verificar si hay algún objetivo para agregar
+            if (objetivosNoVacios.length === 0) {
+                console.log("No hay objetivos para agregar.");
+                return;
+            }
+            if (objetivos.length > 1 || objetivos[0].Desc_Objetivo === "") {
+                return;
+            }
+            fetch('http://localhost:3000/api/v1/obj_cursos/create', {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 'objetivos': objetivosNoVacios, 'Id_Cur': idCourse }),
             })
                 .then(response => response.json())
                 .then(data => {
@@ -445,30 +520,18 @@ export default function ManageCourses() {
                                     </div>
                                     <div className="w-full flex flex-col gap-2 items-start">
                                         {objetivos.map((objetivo, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex gap-2 w-full"
-                                            >
+                                            <div key={objetivo.IdObj} className="flex gap-2 w-full">
                                                 <input
                                                     type="text"
-                                                    value={objetivo.Desc_Objetivo}
+                                                    defaultValue={objetivo.Desc_Objetivo}
                                                     placeholder="Ej: Aprender los fundamentos de React."
-                                                    onChange={e =>
-                                                        handleChangeObj(
-                                                            index,
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    onChange={e => handleChangeObj(index, e.target.value)}
                                                     className="rounded-lg p-2 w-full outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
                                                 />
-                                                {objetivos?.length > 1 && (
+                                                {objetivos.length > 1 && (
                                                     <button
                                                         className="bg-red-500 text-white rounded-lg p-2 transition-all duration-150 hover:bg-red-600"
-                                                        onClick={() =>
-                                                            eliminarObjetivo(
-                                                                index
-                                                            )
-                                                        }
+                                                        onClick={() => eliminarObjetivo(objetivo.IdObj)} // Pasar el ID del objetivo a eliminar
                                                     >
                                                         <Trash2 />
                                                     </button>
@@ -484,14 +547,14 @@ export default function ManageCourses() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="font-semibold text-lg ml-1">
+                                    <label className="font-semibold text-lg">
                                         Portada del curso
                                     </label>
                                     <div className="flex gap-4 justify-center flex-col items-center">
-                                        {subirImagen === true ? <div className="card w-full">
+                                        {subirImagen === true || dataCourse.Fot_Cur != true ? <div className="card w-full">
                                             <FileUpload
                                                 pt={{
-                                                    root: "border-1 border-azulSena rounded-lg p-4",
+                                                    root: "py-4",
                                                     message: 'bg-red-200 text-red-500 p-2 rounded-lg',
                                                     thumbnail: 'rounded-lg',
                                                     details: 'p-2 rounded-lg w-full',
@@ -519,19 +582,19 @@ export default function ManageCourses() {
                                                 }}
                                                 removeIcon={<XCircle />}
 
-                                                name="files" className="w-full" customUpload={true} uploadHandler={formSubmit} accept="image/*" maxFileSize={1000000} emptyTemplate={<p className="mt-4 p-6 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center"><ImagePlus /> Arrastre y suelte archivos aquí para cargarlos.</p>} />
+                                                name="files" className="w-full" customUpload={true} uploadHandler={formSubmit} accept="image/*" maxFileSize={1000000} emptyTemplate={<p className="mt-4 p-10 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center"><ImagePlus /> Arrastre y suelte archivos aquí para cargarlos.</p>} />
                                         </div>
                                             :
                                             <div className="w-full flex flex-col gap-2 items-center">
-                                                <Image src={dataCourse.Fot_Cur} alt="Foto del curso" width={400} height={500} className="rounded-lg" />
+                                                <Image src={dataCourse.Fot_Cur} alt="Foto del curso" className="rounded-lg" width={500} height={400} />
                                             </div>}
                                         {subirImagen && progressBar && <div className="card">
                                             <ProgressBar color="rgb(0, 50, 77)" mode="indeterminate" pt={{
                                                 root: 'lg:w-[500px] sm:w-[300px] w-[200px] h-[6px] rounded-lg',
                                                 container: 'h-[6px] bg-gray-300 rounded-lg',
-                                                }}></ProgressBar>
+                                            }}></ProgressBar>
                                         </div>}
-                                        <button className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white" onClick={() => setSubirImagen(!subirImagen)}>{subirImagen ? "Cancelar" : 'Cambiar portada'}</button>
+                                        {dataCourse.Fot_Cur === null || dataCourse.Fot_Cur === undefined && <button className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white" onClick={() => setSubirImagen(!subirImagen)}>{subirImagen ? "Cancelar" : 'Cambiar portada'}</button>}
                                     </div>
                                 </div>
 
