@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
-import { AlertCircle, ArrowLeftToLine, ChevronDown, ImagePlus, Plus, PlusCircle, PlusCircleIcon, Save, Trash2, Upload, X, XCircle } from "lucide-react";
+import { AlertCircle, ArrowLeftToLine, ChevronDown, File, ImagePlus, Info, Plus, PlusCircle, PlusCircleIcon, Save, Trash2, Upload, Video, X, XCircle } from "lucide-react";
 import Link from "next/link";
 import { Spinner } from "@/components/Spinner/Spinner";
 import { getCookie } from "cookies-next";
@@ -133,6 +133,11 @@ export default function ManageCourses() {
 
     const functionEditCourse = () => {
         try {
+            if (Object.keys(editCourse).length === 0 && editCourse.constructor === Object && requisitos.length === 0 && objetivos.length === 0 && objetivos[0].Desc_Objetivo == "") {
+                console.log("editCourse está vacío, no se ejecutará el fetch.");
+                return toast(<div className="rounded-lg p-2 flex items-center justify-center gap-1 text-black"><Info /> No hay nada para guardar</div>);
+            }
+
             fetch(`http://localhost:3000/api/v1/courses/update/${idCourse}`, {
                 method: "PUT",
                 headers: {
@@ -214,9 +219,9 @@ export default function ManageCourses() {
         setObjetivos(nuevosObjetivos);
     };
 
-    const eliminarObjetivo = index => {
+    const eliminarObjetivo = idObj => {
         if (objetivos.length > 1 || objetivos.length === 2) {
-            const objetivoAEliminar = objetivos[index]; // Obtenemos el objetivo a eliminar por su índice
+            const objetivoAEliminar = objetivos.find(objetivo => objetivo.IdObj === idObj); // Obtenemos el objetivo a eliminar por su índice
             const nuevosObjetivos = objetivos.filter(objetivo => objetivo.IdObj !== objetivoAEliminar.IdObj); // Filtramos los objetivos para excluir el objetivo a eliminar
             setObjetivos(nuevosObjetivos);
         } else {
@@ -226,7 +231,11 @@ export default function ManageCourses() {
 
     const fetchAgregarObjetivos = () => {
         try {
-            const objetivosNoVacios = objetivos.filter(objetivo => objetivo.Desc_Objetivo.trim() !== "");
+            const objetivosNoVacios = objetivos
+                .filter(objetivo => objetivo.Desc_Objetivo.trim() !== "")
+                .map(objetivo => objetivo.Desc_Objetivo);
+
+            console.log(objetivosNoVacios)
 
             // verificar si hay algún objetivo para agregar
             if (objetivosNoVacios.length === 0) {
@@ -256,7 +265,8 @@ export default function ManageCourses() {
     // AGREGAR CONTENIDO
     const [modulos, setModulos] = useState([
         {
-            nombre: "Modulo 1: Introducción",
+            Id_Mod: "asd4hgdf4",
+            Tit_Mod: "Modulo 1: Introducción",
             clases: [
             ]
         },
@@ -264,6 +274,12 @@ export default function ManageCourses() {
 
     const [nuevoNombreModulo, setNuevoNombreModulo] = useState('');
     const [mostrarAgregarModulo, setMostrarAgregarModulo] = useState(false);
+
+    const handleChangeMod = (index, value) => {
+        const nuevosModulos = [...modulos];
+        nuevosModulos[index].Tit_Mod = value;
+        setModulos(nuevosModulos);
+    };
 
     const agregarModulo = () => {
         if (nuevoNombreModulo.trim() === '') {
@@ -275,9 +291,13 @@ export default function ManageCourses() {
             nombre: nuevoNombreModulo,
             clases: []
         };
-        setModulos([...modulos, nuevoModulo]);
-        setNuevoNombreModulo('');
-        setMostrarAgregarModulo(false);
+        try {
+            setModulos([...modulos, nuevoModulo]);
+            setNuevoNombreModulo('');
+            setMostrarAgregarModulo(false);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const agregarClase = (indiceModulo) => {
@@ -520,7 +540,7 @@ export default function ManageCourses() {
                                     </div>
                                     <div className="w-full flex flex-col gap-2 items-start">
                                         {objetivos.map((objetivo, index) => (
-                                            <div key={objetivo.IdObj} className="flex gap-2 w-full">
+                                            <div key={objetivo.IdObj} className="flex gap-2 w-full" id={objetivo.IdObj}>
                                                 <input
                                                     type="text"
                                                     defaultValue={objetivo.Desc_Objetivo}
@@ -626,14 +646,22 @@ export default function ManageCourses() {
                                 <div className="flex flex-col gap-10">
                                     {modulos.map((modulo, indiceModulo) => (
                                         <div key={indiceModulo} className="border-1 border-azulSena p-3 rounded-lg">
-                                            <h4 className="font-bold text-lg my-2">{modulo.nombre}</h4>
+                                            <h4 className="font-bold text-lg my-2">{modulo.Tit_Mod}</h4>
                                             <div className="flex flex-col gap-2 items-start">
                                                 {modulo.clases.map((clase, indiceClase) => (
-                                                    <div key={indiceClase} className="flex w-full items-center justify-between p-2 bg-white rounded-lg border-1 border-azulSena">
-                                                        <div><span className="font-semibold">{clase.nombre}</span></div>
-                                                        <div className="flex gap-2 items-center">
-                                                            <button className="flex items-center gap-1 font-medium bg-azulSena text-white px-2 py-1 rounded-lg transition-all duration-150 hover:bg-black"><Plus />Agregar</button>
-                                                            <button onClick={() => eliminarClase(indiceModulo, indiceClase)}><Trash2 /></button>
+                                                    <div key={indiceClase} className="flex flex-col w-full justify-between p-2 bg-white rounded-lg border-1 border-azulSena">
+                                                        <div className="flex justify-between items-center">
+                                                            <div>
+                                                                <span className="font-semibold">{clase.nombre}</span>
+                                                            </div>
+                                                            <div className="flex gap-2 items-center">
+                                                                <button className="flex items-center gap-1 font-medium bg-azulSena text-white px-2 py-1 rounded-lg transition-all duration-150 hover:bg-black"><Plus />Agregar contenido</button>
+                                                                <button className="bg-red-500 text-white p-1 rounded-lg hover:bg-red-600 transition-all duration-150" onClick={() => eliminarClase(indiceModulo, indiceClase)}><Trash2 /></button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2 mt-2 border-t-1 border-gray-300 flex items-center gap-2">
+                                                            <button className="flex items-center hover:bg-black transition-all duration-150 text-white bg-azulSena p-2 rounded-lg gap-1"><Video size={20} /> Video</button>
+                                                            <button className="flex items-center hover:bg-black transition-all duration-150 text-white bg-azulSena p-2 rounded-lg gap-1"><File size={20} /> Articulo</button>
                                                         </div>
                                                     </div>
                                                 ))}
