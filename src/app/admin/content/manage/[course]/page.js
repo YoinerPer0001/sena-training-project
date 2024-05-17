@@ -54,6 +54,7 @@ export default function ManageCourses() {
                 return response.json();
             })
             .then(data => {
+                console.log(data.data);
                 const course = data.data;
                 setDataCourse(course);
             })
@@ -324,10 +325,10 @@ export default function ManageCourses() {
         const [file] = files;
         const form = new FormData();
         form.append('file', file);
+        setProgressBar(true)
 
         // Sending file
         try {
-            setProgressBar(true)
             const res = await fetch('/api/upload', {
                 method: 'POST',
                 body: form, // Aquí se pasa directamente el objeto FormData
@@ -355,15 +356,17 @@ export default function ManageCourses() {
                     })
 
             } else {
+                setProgressBar(false);
                 return console.log("No se cargo la imagen")
             }
 
         } catch (e) {
+            setProgressBar(false);
             console.log(e);
         }
     }
 
-    const [subirImagen, setSubirImagen] = useState(dataCourse.Fot_Cur !== null ? false : true);
+    const [subirImagen, setSubirImagen] = useState(dataCourse.Fot_Cur === null ? true : false);
 
 
     return (
@@ -571,7 +574,7 @@ export default function ManageCourses() {
                                         Portada del curso
                                     </label>
                                     <div className="flex gap-4 justify-center flex-col items-center">
-                                        {subirImagen === true || dataCourse.Fot_Cur != true ? <div className="card w-full">
+                                        {subirImagen === true || dataCourse.Fot_Cur === null ? <div className="card w-full">
                                             <FileUpload
                                                 pt={{
                                                     root: "py-4",
@@ -602,19 +605,18 @@ export default function ManageCourses() {
                                                 }}
                                                 removeIcon={<XCircle />}
 
-                                                name="files" className="w-full" customUpload={true} uploadHandler={formSubmit} accept="image/*" maxFileSize={1000000} emptyTemplate={<p className="mt-4 p-10 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center"><ImagePlus /> Arrastre y suelte archivos aquí para cargarlos.</p>} />
+                                                name="files" className="w-full"
+                                                customUpload={true}
+                                                uploadHandler={formSubmit}
+                                                accept="image/*"
+                                                maxFileSize={1000000}
+                                                emptyTemplate={<p className="mt-4 p-10 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center"><ImagePlus /> Arrastre y suelte archivos aquí para cargarlos.</p>} />
                                         </div>
                                             :
                                             <div className="w-full flex flex-col gap-2 items-center">
                                                 <Image src={dataCourse.Fot_Cur} alt="Foto del curso" className="rounded-lg" width={500} height={400} />
                                             </div>}
-                                        {subirImagen && progressBar && <div className="card">
-                                            <ProgressBar color="rgb(0, 50, 77)" mode="indeterminate" pt={{
-                                                root: 'lg:w-[500px] sm:w-[300px] w-[200px] h-[6px] rounded-lg',
-                                                container: 'h-[6px] bg-gray-300 rounded-lg',
-                                            }}></ProgressBar>
-                                        </div>}
-                                        {dataCourse.Fot_Cur === null || dataCourse.Fot_Cur === undefined && <button className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white" onClick={() => setSubirImagen(!subirImagen)}>{subirImagen ? "Cancelar" : 'Cambiar portada'}</button>}
+                                        <button className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white" onClick={() => setSubirImagen(!subirImagen)}>{subirImagen ? "Cancelar" : dataCourse.Fot_Cur !== null ? "Cambiar Portada" : "Subir Imagen"}</button>
                                     </div>
                                 </div>
 
