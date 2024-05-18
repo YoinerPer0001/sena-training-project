@@ -2,8 +2,8 @@
 import styles from './Content.module.scss'
 import DataTable, { defaultThemes } from 'react-data-table-component';
 import { useState, useEffect } from 'react';
-import { Spinner } from '@/components/Spinner/Spinner';
-import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
+import { NoDataComponent } from '@/components/usersComponents/NoDataComponent/NoDataComponent';
 import { columnsContent, dataContent } from '@/utils/exampleData';
 import Link from 'next/link'
 import { Filter, FileInput, CirclePlus } from 'lucide-react';

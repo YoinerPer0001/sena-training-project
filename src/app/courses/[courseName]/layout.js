@@ -1,11 +1,11 @@
 'use client'
 
-import AsideStudent from "@/components/AsideStudent/AsideStudent";
-import { NavHome } from "@/components/Nav/NavHome";
-import { NavCourses } from "@/components/NavCourses/NavCourses";
-import TopMessageHome from "@/components/TopMessageHome/TopMessageHome";
+import AsideStudent from "@/components/usersComponents/AsideStudent/AsideStudent";
+import { NavHome } from "@/components/usersComponents/Nav/NavHome";
+import { NavCourses } from "@/components/usersComponents/NavCourses/NavCourses";
+import TopMessageHome from "@/components/usersComponents/TopMessageHome/TopMessageHome";
 import styles from './LayoutCourses.module.scss'
-import { Footer } from "@/components/Footer/Footer";
+import { Footer } from "@/components/usersComponents/Footer/Footer";
 
 export default function inscriptionsLayout({ children }) {
 

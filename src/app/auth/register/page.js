@@ -1,12 +1,12 @@
 'use client'
 import Link from "next/link"
 import { useForm } from "react-hook-form"
-import DangerMessage from "@/components/DangerMessage/DangerMessage";
+import DangerMessage from "@/components/usersComponents/DangerMessage/DangerMessage";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import CircleSpinner from "@/components/CircleSpinner/CircleSpinner";
+import CircleSpinner from "@/components/usersComponents/CircleSpinner/CircleSpinner";
 import { CircleX } from "lucide-react";
 
 export default function Register() {

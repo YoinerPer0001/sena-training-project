@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@/components/Spinner/Spinner";
+import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
 
 export default function Profile() {
     const [dataUser, setDataUser] = useState({});
