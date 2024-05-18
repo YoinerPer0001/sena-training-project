@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { CircleCheckBig, GraduationCap, ListChecks, BadgeAlert, BarChart, BookText, Clock, Video, FileType } from 'lucide-react';
-import { Spinner } from "@/components/Spinner/Spinner"
+import { Spinner } from "@/components/usersComponents/Spinner/Spinner"
 import styles from './CourseDetails.module.scss'
 import Image from "next/image";
 import { Accordion, AccordionItem } from "@nextui-org/react";

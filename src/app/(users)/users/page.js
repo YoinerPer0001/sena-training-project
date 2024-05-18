@@ -1,12 +1,12 @@
 'use client'
-import SignUpCards from '@/components/SignUpCard/SignUpCards';
+import SignUpCards from '@/components/usersComponents/SignUpCard/SignUpCards';
 import styles from './Users.module.scss'
-import ManageCoursesCard from '@/components/ManageCoursesCard/ManageCoursesCard';
+import ManageCoursesCard from '@/components/usersComponents/ManageCoursesCard/ManageCoursesCard';
 import DataTable, { defaultThemes } from 'react-data-table-component';
 import { useState, useEffect } from 'react';
-import { Spinner } from '@/components/Spinner/Spinner';
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 import { columnsUsers, dataUsers } from '@/utils/exampleData';
-import { NoDataComponent } from '@/components/NoDataComponent/NoDataComponent';
+import { NoDataComponent } from '@/components/usersComponents/NoDataComponent/NoDataComponent';
 import { getCookie } from 'cookies-next';
 
 export default function Users() {

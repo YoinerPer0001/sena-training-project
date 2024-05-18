@@ -1,6 +1,6 @@
 'use client'
 
-import { NavBarClasses } from "@/components/NavBarClasses/NavBarClasses";
+import { NavBarClasses } from "@/components/usersComponents/NavBarClasses/NavBarClasses";
 
 export default function CoursesLayout({ children }) {
 

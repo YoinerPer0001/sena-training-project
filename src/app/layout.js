@@ -1,10 +1,10 @@
 'use client'
 import { Work_Sans } from "next/font/google";
 import Head from 'next/head';
-import { Footer } from "@/components/Footer/Footer";
+import { Footer } from "@/components/usersComponents/Footer/Footer";
 import "./globals.css";
 import {Providers} from "./providers";
-import ToasterProvider from "@/components/ToasterProvider/toaster-provider";
+import ToasterProvider from "@/components/usersComponents/ToasterProvider/toaster-provider";
 // import {NextUIProvider} from "@nextui-org/react";
 
 const work_sans = Work_Sans({ subsets: ["latin"], weight: ['300','400','500','600','700','800'] });

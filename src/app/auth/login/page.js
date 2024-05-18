@@ -3,13 +3,14 @@ import Link from 'next/link';
 import { useForm } from "react-hook-form"
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import DangerMessage from '@/components/DangerMessage/DangerMessage';
+import DangerMessage from '@/components/usersComponents/DangerMessage/DangerMessage';
 import styles from './Login.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '@/features/auth/loginSlice'
 import { CircleX } from 'lucide-react';
 import { useState } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
     const classInputs = "my-2 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
@@ -44,7 +45,7 @@ export default function Login() {
         const dataJSON = {
             "Ema_User": data.Ema_User,
             "Pass_User": data.Pass_User,
-            "Dir_Ip": "198.168.0.1"
+            "Dir_Ip": "192.168.0.1"
         }
 
         const response = await fetch('http://localhost:3000/api/v1/login', {
@@ -60,7 +61,13 @@ export default function Login() {
             setCookie('sessionToken', responseJSON.data);
             handleSubmitTwo()
             parseJwt(responseJSON.data)
-            return router.push('/')
+            const dataUser = jwtDecode(responseJSON.data);
+            if(dataUser.user.Id_Rol_FK == 1){
+                return router.push('/admin/dashboard')
+            }else{
+                return router.push('/')
+            }
+            
         }
         else if (responseJSON.code == 108) {
             return

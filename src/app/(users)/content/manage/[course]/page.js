@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { AlertCircle, ArrowLeftToLine, ChevronDown, File, ImagePlus, Info, Plus, PlusCircle, PlusCircleIcon, Save, Trash2, Upload, Video, X, XCircle } from "lucide-react";
 import Link from "next/link";
-import { Spinner } from "@/components/Spinner/Spinner";
+import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { FileUpload } from 'primereact/fileupload';

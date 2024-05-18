@@ -2,8 +2,8 @@
 import React from 'react'
 import styles from './Explore.module.scss'
 import { useEffect, useState } from 'react'
-import SignUpCards from '@/components/SignUpCard/SignUpCards'
-import { Spinner } from '@/components/Spinner/Spinner'
+import SignUpCards from '@/components/usersComponents/SignUpCard/SignUpCards'
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner'
 import Link from 'next/link'
 
 
