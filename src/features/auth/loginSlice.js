@@ -2,8 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getCookie } from 'cookies-next';
 
-const token = getCookie('sessionToken') || null;
-const data = JSON.parse(localStorage.getItem('name')) || null   
+let data = null;
+if (typeof window !== 'undefined') {
+  data = JSON.parse(localStorage.getItem('name')) || null;
+}
+
+const token = getCookie('sessionToken') || null; 
 
 export const loginSlice = createSlice({
     name: 'auth',

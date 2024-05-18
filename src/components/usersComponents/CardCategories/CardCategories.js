@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function CardCategories({img, title, description}) {
     return (
-        <article className='w-full text-[#0f0f0f] border-2 transition-all cursor-pointer duration-200 rounded-lg border-gray-600 hover:border-azulSena hover:translate-y-[-5px]'>
+        <article className='w-full text-[#0f0f0f] border-1 transition-all cursor-pointer duration-200 rounded-lg border-gray-600 hover:border-azulSena hover:translate-y-[-5px]'>
             <div className="relative h-full ml-0 mr-0">
                 <div className="relative h-full rounded-lg">
                     <div className="flex items-center -mt-1 p-5 pb-0">

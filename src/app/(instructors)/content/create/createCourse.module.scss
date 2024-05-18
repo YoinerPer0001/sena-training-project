@@ -58,17 +58,6 @@ $azul-secundario: #6fccff;
                 //     font-size: 2em;
                 //     font-weight: 700;
                 // }
-                input {
-                    width: 50%;
-                    padding: 1em;
-                    border-radius: 11px;
-                    border: none;
-                    outline: 1px solid gray;
-                    font-weight: 500;
-                    &:focus {
-                        outline: 1px solid $azul-primario;
-                    }
-                }
                 @media (max-width: 1024px) {
                     input {
                         width: 100%;

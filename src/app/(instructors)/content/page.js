@@ -55,7 +55,7 @@ export default function Content() {
     return (
         <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
             <div className={styles.container_button_add}>
-                <h3 className='font-bold text-3xl text-center my-2'>Gestión de cursos</h3>
+                <h3 className='font-bold text-3xl text-center my-2 text-azulSena'>Gestión de cursos</h3>
                 <hr />
                 <div className="flex items-center justify-between my-4">
                     <div className='flex items-center gap-2'>
@@ -63,8 +63,8 @@ export default function Content() {
                         <input className='p-2 rounded-lg border outline-none border-gray-200 focus:border-azulSena' name='search_filter_courses' type="text" placeholder="Filtrar por nombre" onChange={handleChange} />
                     </div>
                     <div className='flex gap-2'>
-                        <Link href={'/admin/content/export'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><FileInput />Exportar PDF</Link>
-                        <Link href={'/admin/content/create'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><CirclePlus />Crear nuevo curso</Link>
+                        <Link href={'/content/export'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><FileInput />Exportar PDF</Link>
+                        <Link href={'/content/create'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><CirclePlus />Crear nuevo curso</Link>
                     </div>
                 </div>
             </div>
