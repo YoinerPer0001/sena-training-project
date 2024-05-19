@@ -21,12 +21,12 @@ export default function AccountLayout({ children }) {
         </header>
         <ul>
           <li><Link href="/"><Home /> <p>Inicio</p></Link></li>
-          <li><Link href="/analytics" className={pathname.includes('/users/analytics') ? styles.active : ''}><BarChart2 /> <p>Analíticas</p></Link></li>
+          <li><Link href="/instructors/analytics" className={pathname.includes('/users/analytics') ? styles.active : ''}><BarChart2 /> <p>Analíticas</p></Link></li>
         </ul>
         <ul>
-          <li><Link href="/profile" className={pathname.includes('/profile') ? styles.active : ''}><CircleUser /> <p>Mi perfil</p></Link></li>
-          <li><Link href="/content" className={pathname.includes('/content') ? styles.active : ''}><Clapperboard /> <p>Mis cursos</p></Link></li>
-          <li><Link href="/support" className={pathname.includes('/support') ? styles.active : ''}><CircleHelp /> <p>Soporte técnico</p></Link></li>
+          <li><Link href="/instructors/profile" className={pathname.includes('/profile') ? styles.active : ''}><CircleUser /> <p>Mi perfil</p></Link></li>
+          <li><Link href="/instructors/content" className={pathname.includes('/content') ? styles.active : ''}><Clapperboard /> <p>Mis cursos</p></Link></li>
+          <li><Link href="/instructors/support" className={pathname.includes('/support') ? styles.active : ''}><CircleHelp /> <p>Soporte técnico</p></Link></li>
         </ul>
       </div>
       <section className="w-full h-screen max-h-screen p-4 rounded-lg box-border">

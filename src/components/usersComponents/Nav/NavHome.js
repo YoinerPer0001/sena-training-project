@@ -30,7 +30,9 @@ export const NavHome = () => {
   return (
     <Navbar isBlurred={false} className='p-3 bg-azulSena'>
       <NavbarBrand >
-        <Image priority={true} src={'/logo-senalearn-(white).png'} alt='Logo de SENA Learn' width={50} height={50} />
+        <Link href='/' >
+          <Image priority={true} src={'/logo-senalearn-(white).png'} alt='Logo de SENA Learn' width={50} height={50} />
+        </Link>
       </NavbarBrand>
       <NavbarContent className="hidden md:flex gap-4" justify="center">
         <NavbarItem>
@@ -47,7 +49,7 @@ export const NavHome = () => {
       {authState.isAuthenticated ?
         <NavbarContent as="div" justify="end">
           <button><Bell color='white' /></button>
-          <button><Mail color='white' /></button>
+          <Link href='/messages'><Mail color='white' /></Link>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <div className='flex items-center gap-2 cursor-pointer'>
@@ -64,10 +66,10 @@ export const NavHome = () => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="settings" href='/profile'><div className='flex items-center gap-1'><Bolt size={18}/> Configuración</div></DropdownItem>
+              <DropdownItem key="settings" href='/instructors/profile'><div className='flex items-center gap-1'><Bolt size={18} /> Configuración</div></DropdownItem>
               <DropdownItem key="logout" color="danger">
                 <div onClick={handleLogout} className='flex items-center gap-1'>
-                  <LogOutIcon size={18}/>Cerrar sesión
+                  <LogOutIcon size={18} />Cerrar sesión
                 </div>
               </DropdownItem>
             </DropdownMenu>
