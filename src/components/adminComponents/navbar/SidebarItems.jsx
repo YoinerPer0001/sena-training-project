@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { useGetFetch } from '../fetchActions/GetFetch';
+import { FaChartSimple, FaChartColumn  } from "react-icons/fa6";
 import {
     IoHome,
     IoPerson,
@@ -30,7 +31,7 @@ import {
 } from 'react-icons/io5';
 
 const listIcons = [
-    { icon: <IoHome />, label: 'Home' },          // Inicio
+    { icon: <FaChartSimple />, label: 'Home' },          // Inicio
     { icon: <IoPeople />, label: 'Profile' },      // Perfil de Usuario
     { icon: <IoBook />, label: 'Courses' },        // Cursos
     { icon: <IoSettings />, label: 'Settings' },   // Configuración
@@ -44,7 +45,7 @@ const listIcons = [
 ];
 
 const ListIconsCel = [
-    { icon: <IoHomeOutline className='text-white w-full text-3xl'/>, label: 'Home' },          // Inicio
+    { icon: <FaChartColumn className='text-white w-full text-3xl'/>, label: 'Home' },          // Inicio
     { icon: <IoPeopleOutline className='text-white w-full text-3xl' />, label: 'Profile' },     // Perfil de Usuario
     { icon: <IoBookOutline className='text-white w-full text-3xl'/>, label: 'Courses' },       // Cursos
     { icon: <IoSettingsOutline className='text-white w-full text-3xl'/>, label: 'Settings' },  // Configuración
@@ -91,16 +92,16 @@ export const SidebarItems = () => {
             { windowSize.width > 1214 ? isLoading ? 'Cargando...' : data.map(opcion => (
                 <Link key={opcion.Opcion.id_opcion} href={opcion.Opcion.url}
                     className={`w-full  px-2 inline-flex space-x-2 items-center border-slate-700 py-3  hover:bg-white/5 transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875] border-b'}`}>
-                    <div className="flex flex-row w-full justify-start">
-                        <div className="mx-2">
+                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start">
+                        <div key={opcion.Opcion.id_opcion}  className="mx-2">
                             {listIcons[opcion.Opcion.id_opcion - 1].icon}
                         </div>
                         <span className="text-lg text-center  leading-5 text-white">{opcion.Opcion.nombre_opcion}</span>
                     </div>
                 </Link>
             )) : isLoading ? 'Cargando...' : data.map(opcion => (
-                <div className="w-full flex flex-col items-center justify-start pt-3">
-                    <Link href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875]  rounded-lg'}`}>
+                <div key={opcion.Opcion.id_opcion} className="w-full flex flex-col items-center justify-start pt-3">
+                    <Link key={opcion.Opcion.id_opcion+"k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875]  rounded-lg'}`}>
                         {ListIconsCel[opcion.Opcion.id_opcion - 1].icon}
                     </Link>
                 </div>

@@ -3,18 +3,19 @@ import React from 'react'
 import styles from './navbar.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from "next/navigation";
-import { IoHome, IoPerson, IoBook, IoBookOutline, IoExit, IoHomeOutline, IoPeopleOutline, IoCogOutline } from "react-icons/io5";
+import usePathname from 'next/navigation'
 import { VscGear } from "react-icons/vsc";
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../features/auth/loginSlice'
 import { deleteCookie } from 'cookies-next';
 import { SidebarItems } from './SidebarItems'
+import { GiExitDoor } from "react-icons/gi";
 import capitalize from 'capitalize'
 
 
-export const Sidebar = () => {
+export const Sidebar = ({ estadoSidebar }) => {
+  
     const { Nom_User, Ape_User, Ema_User } = JSON.parse(localStorage.getItem('name'));
 
     const router = useRouter()
@@ -28,11 +29,11 @@ export const Sidebar = () => {
         return router.push('/auth/login')
 
     }
-    const pathActual = usePathname();
+
     return (
         <>
             {/* {navbar-computadores} */}
-            <div className={`${styles.NavbarComputers} bg-[#00324D]  min-h-screen flex text-white`}>
+            <div className={`${styles.NavbarComputers} bg-[#00324D] fixed z-20 h-screen b-0  min-h-screen top-0 left-0 flex text-white`}>
 
                 <div className={`${styles.NavbarInfo} w-full  h-full flex flex-col justify-between `}>
                     <div className='w-full h-1/3 flex flex-col '>
@@ -52,9 +53,10 @@ export const Sidebar = () => {
                     {/* {items de navbar} */}
                     <SidebarItems />
 
-                    <div className='flex w-full justify-center items-center pb-10'>
-                        <button onClick={handleLogout}>
-                            <span className="text-sm text-center  leading-5 text-white">Cerrar sesion</span>
+                    <div className='flex w-full justify-start items-center px-3 pb-10'>
+                        <button className='w-full flex items-center' onClick={handleLogout}>
+                            <GiExitDoor className='text-white mx-2 text-3xl' />
+                            <span className="text-sm text-white">Cerrar sesion</span>
                         </button>
                     </div>
                 </div>
@@ -64,7 +66,7 @@ export const Sidebar = () => {
 
             {/* {navbar-celulares} */}
 
-            <div className={`${styles.NavbarCelulares} h-screen fixed z-10 left-0 top-0 bg-[#00324D]`}>
+            <div className={`${styles.NavbarCelulares} ${estadoSidebar == true ? 'opacity-100 z-20' : 'opacity-0 z-0'} h-screen fixed  left-0 top-0 bg-[#00324D] transition-all ease-in-out delay-150`}>
                 <div className={`${styles.NavbarInfo} w-full h-full flex flex-col `}>
                     <div className='w-full h-16 flex flex-col py-6 border-b-2 border-[#55768875]  '>
                         <div className='flex w-full h-full items-center justify-center '>
@@ -83,6 +85,7 @@ export const Sidebar = () => {
                 </div>
 
             </div>
+
 
         </>
     )

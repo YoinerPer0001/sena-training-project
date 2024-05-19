@@ -1,3 +1,4 @@
+
 import UserTable from "@/components/adminComponents/tables/UserTables";
 import styles from "./user.module.scss"
 export default function usersPage() {

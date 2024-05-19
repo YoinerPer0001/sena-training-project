@@ -9,15 +9,11 @@ $azul-secundario: #6fccff;
 
 .NavbarCelulares{
     width: 4rem;
-    display: none;
 }
 
 
 @media (max-width: 1214px) {//tablets
     .NavbarComputers{
-        display: none;
-    }
-    .NavbarCelulares{
         display: none;
     }
   
