@@ -1,8 +1,9 @@
 
 export default function dashboardPage() {
   return (
-    <div>
-      <h1>Hello dashboardPage</h1>
-    </div>
+    <div className="w-full h-full bg-slate-600 pt-40 ">
+     
+      
+      </div>
   );
 }
