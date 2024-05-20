@@ -1,0 +1,34 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+$verde-primario: #39a900;
+$azul-secundario: #6fccff;
+
+
+
+@media (max-width: 480px) {//celulares
+    .contUsersTable {
+      max-width: 2rem;
+    }
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {//tablets
+    .contUsersTable {
+      max-width: 2rem;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {//tablets
+    .contUsersTable {
+      max-width: 2rem;
+    }
+  }
+
+  @media (min-width: 1024) and (max-width: 1200px) {//tablets
+    .contUsersTable {
+      max-width: 2rem;
+    }
+  }
+  
+  
+
+  

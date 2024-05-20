@@ -1,0 +1,21 @@
+$azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+$verde-primario: #39a900;
+$azul-secundario: #6fccff;
+
+.NavbarComputers{
+    width: 15%;
+}
+
+.NavbarCelulares{
+    width: 4rem;
+}
+
+
+@media (max-width: 1214px) {//tablets
+    .NavbarComputers{
+        display: none;
+    }
+  
+}
+
