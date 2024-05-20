@@ -8,9 +8,14 @@ $azul-secundario: #6fccff;
     flex-direction: row;
 }
 
-.contPrinIzq_sup{
-
+.contPrinIzq_inf {
+    grid-template-columns: repeat(4, 1fr);
 }
+
+.roboto {
+    font-family: 'Open Sans', sans-serif, 'Arial', sans-serif;
+    font-weight: bold;
+  }
 
 
 
@@ -20,11 +25,16 @@ $azul-secundario: #6fccff;
     .contPrincipal {
         flex-direction: column;
 
-        .contPrinIzq{
+        .contPrinIzq {
             width: 100%;
+            margin-bottom: 1rem;
+
+            .contPrinIzq_inf {
+                grid-template-columns: repeat(1, 1fr);
+              }
         }
 
-        .contPrinDer{
+        .contPrinDer {
             width: 100%;
         }
     }
@@ -36,11 +46,14 @@ $azul-secundario: #6fccff;
     .contPrincipal {
         flex-direction: column;
 
-        .contPrinIzq{
+        .contPrinIzq {
             width: 100%;
+            margin-bottom: 1rem;
+
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .contPrinDer{
+        .contPrinDer {
             width: 100%;
         }
     }
@@ -50,14 +63,15 @@ $azul-secundario: #6fccff;
 
     //tablets
     .contPrincipal {
-        flex-direction: row;
+        flex-direction: column;
 
-        .contPrinIzq{
-           
+        .contPrinIzq {
+            width: 100%;
+            margin-bottom: 1rem;
         }
 
-        .contPrinDer{
-           
+        .contPrinDer {
+            width: 100%;
         }
     }
 }
@@ -68,12 +82,14 @@ $azul-secundario: #6fccff;
     .contPrincipal {
         flex-direction: row;
 
-        .contPrinIzq{
-           
+        .contPrinIzq {
+
         }
 
-        .contPrinDer{
-           
+        .contPrinDer {
+
         }
     }
+
+
 }
