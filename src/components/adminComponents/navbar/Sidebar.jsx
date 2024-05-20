@@ -3,14 +3,12 @@ import React from 'react'
 import styles from './navbar.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import usePathname from 'next/navigation'
-import { VscGear } from "react-icons/vsc";
+import { LuLogOut, LuSettings2 } from "react-icons/lu";
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../features/auth/loginSlice'
 import { deleteCookie } from 'cookies-next';
 import { SidebarItems } from './SidebarItems'
-import { GiExitDoor } from "react-icons/gi";
 import capitalize from 'capitalize'
 
 
@@ -55,7 +53,7 @@ export const Sidebar = ({ estadoSidebar }) => {
 
                     <div className='flex w-full justify-start items-center px-3 pb-10'>
                         <button className='w-full flex items-center' onClick={handleLogout}>
-                            <GiExitDoor className='text-white mx-2 text-3xl' />
+                            <LuLogOut className='text-white mx-2 text-3xl' />
                             <span className="text-sm text-white">Cerrar sesion</span>
                         </button>
                     </div>
@@ -78,7 +76,7 @@ export const Sidebar = ({ estadoSidebar }) => {
                         <SidebarItems />
                         <div className='flex w-full justify-center items-center h-16 '>
                             <Link href={'/admin/dashboard'}>
-                                <VscGear className=" text-white w-full text-4xl" />
+                                <LuSettings2 className=" text-white w-full text-4xl" />
                             </Link>
                         </div>
                     </div>

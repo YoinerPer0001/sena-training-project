@@ -1,8 +1,8 @@
 'use client'
 import { useState } from "react";
 import { Sidebar } from "@/components/adminComponents/navbar/Sidebar";
-import { FaBars ,FaRegBell} from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import { LuBell, LuMenu  } from "react-icons/lu";
 import Image from 'next/image'
 
 
@@ -24,7 +24,7 @@ export default function adminLayout({ children }) {
           <div className="pl-2 w-2/3 h-full flex justify-start items-center">
             <div className={`${status == true ? ' pl-16 w-24': 'pl-0 w-10'} lg:md:xl:hidden sm:block  h-full flex items-center transition-all ease-in-out delay-75`}>
               <button onClick={()=>setstatus(!status)}>
-                <FaBars className="text-3xl" />
+                <LuMenu className="text-3xl" />
               </button>
             </div>
             <div className="text-center flex w-2/3 h-full items-center">
@@ -37,7 +37,7 @@ export default function adminLayout({ children }) {
             </div>
           </div>
           <div className=" lg:md:xl:w-1/6 sm:w-1/3  h-full  flex flex-row-reverse py-3 justify-center items-center">
-            <FaRegBell className="text-2xl mx-3"/>
+            <LuBell className="text-2xl mx-3"/>
             <Image priority width={50} height={50} className="rounded-full lg:md:xl:hidden sm:block" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80" alt="logo.png" />
           </div>
 

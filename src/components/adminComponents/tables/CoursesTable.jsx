@@ -4,11 +4,11 @@ import { useGetFetch } from '../fetchActions/GetFetch';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import capitalize from 'capitalize';
-import { FaEdit } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
+import { LuSettings2 } from "react-icons/lu";
 
 export default function CoursesTable() {
     const url = 'http://localhost:3000/api/v1/courses';
@@ -103,7 +103,7 @@ export default function CoursesTable() {
                     variant="text"
                     color="primary"
                     size="medium"
-                    startIcon={<FaEdit />}
+                    startIcon={<LuSettings2 />}
                     onClick={() => {
                         router.push('/');
                     }}
