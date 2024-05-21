@@ -4,33 +4,33 @@ import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { useGetFetch } from '../fetchActions/GetFetch';
 import {
-    LuLineChart,
-    LuHome,
-    LuUser,
-    LuBook,
-    LuSettings,
-    LuBarChart2,
-    LuBell,
-    LuMessageSquare,
-    LuFolder,
-    LuUsers,
-    LuCalendar,
-    LuHelpCircle,
-    LuPers
-} from "react-icons/lu";
+    LineChart,
+    Home,
+    User,
+    Book,
+    Settings,
+    BarChart2,
+    Bell,
+    MessageSquare,
+    Folder,
+    Users,
+    Calendar,
+    HelpCircle,
+    Pers
+} from "lucide-react";
 
 const listIcons = [
-    { icon: <LuLineChart className='text-white text-2xl' />, label: 'Home' },              // Inicio
-    { icon: <LuUsers className='text-white text-2xl'/>, label: 'Profile' },          // Perfil de Usuario
-    { icon: <LuBook className='text-white text-2xl'/>, label: 'Courses' },           // Cursos
-    { icon: <LuBell className='text-white text-2xl'/>, label: 'Settings' },      // Configuración
-    { icon: <LuBarChart2 className='text-white text-2xl'/>, label: 'Analytics' },    // Análisis
-    { icon: <LuSettings className='text-white text-2xl'/>, label: 'Notifications' },     // Notificaciones
-    { icon: <LuMessageSquare className='text-white text-2xl'/>, label: 'Messages' }, // Mensajes/Comentarios
-    { icon: <LuFolder className='text-white text-2xl'/>, label: 'Resources' },       // Recursos
-    { icon: <LuUser className='text-white text-2xl'/>, label: 'Users' },             // Perfil Usuario
-    { icon: <LuCalendar className='text-white text-2xl'/>, label: 'Calendar' },      // Calendario
-    { icon: <LuHelpCircle className='text-white text-2xl'/>, label: 'Help' }         // Ayuda
+    { icon: <LineChart className='text-white text-2xl' />, label: 'Home' },              // Inicio
+    { icon: <Users className='text-white text-2xl'/>, label: 'Profile' },          // Perfil de Usuario
+    { icon: <Book className='text-white text-2xl'/>, label: 'Courses' },           // Cursos
+    { icon: <Bell className='text-white text-2xl'/>, label: 'Settings' },      // Configuración
+    { icon: <BarChart2 className='text-white text-2xl'/>, label: 'Analytics' },    // Análisis
+    { icon: <Settings className='text-white text-2xl'/>, label: 'Notifications' },     // Notificaciones
+    { icon: <MessageSquare className='text-white text-2xl'/>, label: 'Messages' }, // Mensajes/Comentarios
+    { icon: <Folder className='text-white text-2xl'/>, label: 'Resources' },       // Recursos
+    { icon: <User className='text-white text-2xl'/>, label: 'Users' },             // Perfil Usuario
+    { icon: <Calendar className='text-white text-2xl'/>, label: 'Calendar' },      // Calendario
+    { icon: <HelpCircle className='text-white text-2xl'/>, label: 'Help' }         // Ayuda
 ];
 
 

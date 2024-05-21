@@ -2,9 +2,8 @@ import React from 'react'
 import Image from 'next/image'
 import Link from "next/link"
 import styles from './Footer.module.scss'
-import { MdFacebook } from "react-icons/md";
-import { AiOutlineTwitter } from "react-icons/ai";
-import { AiFillInstagram } from "react-icons/ai";
+import { Facebook, TwitterIcon } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 
 export const Footer = () => {
@@ -18,9 +17,9 @@ export const Footer = () => {
             <li><Link href="#">Aviso legal</Link></li>
           </ul>
           <ul>
-            <li><Link href="#"><AiOutlineTwitter/></Link></li>
-            <li><Link href="#"><MdFacebook/></Link></li>
-            <li><Link href="#"><AiFillInstagram/></Link></li>
+            <li><Link href="#"><TwitterIcon/></Link></li>
+            <li><Link href="#"><Facebook/></Link></li>
+            <li><Link href="#"><Instagram/></Link></li>
           </ul>
         </div>
         <div className={styles.footer_bottom}>

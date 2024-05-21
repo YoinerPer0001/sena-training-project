@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './navbar.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import { LuLogOut, LuSettings2 } from "react-icons/lu";
+import { LogOut, Settings2 } from "lucide-react";
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../features/auth/loginSlice'
@@ -31,7 +31,7 @@ export const Sidebar = ({ estadoSidebar }) => {
     return (
         <>
             {/* {navbar-computadores} */}
-            <div className={`${styles.NavbarComputers} bg-[#00324D] fixed z-20 h-screen b-0  min-h-screen top-0 left-0 flex text-white`}>
+            <div className={`${styles.NavbarComputers} bg-[#00324D] fixed z-20 h-screen b-0   min-h-screen top-0 left-0 flex text-white`}>
 
                 <div className={`${styles.NavbarInfo} w-full  h-full flex flex-col justify-between `}>
                     <div className='w-full h-1/3 flex flex-col '>
@@ -53,7 +53,7 @@ export const Sidebar = ({ estadoSidebar }) => {
 
                     <div className='flex w-full justify-start items-center px-3 pb-10'>
                         <button className='w-full flex items-center' onClick={handleLogout}>
-                            <LuLogOut className='text-white mx-2 text-3xl' />
+                            <LogOut className='text-white mx-2 text-3xl' />
                             <span className="text-sm text-white">Cerrar sesion</span>
                         </button>
                     </div>
@@ -76,7 +76,7 @@ export const Sidebar = ({ estadoSidebar }) => {
                         <SidebarItems />
                         <div className='flex w-full justify-center items-center h-16 '>
                             <Link href={'/admin/dashboard'}>
-                                <LuSettings2 className=" text-white w-full text-4xl" />
+                                <Settings2 className=" text-white w-full text-4xl" />
                             </Link>
                         </div>
                     </div>

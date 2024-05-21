@@ -3,7 +3,7 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { useGetFetch } from '../fetchActions/GetFetch';
-import { LuFilter } from "react-icons/lu";
+import { Filter } from "lucide-react";
 import styles from './graphics.module.scss'
 import { useEffect, useState } from 'react';
 
@@ -48,7 +48,7 @@ export default function BarrasGraphic() {
     <>
       <div className='flex flex-row w-full justify-center items-center  rounded-md'>
         <span className={`${styles.roboto} text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
-          <LuFilter className='px-1 text-xl' />
+          <Filter className='px-1 text-xl' />
         </span>
         <select onChange={onSelectChange} name="" id="">
           {!isLoading && data[0]?.years.map((year) => (
