@@ -1,0 +1,100 @@
+.roboto {
+    font-family: 'Open Sans', sans-serif, 'Arial', sans-serif;
+    font-weight: bold;
+  }
+
+  $azul-primario: #00324D;
+$naranja-primario: #FF6C20;
+$verde-primario: #39a900;
+$azul-secundario: #6fccff;
+
+//estado inicial
+.contPrincipal {
+    flex-direction: row;
+}
+
+.contPrinIzq_inf {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.roboto {
+    font-family: 'Open Sans', sans-serif, 'Arial', sans-serif;
+    font-weight: bold;
+  }
+
+
+
+@media (max-width: 480px) {
+
+    //celulares
+    .contPrincipal {
+        flex-direction: column;
+
+        .contPrinIzq {
+            width: 100%;
+            margin-bottom: 1rem;
+
+            .contPrinIzq_inf {
+                grid-template-columns: repeat(1, 1fr);
+              }
+        }
+
+        .contPrinDer {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+    //tablets
+    .contPrincipal {
+        flex-direction: column;
+
+        .contPrinIzq {
+            width: 100%;
+            margin-bottom: 1rem;
+
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .contPrinDer {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    //tablets
+    .contPrincipal {
+        flex-direction: column;
+
+        .contPrinIzq {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .contPrinDer {
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: 1024) and (max-width: 1200px) {
+
+    //computadores
+    .contPrincipal {
+        flex-direction: row;
+
+        .contPrinIzq {
+
+        }
+
+        .contPrinDer {
+
+        }
+    }
+
+
+}

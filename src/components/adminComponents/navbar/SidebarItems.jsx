@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { useGetFetch } from '../fetchActions/GetFetch';
-import { FaChartSimple, FaChartColumn  } from "react-icons/fa6";
 import {
+    LuLineChart,
     LuHome,
     LuUser,
     LuBook,
@@ -20,7 +20,7 @@ import {
 } from "react-icons/lu";
 
 const listIcons = [
-    { icon: <LuHome className='text-white text-2xl' />, label: 'Home' },              // Inicio
+    { icon: <LuLineChart className='text-white text-2xl' />, label: 'Home' },              // Inicio
     { icon: <LuUsers className='text-white text-2xl'/>, label: 'Profile' },          // Perfil de Usuario
     { icon: <LuBook className='text-white text-2xl'/>, label: 'Courses' },           // Cursos
     { icon: <LuBell className='text-white text-2xl'/>, label: 'Settings' },      // Configuración

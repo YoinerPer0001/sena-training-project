@@ -14,11 +14,9 @@ export default function dashboardPage() {
       <div className={`${styles.contPrinIzq} w-max border-b-3 flex flex-col md:lg:xl:pr-3 mr-3 `}>
 
         <div className={`${styles.contPrinIzq_sup} h-72 inline-flex flex-col justify-center items-end rounded-lg mb-2 w-full  bg-[#ffffff]`}>
-          <div className="w-full text-start pl-4 pt-2">
-            <span className={`${styles.roboto} text-md font-sans  mb-2 text-[#21264F]`}>Inscripciones en los ultimos meses</span>
-          </div>
           <BarrasGraphic />
         </div>
+        {/* DIAGRAMAS REDONDOS */}
         <div className={`${styles.contPrinIzq_inf}   w-full h-1/2 grid gap-2 py-4 `}>
 
           <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
@@ -37,7 +35,7 @@ export default function dashboardPage() {
 
           </div>
           <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
-            <span className={`${styles.roboto} text-center text-[#21264F]`}>Tasa de abandono de cursos</span>
+            <span className={`${styles.roboto} text-center text-[#21264F]`}>Número Total de  cursos</span>
             <Indicador />
             
           </div>
