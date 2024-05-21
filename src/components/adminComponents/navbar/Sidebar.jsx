@@ -43,7 +43,7 @@ export const Sidebar = ({ estadoSidebar }) => {
                                 <Image width={80} height={80} className="rounded-full" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80" alt="logo.png" />
                             </Link>
                             <div className='flex flex-col gap-1 mt-2'>
-                                <span className='leading-3 font-semibold'>{capitalize(Nom_User) + " " + capitalize(Ape_User)}</span>
+                                <span className='leading-3 text-center font-semibold'>{capitalize(Nom_User) + " " + capitalize(Ape_User)}</span>
                                 <span className='leading-3 text-sm text-gray-400'>{Ema_User}</span>
                             </div>
                         </div>
