@@ -1,7 +1,4 @@
 import Image from 'next/image';
-import { MdFavorite } from "react-icons/md";
-import { MdAccessTimeFilled } from "react-icons/md";
-import { AiFillHeart } from "react-icons/ai";
 import styles from './SignUpCards.module.scss'
 import { BookText, Heart } from 'lucide-react';
 // import DarkButtons from '../DarkButtons';

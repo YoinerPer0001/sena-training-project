@@ -6,6 +6,7 @@ import { useGetFetch } from '../fetchActions/GetFetch';
 import { Filter } from "lucide-react";
 import styles from './graphics.module.scss'
 import { useEffect, useState } from 'react';
+import {Select, SelectItem} from "@nextui-org/react";
 
 const valueFormatter = (value) => `${value}`;
 
@@ -50,14 +51,15 @@ export default function BarrasGraphic() {
         <span className={`${styles.roboto} text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
           <Filter className='px-1 text-xl' />
         </span>
-        <select onChange={onSelectChange} name="" id="">
+        <Select  className=' w-40 h-1' onChange={onSelectChange} name="" id="">
           {!isLoading && data[0]?.years.map((year) => (
-            <option key={year.year} value={year.year}>{year.year}</option>
+            <SelectItem  key={year.year} value={year.year}>{year.year}</SelectItem>
           ))}
-        </select>
+        </Select>
       </div>
       <div className='flex flex-col' style={{ width: '100%', height: '90%' }}>
         <BarChart
+          colors= {['#6fccff']}
           dataset={dataset}
           xAxis={[
             { scaleType: 'band', dataKey: 'mes' },
