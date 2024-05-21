@@ -31,7 +31,7 @@ export default function Register() {
             "Ape_User": data.Ape_User,
             "Ema_User": data.Ema_User,
             "Pass_User": data.Pass_User,
-            "Dir_Ip": "198.168.0.1"
+            "Dir_Ip": "192.168.0.1"
         }
         const res = await fetch('http://localhost:3000/api/v1/register', {
             method: 'POST',

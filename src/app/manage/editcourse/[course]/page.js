@@ -79,25 +79,6 @@ export default function ManageCourses() {
                     setLoading(false);
                 }
             })
-
-        // fetch(`http://localhost:3000/api/v1/curso/req-previos/${idCourse}`)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         const data = response.data;
-        //         if (data.length > 0) {
-        //             console.log(data)
-        //             const reqCurso = data.map(obj => {
-        //                 return {
-        //                     "Desc_Objetivo": obj.Desc_Objetivo
-        //                 }
-        //             })
-        //             setObjetivos(reqCurso)
-        //             setLoading(false);
-        //         } else {
-        //             setObjetivos([{ "IdObj": uuidv4(), "Desc_Objetivo": '' }])
-        //             setLoading(false);
-        //         }
-        //     })
     }, []);
 
     const handleClickPage1 = () => {
@@ -401,7 +382,7 @@ export default function ManageCourses() {
                         <div className="absolute left-0 flex items-center justify-start">
                             <Link
                                 className="my-auto transition-all duration-150 flex items-center gap-2 hover:bg-gray-300 p-2 rounded-lg font-medium"
-                                href={"/admin/content"}
+                                href={"/instructors/content"}
                             >
                                 <ArrowLeftToLine /> Volver
                             </Link>

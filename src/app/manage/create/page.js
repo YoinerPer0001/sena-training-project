@@ -4,9 +4,10 @@ import { Progress } from "@nextui-org/react";
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
-import { ImagePlus, Pencil, ArrowLeftToLine } from 'lucide-react';
+import { ImagePlus, Pencil, ArrowLeftToLine, CircleCheck, ChevronRight, ChevronLeft } from 'lucide-react';
 import toast from "react-hot-toast";
 import { getCookie } from 'cookies-next';
+import CategoryIndicator from '@/components/usersComponents/CategoryIndicator/CategoryIndicator';
 
 export default function CreateCourse() {
   const token = getCookie('sessionToken')
@@ -121,29 +122,20 @@ export default function CreateCourse() {
   return (
     <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto relative">
       <div className='absolute top-4 hidden lg:flex'>
-        <Link href="/admin/content" className='transition-all duration-200 flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg'>
+        <Link href="/content" className='transition-all duration-200 flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg'>
           <ArrowLeftToLine /> Volver
         </Link>
       </div>
-      <div className={styles.container_create}>
-        <div className={styles.create_course}>
-          <div className={styles.create_course_title}>
-            <div className="flex w-full justify-center items-center">
-              <div className='flex flex-col justify-center items-center relative'>
-                <span className={`flex justify-center items-center w-[40px] h-[40px] rounded-full ${pages >= 0 ? 'bg-[#6fccff] text-[#00324D] font-semibold' : 'bg-gray-400 text-white'}`}>1</span>
-                <span className={`hidden md:block absolute top-10 ${pages >= 0 ? 'text-[#00324D] font-semibold' : ''}`}>Título</span>
-              </div>
+      <div className='w-full h-full items-center flex flex-col'>
+        <div className='flex flex-col justify-between h-full w-full'>
+          <div className='w-full'>
+            <header className="flex w-full justify-center items-center">
+              <CategoryIndicator pages={pages} label={"Titulo"} actualPage={0}/>
               <div className={`h-[2px] min-w-[25px] md:min-w-[80px] bg-transparent border-b-2 ${pages > 0 ? 'border-[#6fccff]' : 'border-gray-400'}`}></div>
-              <div className='flex flex-col justify-center items-center relative'>
-                <span className={`flex justify-center items-center w-[40px] h-[40px] rounded-full ${pages >= 1 ? 'bg-[#6fccff] text-[#00324D] font-semibold' : 'bg-gray-400 text-white'}`}>2</span>
-                <span className={`hidden md:block absolute top-10 ${pages >= 1 ? 'text-[#00324D] font-semibold' : ''}`}>Descripción</span>
-              </div>
+              <CategoryIndicator pages={pages} label={"Descripción"} actualPage={1}/>
               <div className={`h-[2px] min-w-[25px] md:min-w-[80px] bg-transparent border-b-2 ${pages > 1 ? 'border-[#6fccff]' : 'border-gray-400'}`}></div>
-              <div className='flex flex-col justify-center items-center relative'>
-                <span className={`flex justify-center items-center w-[40px] h-[40px] rounded-full ${pages >= 2 ? 'bg-[#6fccff] text-[#00324D] font-semibold' : 'bg-gray-400 text-white'}`}>3</span>
-                <span className={`hidden md:block absolute top-10 ${pages >= 2 ? 'text-[#00324D] font-semibold' : ''}`}>Categoria</span>
-              </div>
-            </div>
+              <CategoryIndicator pages={pages} label={"Categoría"} actualPage={2}/>
+            </header>
             {pages == 0 ?
               <>
                 <div className='mt-6 flex justify-center flex-col items-center'>
@@ -151,29 +143,30 @@ export default function CreateCourse() {
                   <p className='text-sm md:text-base'>No te preocupes, después podrás modificarlo.</p>
                 </div>
                 <div className='flex justify-center mt-2'>
-                  <input className='text-sm md:text-base p-2 border-1 border-gray-300 rounded-lg w-2/4' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur ? dataCourse.Nom_Cur : ''} />
-                </div> </> : ''}
+                  <input className='text-sm md:text-base p-2 border-1 outline-1 outline-azulSena border-gray-300 rounded-lg w-2/4' name='create_course_title' type="text" placeholder="Ejemplo: Aprende Photoshop desde cero" maxLength="70" onChange={handleChangeName} value={dataCourse.Nom_Cur ? dataCourse.Nom_Cur : ''} />
+                </div> 
+              </> : ''}
             {pages == 1 ? <>
-              <div>
+              <div className='mt-6 flex justify-center flex-col items-center'>
                 <h3 className='text-xl md:text-3xl p-2 pb-0 text-center font-bold'>¿Cómo describirías el curso?</h3>
                 <p className='text-sm md:text-base'>No te preocupes, después podrás modificarlo.</p>
               </div>
-              <div>
-                <input name='create_course_title' type="text" placeholder="Ejemplo: Este curso está diseñado para brindar a los participantes una sól" maxLength="100" onChange={handleChangeDes} value={dataCourse.Des_Cur ? dataCourse.Des_Cur : ''} />
+              <div className='flex justify-center mt-2'>
+                <input className='text-sm md:text-base p-2 border-1 outline-1 outline-azulSena border-gray-300 rounded-lg w-2/4' name='create_course_title' type="text" placeholder="Ejemplo: Este curso está diseñado para aquellos que desean adentrarse en el mundo de la programación." maxLength="100" onChange={handleChangeDes} value={dataCourse.Des_Cur ? dataCourse.Des_Cur : ''} />
               </div>
             </> : ''}
             {pages == 2 ? <>
-              <div>
+              <div className='mt-6 flex justify-center flex-col items-center'>
                 <h3 className='text-xl md:text-3xl p-2 pb-0 text-center font-bold'>¿A qué categoria se acomodaría mejor el curso?</h3>
                 <p className='text-sm md:text-base'>Si no lo tienes claro, puedes modificarlo luego.</p>
               </div>
               <div>
-                <div className={styles.create_course_price}>
+                <div className='flex justify-center mt-2'>
                   <select
                     // label="Seleccionar categoría"
                     // className="max-w-xs"
                     // variant='bordered'
-                    className={styles.select}
+                    className='cursor-pointer text-sm md:text-base p-2 border-1 outline-1 outline-azulSena border-gray-300 rounded-lg w-2/4'
                     onChange={handleChangeCategory}
                     defaultValue={dataCourse.Id_Cat_FK}
                   >
@@ -211,13 +204,13 @@ export default function CreateCourse() {
               </div>
             </> : ''}
           </div>
-          <footer className={styles.create_course_button}>
-            <div className={styles.pages_buttons}>
-              {pages == 0 ? '' : <button onClick={prevPage} className={styles.prevButton}>Anterior</button>}
-              {pages != 2 ? <button onClick={nextPage} className={styles.nextButton} disabled={pages == 0 && dataCourse.Nom_Cur == null || dataCourse.Nom_Cur == '' || pages == 1 && dataCourse.Des_Cur == null || dataCourse.Des_Cur == ''}>Siguiente</button> : <button onClick={createCourse} className={styles.nextButton}>Finalizar</button>}
+          <footer className='flex flex-col items-center gap-3 justify-center'>
+            <div className='flex items-center gap-2 justify-center'>
+              {pages == 0 ? '' : <button onClick={prevPage} className='bg-azulSena text-sm md:text-base text-white p-2 rounded-lg transition-all duration-150 hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-500 flex items-center gap-1'><ChevronLeft size={18}/> Anterior</button>}
+              {pages != 2 ? <button onClick={nextPage} className='bg-azulSena text-sm md:text-base text-white p-2 rounded-lg transition-all duration-150 hover:bg-black disabled:cursor-not-allowed disabled:bg-gray-500 flex items-center gap-1' disabled={pages == 0 && dataCourse.Nom_Cur == null || dataCourse.Nom_Cur == '' || pages == 1 && dataCourse.Des_Cur == null || dataCourse.Des_Cur == ''}>Siguiente <ChevronRight size={18} /></button> : <button onClick={createCourse} className='bg-azulSena text-white rounded-lg p-2 hover:bg-black transition-all duration-150 flex items-center gap-1'>Finalizar <CircleCheck size={18}/></button>}
             </div>
-            <div className='flex lg:hidden'>
-              <Link href="/admin/content" className='flex items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg transition-all duration-200'>
+            <div className='flex lg:hidden items-center gap-2 justify-center'>
+              <Link href="/content" className='flex text-sm md:text-base items-center gap-2 font-semibold hover:bg-gray-300 p-2 rounded-lg transition-all duration-200'>
                 <ArrowLeftToLine /> Volver
               </Link>
             </div>

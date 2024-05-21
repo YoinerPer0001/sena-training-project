@@ -19,23 +19,23 @@ export default function dashboardPage() {
         {/* DIAGRAMAS REDONDOS */}
         <div className={`${styles.contPrinIzq_inf}   w-full h-1/2 grid gap-2 py-4 `}>
 
-          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
-            <span className={`${styles.roboto} text-center text-[#21264F]`}>Número Total de usuarios</span>
+          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2 `} >
+            <span className={`font-semibold text-center text-[#21264F]`}>Número Total de usuarios</span>
             <Indicador />
           </div>
-          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
-            <span className={`${styles.roboto} text-center text-[#21264F]`}>Tasa de finalización de cursos</span>
+          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2 `} >
+            <span className={`font-semibold text-center text-[#21264F]`}>Tasa de finalización de cursos</span>
             <Indicador />
             
           </div>
-          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
-            <span className={`${styles.roboto} text-center text-[#21264F]`}>Progreso promedio de los usuarios</span>
+          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2 `} >
+            <span className={`font-semibold text-center text-[#21264F]`}>Progreso promedio de los usuarios</span>
             <Indicador />
            
 
           </div>
-          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center pt-2 `} >
-            <span className={`${styles.roboto} text-center text-[#21264F]`}>Número Total de  cursos</span>
+          <div className={`bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2 `} >
+            <span className={`font-semibold text-center text-[#21264F]`}>Tasa de abandono de cursos</span>
             <Indicador />
             
           </div>
@@ -47,8 +47,8 @@ export default function dashboardPage() {
         <div className="p-4  bg-white h-full rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Cursos destacados</h3>
-            <Link href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-              View all
+            <Link href="#" className="text-sm font-medium text-azulSena hover:underline dark:text-azulSecundarioSena">
+              Ver todo
             </Link>
           </div>
           <div className="flow-root">
@@ -130,7 +130,6 @@ export default function dashboardPage() {
                       Andrea Cordoba
                     </p>
                   </div>
-                 
                 </Link>
               </li>
             </ul>

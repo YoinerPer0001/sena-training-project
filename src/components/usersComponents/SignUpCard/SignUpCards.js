@@ -6,7 +6,7 @@ import styles from './SignUpCards.module.scss'
 import { BookText, Heart } from 'lucide-react';
 // import DarkButtons from '../DarkButtons';
 
-export default function SignUpCards({ score, title, img, category, href }) {
+export default function SignUpCards({ title, img, category, href }) {
     return (
         <a href={href}>
             <article className={styles.article}>
@@ -14,7 +14,7 @@ export default function SignUpCards({ score, title, img, category, href }) {
                     <span className="font-semibold text-xs text-center uppercase">{category}</span>
                 </div>
                 <picture>
-                    <Image src={img} alt={title} width="300" height="200" />
+                    <Image src={img} alt={title} width="1280" height="720" />
                 </picture>
                 <div className={styles.title_div}>
                     <h3 className="text-left p-1 line-clamp-1">{title}</h3>
