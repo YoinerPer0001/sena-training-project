@@ -4,9 +4,9 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 
 cloudinary.config({ 
-    cloud_name: "dla5djfdc", 
-    api_key: "788711734647226", 
-    api_secret: "Ex4tOhydc50XvKXPYFMUuv07VcY" // Click 'View Credentials' below to copy your API secret
+    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View Credentials' below to copy your API secret
 });
 
 export async function POST(request) {
