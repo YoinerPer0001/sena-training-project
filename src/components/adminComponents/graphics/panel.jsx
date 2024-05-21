@@ -47,7 +47,7 @@ export default function BarrasGraphic() {
     
     <>
       <div className='flex flex-row w-full justify-center items-center  rounded-md'>
-        <span className={`${styles.roboto} text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
+        <span className={`text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
           <Filter className='px-1 text-xl' />
         </span>
         <select onChange={onSelectChange} name="" id="">
@@ -58,6 +58,7 @@ export default function BarrasGraphic() {
       </div>
       <div className='flex flex-col' style={{ width: '100%', height: '90%' }}>
         <BarChart
+          colors={["#6fccff"]}
           dataset={dataset}
           xAxis={[
             { scaleType: 'band', dataKey: 'mes' },
