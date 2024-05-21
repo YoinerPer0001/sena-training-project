@@ -4,13 +4,12 @@ import { useGetFetch } from '../fetchActions/GetFetch';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import capitalize from 'capitalize';
-import { FaEllipsis } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
 import Image from 'next/image'
+import { Settings2 } from "lucide-react";
 
 
 
@@ -107,7 +106,7 @@ export default function UserTable() {
                     variant="text"
                     color="primary"
                     size="medium"
-                    startIcon={<FaEdit />}
+                    startIcon={<Settings2 />}
                     onClick={() => {
                         router.push('/')
                     }}

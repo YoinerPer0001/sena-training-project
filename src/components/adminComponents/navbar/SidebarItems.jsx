@@ -3,62 +3,36 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
 import { useGetFetch } from '../fetchActions/GetFetch';
-import { FaChartSimple, FaChartColumn  } from "react-icons/fa6";
 import {
-    IoHome,
-    IoPerson,
-    IoBook,
-    IoSettings,
-    IoStatsChart,
-    IoNotifications,
-    IoChatbubbles,
-    IoFileTrayFull,
-    IoPeople,
-    IoCalendar,
-    IoHelpCircle,
-    IoHomeOutline,
-    IoPeopleOutline,
-    IoBookOutline,
-    IoSettingsOutline,
-    IoStatsChartOutline,
-    IoNotificationsOutline,
-    IoChatbubblesOutline,
-    IoFileTrayFullOutline,
-    IoPersonOutline,
-    IoCalendarOutline,
-    IoHelpCircleOutline
-
-} from 'react-icons/io5';
+    LineChart,
+    Home,
+    User,
+    Book,
+    Settings,
+    BarChart2,
+    Bell,
+    MessageSquare,
+    Folder,
+    Users,
+    Calendar,
+    HelpCircle,
+    Pers
+} from "lucide-react";
 
 const listIcons = [
-    { icon: <FaChartSimple />, label: 'Home' },          // Inicio
-    { icon: <IoPeople />, label: 'Profile' },      // Perfil de Usuario
-    { icon: <IoBook />, label: 'Courses' },        // Cursos
-    { icon: <IoSettings />, label: 'Settings' },   // Configuración
-    { icon: <IoStatsChart />, label: 'Analytics' },// Análisis
-    { icon: <IoNotifications />, label: 'Notifications' }, // Notificaciones
-    { icon: <IoChatbubbles />, label: 'Messages' }, // Mensajes/Comentarios
-    { icon: <IoFileTrayFull />, label: 'Resources' }, // Recursos
-    { icon: <IoPerson />, label: 'Users' },        // Perfil Usuario
-    { icon: <IoCalendar />, label: 'Calendar' },   // Calendario
-    { icon: <IoHelpCircle />, label: 'Help' }      // Ayuda
+    { icon: <LineChart className='text-white text-2xl' />, label: 'Home' },              // Inicio
+    { icon: <Users className='text-white text-2xl'/>, label: 'Profile' },          // Perfil de Usuario
+    { icon: <Book className='text-white text-2xl'/>, label: 'Courses' },           // Cursos
+    { icon: <Bell className='text-white text-2xl'/>, label: 'Settings' },      // Configuración
+    { icon: <BarChart2 className='text-white text-2xl'/>, label: 'Analytics' },    // Análisis
+    { icon: <Settings className='text-white text-2xl'/>, label: 'Notifications' },     // Notificaciones
+    { icon: <MessageSquare className='text-white text-2xl'/>, label: 'Messages' }, // Mensajes/Comentarios
+    { icon: <Folder className='text-white text-2xl'/>, label: 'Resources' },       // Recursos
+    { icon: <User className='text-white text-2xl'/>, label: 'Users' },             // Perfil Usuario
+    { icon: <Calendar className='text-white text-2xl'/>, label: 'Calendar' },      // Calendario
+    { icon: <HelpCircle className='text-white text-2xl'/>, label: 'Help' }         // Ayuda
 ];
 
-const ListIconsCel = [
-    { icon: <FaChartColumn className='text-white w-full text-3xl'/>, label: 'Home' },          // Inicio
-    { icon: <IoPeopleOutline className='text-white w-full text-3xl' />, label: 'Profile' },     // Perfil de Usuario
-    { icon: <IoBookOutline className='text-white w-full text-3xl'/>, label: 'Courses' },       // Cursos
-    { icon: <IoSettingsOutline className='text-white w-full text-3xl'/>, label: 'Settings' },  // Configuración
-    { icon: <IoStatsChartOutline className='text-white w-full text-3xl'/>, label: 'Analytics' },// Análisis
-    { icon: <IoNotificationsOutline className='text-white w-full text-3xl'/>, label: 'Notifications' }, // Notificaciones
-    { icon: <IoChatbubblesOutline className='text-white w-full text-3xl'/>, label: 'Messages' }, // Mensajes/Comentarios
-    { icon: <IoFileTrayFullOutline className='text-white w-full text-3xl'/>, label: 'Resources' }, // Recursos
-    { icon: <IoPersonOutline className='text-white w-full text-3xl'/>, label: 'Users' },       // Perfil Usuario
-    { icon: <IoCalendarOutline className='text-white w-full text-3xl'/>, label: 'Calendar' },  // Calendario
-    { icon: <IoHelpCircleOutline className='text-white w-full text-3xl'/>, label: 'Help' }     // Ayuda
-  ];
-
-export default listIcons;
 
 
 export const SidebarItems = () => {
@@ -91,8 +65,8 @@ export const SidebarItems = () => {
         <div className="w-full flex flex-col px-3 items-start justify-start">
             { windowSize.width > 1214 ? isLoading ? 'Cargando...' : data.map(opcion => (
                 <Link key={opcion.Opcion.id_opcion} href={opcion.Opcion.url}
-                    className={`w-full  px-2 flex space-x-2 items-center py-3 hover:bg-[#00000050] rounded-lg transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena hover:bg-verdeSena'}`}>
-                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start items-center">
+                    className={`w-full  px-2 inline-flex space-x-2 items-center border-slate-700 py-3  hover:bg-white/5 transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875] border-b'}`}>
+                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start">
                         <div key={opcion.Opcion.id_opcion}  className="mx-2">
                             {listIcons[opcion.Opcion.id_opcion - 1].icon}
                         </div>
@@ -101,7 +75,7 @@ export const SidebarItems = () => {
                 </Link>
             )) : isLoading ? 'Cargando...' : data.map(opcion => (
                 <div key={opcion.Opcion.id_opcion} className="w-full flex flex-col items-center justify-start pt-3">
-                    <Link key={opcion.Opcion.id_opcion+"k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena  rounded-lg'}`}>
+                    <Link key={opcion.Opcion.id_opcion+"k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875]  rounded-lg'}`}>
                         {ListIconsCel[opcion.Opcion.id_opcion - 1].icon}
                     </Link>
                 </div>

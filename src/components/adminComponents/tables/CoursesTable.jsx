@@ -4,7 +4,6 @@ import { useGetFetch } from '../fetchActions/GetFetch';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import capitalize from 'capitalize';
-import { FaEdit } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { esES as materialEsES } from '@mui/material/locale';

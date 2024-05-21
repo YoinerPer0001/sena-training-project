@@ -3,14 +3,11 @@ import React from 'react'
 import styles from './navbar.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
-import usePathname from 'next/navigation'
-import { VscGear } from "react-icons/vsc";
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../features/auth/loginSlice'
 import { deleteCookie } from 'cookies-next';
 import { SidebarItems } from './SidebarItems'
-import { GiExitDoor } from "react-icons/gi";
 import capitalize from 'capitalize'
 import { Bolt, LogOut } from 'lucide-react'
 
