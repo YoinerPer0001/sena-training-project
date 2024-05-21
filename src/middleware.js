@@ -14,36 +14,36 @@ export async function middleware(req) {
 
     try {
         const { payload } = await jwtVerify(token, secret, { algorithms: ['HS256'] });
-        console.log(payload);
+        // console.log(payload);
 
-        const roleMap = {
-            1: 'admin',
-            2: 'instructor',
-            3: 'user'
-        };
+        // const roleMap = {
+        //     1: 'admin',
+        //     2: 'instructor',
+        //     3: 'user'
+        // };
 
-        const userRole = roleMap[payload.Id_Rol_FK];
+        // const userRole = roleMap[payload.Id_Rol_FK];
 
-        if (!userRole) {
-            return NextResponse.redirect(new URL('/403', req.url)); // Ruta de acceso denegado
-        }
+        // if (!userRole) {
+        //     return NextResponse.redirect(new URL('/403', req.url)); // Ruta de acceso denegado
+        // }
 
-        const route = req.nextUrl.pathname;
+        // const route = req.nextUrl.pathname;
 
-        const routePermissions = {
-            '/account': ['admin', 'instructor', 'user'], // Ejemplo de roles permitidos para /account
-            '/courses/explore': ['admin', 'instructor', 'user'], // Ejemplo de roles permitidos para /courses
-            '/instructors': ['admin', 'instructor'],
-            '/admin': ['admin'], // Solo admin puede acceder a /admin
-        };
+        // const routePermissions = {
+        //     '/account': ['admin', 'instructor', 'user'], // Ejemplo de roles permitidos para /account
+        //     '/courses/explore': ['admin', 'instructor', 'user'], // Ejemplo de roles permitidos para /courses
+        //     '/instructors': ['admin', 'instructor'],
+        //     '/admin': ['admin'], // Solo admin puede acceder a /admin
+        // };
 
-        // Encontrar la ruta base y los roles permitidos
-        const baseRoute = Object.keys(routePermissions).find(key => route.startsWith(key));
-        const allowedRoles = baseRoute ? routePermissions[baseRoute] : [];
+        // // Encontrar la ruta base y los roles permitidos
+        // const baseRoute = Object.keys(routePermissions).find(key => route.startsWith(key));
+        // const allowedRoles = baseRoute ? routePermissions[baseRoute] : [];
 
-        if (!allowedRoles.includes(userRole)) {
-            return NextResponse.redirect(new URL('/403', req.url)); // Ruta de acceso denegado
-        }
+        // if (!allowedRoles.includes(userRole)) {
+        //     return NextResponse.redirect(new URL('/403', req.url)); // Ruta de acceso denegado
+        // }
 
         return NextResponse.next();
     } catch (e) {

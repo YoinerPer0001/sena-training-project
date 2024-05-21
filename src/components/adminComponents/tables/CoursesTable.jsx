@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
+import { Edit } from 'lucide-react';
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 
 export default function CoursesTable() {
     const url = 'http://localhost:3000/api/v1/courses';
@@ -16,7 +18,7 @@ export default function CoursesTable() {
     const router = useRouter();
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     const rows = data.map((item) => ({
@@ -25,10 +27,11 @@ export default function CoursesTable() {
         col2: item.Fech_Crea_Cur,
         col3: capitalize(item.Categoria.Nom_Cat),
         col4: item.Est_Cur,
-        col5: capitalize(item.Instructor.Nom_User),
+        col5: capitalize(item.Instructor?.Nom_User == null ? 'Sin instructor' : item.Instructor.Nom_User) ,
         col6: item.ESTADO_REGISTRO
     }));
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const existingTheme = useTheme();
 
     const theme = createTheme(
@@ -56,17 +59,17 @@ export default function CoursesTable() {
             headerClassName: 'super-app-theme--header',
             valueGetter: (params) => {
                 if (params === 1) {
-                    return 'creado';
+                    return 'Creado';
                 } else if (params === 2) {
-                    return 'publicado';
+                    return 'Publicado';
                 }
                 return '';
             },
             renderCell: (params) => {
-                if (params.value === "creado") {
-                    return <span className='bg-[#e6b55c] text-center p-2 rounded-md'>{params.value}</span>;
-                } else if (params.value === "publicado") {
-                    return <span className='bg-[#9aec85] text-center p-2 rounded-md'>{params.value}</span>;
+                if (params.value === "Creado") {
+                    return <span className='bg-gray-200 text-gray-600 text-center p-2 rounded-full font-semibold mx-auto'>{params.value}</span>;
+                } else if (params.value === "Publicado") {
+                    return <span className='bg-green-100 text-green-700 text-center p-2 rounded-full font-semibold'>{params.value}</span>;
                 }
                 return null;
             }
@@ -79,17 +82,17 @@ export default function CoursesTable() {
             headerClassName: 'super-app-theme--header',
             valueGetter: (params) => {
                 if (params === 1) {
-                    return 'activo';
+                    return 'Activo';
                 } else if (params === 0) {
-                    return 'eliminado';
+                    return 'Eliminado';
                 }
                 return '';
             },
             renderCell: (params) => {
-                if (params.value === "activo") {
-                    return <span className='bg-[#9aec85] text-center p-2 rounded-md'>{params.value}</span>;
-                } else if (params.value === "eliminado") {
-                    return <span className='bg-[#e76767] text-center p-2 rounded-md'>{params.value}</span>;
+                if (params.value === "Activo") {
+                    return <span className='bg-green-100 text-green-700 text-center p-2 rounded-full font-semibold'>{params.value}</span>;
+                } else if (params.value === "Eliminado") {
+                    return <span className='bg-red-100 text-red-500 text-center p-2 rounded-full font-semibold'>{params.value}</span>;
                 }
                 return null;
             }
@@ -103,7 +106,7 @@ export default function CoursesTable() {
                     variant="text"
                     color="primary"
                     size="medium"
-                    startIcon={<FaEdit />}
+                    startIcon={<Edit size={20}/>}
                     onClick={() => {
                         router.push('/');
                     }}
@@ -113,16 +116,18 @@ export default function CoursesTable() {
     ];
 
     return (
-        <div className=' overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
+        <div className='overflow-hidden rounded-lg' style={{ backgroundColor: '#fff', overflow: 'hidden', width: '100%', margin: '8px' }}>
         <Box
             sx={{
                 '& .super-app-theme--header': {
                     backgroundColor: '#ffffff',
+                    borderRadius: '8px',
 
                 },
 
                 '& .MuiDataGrid-columnHeaderTitle': {
                     fontWeight: 'bold',
+                    borderRadius: '8px',
                 },
 
                 '& .MuiButtonBase-root': {
@@ -130,14 +135,12 @@ export default function CoursesTable() {
                 },
 
                 '& .MuiDataGrid-cell': {
-                    backgroundColor: '#ffffff'
+                    backgroundColor: '#ffffff',
                 }
             }}
         >
             <ThemeProvider theme={theme}>
-
                 <DataGrid
-
                     rows={rows}
                     columns={columns}
                     initialState={{

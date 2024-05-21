@@ -4,12 +4,13 @@ import { Sidebar } from "@/components/adminComponents/navbar/Sidebar";
 import { FaBars ,FaRegBell} from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import Image from 'next/image'
+import { Menu } from "lucide-react";
 
 
-export default function adminLayout({ children }) {
+export default function AdminLayout({ children }) {
   const [status, setstatus] = useState(false)
 
-  const pathname =usePathname() ;
+  const pathname = usePathname() ;
 
   return (
     <div className="w-full h-screen flex min-h-screen">
@@ -22,9 +23,9 @@ export default function adminLayout({ children }) {
         <div className="w-screen h-16 bg-white lg:md:xl:pl-52 sm:pl-0 fixed top-0 left-0 z-10 flex justify-between flex-grow items-center">
           {/* Aquí va el contenido del Navbar */}
           <div className="pl-2 w-2/3 h-full flex justify-start items-center">
-            <div className={`${status == true ? ' pl-16 w-24': 'pl-0 w-10'} lg:md:xl:hidden sm:block  h-full flex items-center transition-all ease-in-out delay-75`}>
+            <div className={`${status == true ? ' pl-16 w-24': 'pl-0 w-10'} lg:md:xl:hidden h-full flex items-center transition-all ease-in-out delay-75`}>
               <button onClick={()=>setstatus(!status)}>
-                <FaBars className="text-3xl" />
+                <Menu className="text-3xl" />
               </button>
             </div>
             <div className="text-center flex w-2/3 h-full items-center">

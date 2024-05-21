@@ -91,17 +91,17 @@ export const SidebarItems = () => {
         <div className="w-full flex flex-col px-3 items-start justify-start">
             { windowSize.width > 1214 ? isLoading ? 'Cargando...' : data.map(opcion => (
                 <Link key={opcion.Opcion.id_opcion} href={opcion.Opcion.url}
-                    className={`w-full  px-2 inline-flex space-x-2 items-center border-slate-700 py-3  hover:bg-white/5 transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875] border-b'}`}>
-                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start">
+                    className={`w-full  px-2 flex space-x-2 items-center py-3 hover:bg-[#00000050] rounded-lg transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena hover:bg-verdeSena'}`}>
+                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start items-center">
                         <div key={opcion.Opcion.id_opcion}  className="mx-2">
                             {listIcons[opcion.Opcion.id_opcion - 1].icon}
                         </div>
-                        <span className="text-lg text-center  leading-5 text-white">{opcion.Opcion.nombre_opcion}</span>
+                        <span className="text-center  leading-5 text-white">{opcion.Opcion.nombre_opcion}</span>
                     </div>
                 </Link>
             )) : isLoading ? 'Cargando...' : data.map(opcion => (
                 <div key={opcion.Opcion.id_opcion} className="w-full flex flex-col items-center justify-start pt-3">
-                    <Link key={opcion.Opcion.id_opcion+"k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875]  rounded-lg'}`}>
+                    <Link key={opcion.Opcion.id_opcion+"k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena  rounded-lg'}`}>
                         {ListIconsCel[opcion.Opcion.id_opcion - 1].icon}
                     </Link>
                 </div>

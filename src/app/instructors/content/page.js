@@ -24,7 +24,7 @@ export default function Content() {
                         'createdAt': curso.Fech_Crea_Cur,
                         'state': curso.Est_Cur == 2 ? <div className='bg-green-100 text-green-700 p-2 rounded-full font-semibold'>Publicado</div> : <div className='bg-gray-100 text-gray-600 p-2 rounded-full font-semibold'>Creado</div>,
                         'actions': <div className='flex gap-1'>
-                            <Link className='bg-azulSena hover:bg-black transition-all duration-150 p-2 text-white rounded-lg' href={`/admin/content/manage/${curso.Id_Cur}`}>Editar</Link>
+                            <Link className='bg-azulSena hover:bg-black transition-all duration-150 p-2 text-white rounded-lg' href={`/manage/editcourse/${curso.Id_Cur}`}>Editar</Link>
                         </div>
                     }));
                     setRecords(cursos)

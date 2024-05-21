@@ -76,9 +76,9 @@ export default function UserTable() {
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => {
                 if (params.row.col4 === 1) {
-                    return <span className='bg-[#9aec85] text-center p-2 rounded-md'>verificado</span>
+                    return <span className='bg-green-100 text-green-700 text-center p-2 rounded-full font-semibold'>Verificado</span>
                 } else {
-                    return <span className='bg-[#e78b67] text-center p-2 rounded-md'>no verificado</span>
+                    return <span className='bg-red-100 text-red-500 text-center p-2 rounded-full font-semibold'>Sin verificar</span>
                 }
             }
         },
@@ -90,9 +90,9 @@ export default function UserTable() {
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => {
                 if (params.row.col6 === 1) {
-                    return <span className='bg-[#9aec85] text-center p-2 rounded-md'>activo</span>
+                    return <span className='bg-green-100 text-green-700 text-center p-2 rounded-full font-semibold'>Activo</span>
                 } else {
-                    return <span className='bg-[#e78b67] text-center p-2 rounded-md'>inactivo</span>
+                    return <span className='bg-red-100 text-red-500 text-center p-2 rounded-full font-semibold'>Inactivo</span>
                 }
             }
         },
@@ -118,6 +118,7 @@ export default function UserTable() {
         },
     ];
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const existingTheme = useTheme();
 
     const theme = createTheme(

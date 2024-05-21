@@ -12,7 +12,6 @@ export const NavHome = () => {
   const router = useRouter()
   const authState = useSelector(state => state.auth)
   const dispatch = useDispatch()
-  console.log(authState)
 
   const handleLogout = () => {
     dispatch(logout())
