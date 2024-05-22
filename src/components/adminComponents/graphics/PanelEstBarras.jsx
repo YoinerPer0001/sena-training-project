@@ -71,7 +71,7 @@ export default function BarrasGraphic() {
           ))}
         </Select> */}
       </div>
-      <div className='flex flex-col' style={{ width: '100%', height: '90%' }}>
+      <div className='flex flex-col' style={{ width: '100%', height: '100%' }}>
         <BarChart
           colors={["#6fccff"]}
           dataset={dataset}
