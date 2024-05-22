@@ -12,7 +12,7 @@ export default function Indicadores() {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className={`${styles.contPrinIzq_inf} w-full h-1/2 grid gap-2`}>
+        <div className={`${styles.contPrinIzq_inf} w-full h-full grid gap-2`}>
           <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2">
             <span className="font-semibold text-center text-[#21264F]">Número Total de usuarios</span>
             <Stack
