@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Video, X } from "lucide-react";
-import { CloudinaryVideo } from "@cloudinary/url-gen";
+import { CldVideoPlayer } from 'next-cloudinary';
+import 'next-cloudinary/dist/cld-video-player.css';
 
 const Page = () => {
     const [aside, setAside] = useState();
@@ -20,12 +21,11 @@ const Page = () => {
         <>
             <section className="w-3/4 bg-black">
                 <div className="flex justify-center items-center">
-                    <CloudinaryVideo
-                        src={
-                            "https://res.cloudinary.com/dnarhjdqu/video/upload/v1715347433/Una_hackathon_de_Midudev_fue_cancelada_dvkhvx.mp4"
-                        }
+                    <CldVideoPlayer
+                        width="1920"
+                        height="1080"
+                        src="https://res.cloudinary.com/dnarhjdqu/video/upload/v1715347433/Una_hackathon_de_Midudev_fue_cancelada_dvkhvx.mp4"
                         className="rounded-lg w-3/4"
-                        controls
                     />
                 </div>
             </section>
