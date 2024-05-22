@@ -13,16 +13,19 @@ export const loginSlice = createSlice({
     name: 'auth',
     initialState: {
         isAuthenticated: token == null ? false : true,
-        user: data == null ? {} : data
+        user: data == null ? {} : data,
+        token: token == null ? null : token
     },
     reducers: {
         login: (state, action) => {
             state.isAuthenticated = true;
             state.user = JSON.parse(localStorage.getItem('name'));
+            state.token = token;
         },
         logout: (state) => {
             state.isAuthenticated = false;
             state.user = {};
+            state.token = null;
         },
     },
 })

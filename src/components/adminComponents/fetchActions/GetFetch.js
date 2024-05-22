@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 
 export const useGetFetch = (url) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const authState = useSelector(state => state.auth)
 
   useEffect(() => {
     const fetchData = async () => {

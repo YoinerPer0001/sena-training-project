@@ -44,7 +44,7 @@ export default function Register() {
         if (resJSON.type == 'success') {
             toast.success('Registro completado correctamente')
             setLoading(false);
-            router.push('/')
+            router.push('/auth/login')
         } else if (resJSON.code == 107){
             setErrorMsg({state: true, msg: 'Ese correo ya está registrado.'})
             setLoading(false);
@@ -106,7 +106,7 @@ export default function Register() {
                         <CircleX size={18}/> {msgError.state == true ? msgError.msg : ''}
                     </div>
                     <div className="flex items-center flex-col mt-2">
-                        <button className={`flex min-w-[100px] justify-center items-center lg:text-white  ${loading ? "lg:bg-[#47a7db]" : "lg:bg-[#00324D]"} text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena`} type="submit">{loading ? <CircleSpinner /> : "Registrarse" } </button>
+                        <button className={`flex min-w-[100px] justify-center items-center lg:text-white  ${loading ? "lg:bg-[#47a7db]" : "lg:bg-[#00324D]"} text-white bg-[#39A900] py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 bg-greensena`} type="submit">{loading ? <CircleSpinner /> : "Registrarse" }</button>
                     </div>
                     {/* Botones de registro e iniciar sesión */}
                     <div className="lg:hidden flex flex-col sm:flew-row my-3">

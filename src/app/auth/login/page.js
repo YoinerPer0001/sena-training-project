@@ -32,6 +32,7 @@ export default function Login() {
     
 
     const [msgError, setErrorMsg] = useState({state: false, msg: ''})
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -41,40 +42,45 @@ export default function Login() {
 
     const onSubmit = handleSubmit(async (data, event) => {
         event.preventDefault();
-
-        const dataJSON = {
-            "Ema_User": data.Ema_User,
-            "Pass_User": data.Pass_User,
-            "Dir_Ip": "192.168.0.1"
-        }
-
-        const response = await fetch('http://localhost:3000/api/v1/login', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dataJSON)
-        })
-
-        const responseJSON = await response.json();
-        if (responseJSON.type == 'success') {
-            localStorage.setItem('sessionToken', responseJSON.data);
-            setCookie('sessionToken', responseJSON.data);
-            handleSubmitTwo()
-            parseJwt(responseJSON.data)
-            const dataUser = jwtDecode(responseJSON.data);
-            if(dataUser.user.Id_Rol_FK == 1){
-                return router.push('/admin/dashboard')
-            }else{
-                return router.push('/')
+        setLoading(true)
+        try {
+            const dataJSON = {
+                "Ema_User": data.Ema_User,
+                "Pass_User": data.Pass_User,
+                "Dir_Ip": "192.168.0.1"
             }
-            
-        }
-        else if (responseJSON.code == 108) {
-            return
-        } else if(responseJSON.code == 403) {
-            setErrorMsg({state: true, msg: 'Usuario o contraseña incorrecta.'})
-        } else if(responseJSON.code == 500) {
-            setErrorMsg({state: true, msg: 'Ese correo no está registrado'})
+    
+            const response = await fetch('http://localhost:3000/api/v1/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataJSON)
+            })
+    
+            const responseJSON = await response.json();
+            if (responseJSON.type == 'success') {
+                localStorage.setItem('sessionToken', responseJSON.data);
+                setCookie('sessionToken', responseJSON.data);
+                handleSubmitTwo()
+                parseJwt(responseJSON.data)
+                const dataUser = jwtDecode(responseJSON.data);
+                setLoading(false)
+                if(dataUser.user.Id_Rol_FK == 1){
+                    return router.push('/admin/dashboard')
+                }else{
+                    return router.push('/')
+                }
+                
+            }
+            else if (responseJSON.code == 108) {
+                return
+            } else if(responseJSON.code == 403) {
+                setErrorMsg({state: true, msg: 'Usuario o contraseña incorrecta.'})
+            } else if(responseJSON.code == 500) {
+                setErrorMsg({state: true, msg: 'Ese correo no está registrado'})
+            }
+        } catch (error) {
+            console.log(error)
         }
         // login(tokens.result.data.codigo)
 

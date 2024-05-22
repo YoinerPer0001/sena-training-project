@@ -7,6 +7,7 @@ import {
     AlertCircle,
     ArrowLeftToLine,
     ChevronDown,
+    Edit,
     File,
     ImagePlus,
     Info,
@@ -28,6 +29,7 @@ import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
 import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
+import { useGetFetch } from "@/components/adminComponents/fetchActions/GetFetch";
 
 export default function ManageCourses() {
     const pathname = usePathname();
@@ -41,6 +43,10 @@ export default function ManageCourses() {
     const id = pathname.split("/");
     const idCourse = id[id.length - 1];
     const token = getCookie("sessionToken");
+
+    const [modulos, setModulos] = useState([]);
+
+    const { data } = useGetFetch(`http://localhost:3000/api/v1/modulo_curso/${idCourse}`)
 
     useEffect(() => {
         // FETCH CATEGORÍAS
@@ -69,7 +75,6 @@ export default function ManageCourses() {
                 return response.json();
             })
             .then(data => {
-                console.log(data.data);
                 const course = data.data;
                 setDataCourse(course);
             })
@@ -94,7 +99,13 @@ export default function ManageCourses() {
                     setLoading(false);
                 }
             });
-    }, []);
+        if (data) {
+            setModulos(data);
+        }
+        // MODULOS DEL CURSO
+    }, [data]);
+
+
 
     const handleClickPage1 = () => {
         setPage(1);
@@ -280,47 +291,61 @@ export default function ManageCourses() {
     };
 
     // AGREGAR CONTENIDO
-    const [modulos, setModulos] = useState([
-        {
-            Id_Mod: "asd4hgdf4",
-            Tit_Mod: "Modulo 1: Introducción",
-            clases: [],
-        },
-    ]);
+
 
     const [nuevoNombreModulo, setNuevoNombreModulo] = useState("");
+    const [editNombreMod, setEditNombreMod] = useState("");
     const [mostrarAgregarModulo, setMostrarAgregarModulo] = useState(false);
+    const [editIndexMod, setEditIndexMod] = useState(null);
 
-    const handleChangeMod = (index, value) => {
-        const nuevosModulos = [...modulos];
-        nuevosModulos[index].Tit_Mod = value;
-        setModulos(nuevosModulos);
+    const handleEditClick = (index) => {
+        setEditIndexMod(index);
     };
 
-    const agregarModulo = () => {
-        if (nuevoNombreModulo.trim() === "") {
-            alert("Por favor ingresa un nombre para el módulo.");
-            return;
-        }
+    const eliminarModulo = () => {
 
-        const nuevoModulo = {
-            nombre: nuevoNombreModulo,
-            clases: [],
-        };
-        try {
-            setModulos([...modulos, nuevoModulo]);
-            setNuevoNombreModulo("");
-            setMostrarAgregarModulo(false);
-        } catch (err) {
-            console.log(err);
+    };
+
+
+    const agregarModulo = () => {
+        if (nuevoNombreModulo.trim() !== "") {
+            try {
+                fetch(`http://localhost:3000/api/v1/modulo_curso/create`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        Id_Cur: idCourse,
+                        Tit_Mod: nuevoNombreModulo,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response);
+                        if (response.type === 'success') {
+                            toast.success('Se creo el modulo')
+                            const nuevoModulo = {
+                                Tit_Mod: nuevoNombreModulo,
+                            };
+                            setModulos([...modulos, nuevoModulo]);
+                            setNuevoNombreModulo("")
+                            setMostrarAgregarModulo(false);
+                        } else {
+                            alert('error')
+                        }
+                    });
+            } catch (e) {
+                console.log("Error: " + e);
+            }
         }
     };
 
     const agregarClase = indiceModulo => {
         const nuevaClase = {
-            nombre: `Clase #${
-                modulos[indiceModulo].clases.length + 1
-            }: Nueva clase`,
+            nombre: `Clase #${modulos[indiceModulo].clases.length + 1
+                }: Nueva clase`,
         };
         const nuevosModulos = [...modulos];
         nuevosModulos[indiceModulo].clases.push(nuevaClase);
@@ -391,6 +416,14 @@ export default function ManageCourses() {
         dataCourse.Fot_Cur === null ? true : false
     );
 
+    const [contenidoVisible, setContenidoVisible] = useState({});
+    const toggleContenidoVisible = (indiceClase) => {
+        setContenidoVisible(prevState => ({
+            ...prevState,
+            [indiceClase]: !prevState[indiceClase]
+        }));
+    };
+
     return (
         <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
             {loading ? (
@@ -402,21 +435,19 @@ export default function ManageCourses() {
                     <div className="relative flex items-center justify-center">
                         <div className="flex">
                             <button
-                                className={`font-semibold text-base text-center rounded-bl-lg rounded-tl-lg p-3 ${
-                                    page == 1
-                                        ? "text-white bg-azulSena"
-                                        : "text-azulSena bg-white"
-                                }`}
+                                className={`font-semibold text-base text-center rounded-bl-lg rounded-tl-lg p-3 ${page == 1
+                                    ? "text-white bg-azulSena"
+                                    : "text-azulSena bg-white"
+                                    }`}
                                 onClick={handleClickPage1}
                             >
                                 Información básica
                             </button>
                             <button
-                                className={`font-semibold text-base text-center p-3 rounded-tr-lg rounded-br-lg ${
-                                    page == 1
-                                        ? "text-azulSena bg-white"
-                                        : "text-white bg-azulSena"
-                                }`}
+                                className={`font-semibold text-base text-center p-3 rounded-tr-lg rounded-br-lg ${page == 1
+                                    ? "text-azulSena bg-white"
+                                    : "text-white bg-azulSena"
+                                    }`}
                                 onClick={handleClickPage2}
                             >
                                 Crear contenido
@@ -495,7 +526,7 @@ export default function ManageCourses() {
                                             ))}
                                     </select>
                                     {editCourse.Id_Cat_FK &&
-                                    editCourse.Id_Cat_FK == 0 ? (
+                                        editCourse.Id_Cat_FK == 0 ? (
                                         <div className="text-red-500 p-2 font-medium text-sm pt-0 pl-1 flex gap-1 items-center">
                                             <AlertCircle size={18} /> Debes
                                             escoger una categoría.
@@ -622,7 +653,7 @@ export default function ManageCourses() {
                                     </label>
                                     <div className="flex gap-4 justify-center flex-col items-center">
                                         {subirImagen === true ||
-                                        dataCourse.Fot_Cur === null ? (
+                                            dataCourse.Fot_Cur === null ? (
                                             <div className="card w-full">
                                                 <FileUpload
                                                     pt={{
@@ -699,8 +730,8 @@ export default function ManageCourses() {
                                             {subirImagen
                                                 ? "Cancelar"
                                                 : dataCourse.Fot_Cur !== null
-                                                ? "Cambiar Portada"
-                                                : "Subir Imagen"}
+                                                    ? "Cambiar Portada"
+                                                    : "Subir Imagen"}
                                         </button>
                                     </div>
                                 </div>
@@ -721,7 +752,7 @@ export default function ManageCourses() {
                     )}
                     {page === 2 && (
                         <form
-                            className="my-4 flex flex-col w-3/4 lg:w-2/4 gap-8 mx-auto"
+                            className="my-4 flex flex-col w-full sm:w-3/4 lg:w-2/4 gap-8 mx-auto"
                             onSubmit={e => e.preventDefault()}
                         >
                             <div className="flex flex-col gap-2 items-center">
@@ -749,11 +780,20 @@ export default function ManageCourses() {
                                             key={indiceModulo}
                                             className="border-1 border-azulSena p-3 rounded-lg"
                                         >
-                                            <h4 className="font-bold text-lg my-2">
-                                                {modulo.Tit_Mod}
-                                            </h4>
+                                            <div className="my-2 flex group items-center gap-2 flex-wrap">
+                                                <div>
+                                                    {editIndexMod === indiceModulo ? (<div className="flex items-center gap-2">
+                                                        <span className="font-semibold">Modulo: </span>
+                                                        <input className="p-2 rounded-lg border-1 outline-none border-gray-300 focus:border-azulSena" id={modulo.Id_Mod} type="text" defaultValue={modulo.Tit_Mod} placeholder="Introduce el nombre del modulo"/>
+                                                    </div>) : <h4 className="font-bold text-lg">{modulo.Tit_Mod}</h4>}
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
+                                                    <button onClick={() => handleEditClick(indiceModulo)} className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
+                                                    <button value={modulo.Id_Mod} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                </div>
+                                            </div>
                                             <div className="flex flex-col gap-2 items-start">
-                                                {modulo.clases.map(
+                                                {/* {modulo.clases.map(
                                                     (clase, indiceClase) => (
                                                         <div
                                                             key={indiceClase}
@@ -768,7 +808,8 @@ export default function ManageCourses() {
                                                                     </span>
                                                                 </div>
                                                                 <div className="flex gap-2 items-center">
-                                                                    <button className="flex items-center gap-1 font-medium bg-azulSena text-white px-2 py-1 rounded-lg transition-all duration-150 hover:bg-black">
+                                                                    <button className="flex items-center gap-1 font-medium bg-azulSena text-white px-2 py-1 rounded-lg transition-all duration-150 hover:bg-black"
+                                                                        onClick={() => toggleContenidoVisible(indiceClase)}>
                                                                         <Plus />
                                                                         Agregar
                                                                         contenido
@@ -786,27 +827,14 @@ export default function ManageCourses() {
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                                            <div className="p-2 mt-2 border-t-1 border-gray-300 flex items-center gap-2">
-                                                                <button className="flex items-center hover:bg-black transition-all duration-150 text-white bg-azulSena p-2 rounded-lg gap-1">
-                                                                    <Video
-                                                                        size={
-                                                                            20
-                                                                        }
-                                                                    />{" "}
-                                                                    Video
-                                                                </button>
-                                                                <button className="flex items-center hover:bg-black transition-all duration-150 text-white bg-azulSena p-2 rounded-lg gap-1">
-                                                                    <File
-                                                                        size={
-                                                                            20
-                                                                        }
-                                                                    />{" "}
-                                                                    Articulo
-                                                                </button>
-                                                            </div>
+                                                            
                                                         </div>
                                                     )
-                                                )}
+                                                )} */}
+                                                <div className="flex items-center justify-start gap-2 w-full">
+                                                    <div className="font-semibold min-w-[120px]">Nueva clase: </div>
+                                                    <input className="w-full rounded-lg p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase"/>
+                                                </div>
                                                 <button
                                                     onClick={() =>
                                                         agregarClase(
@@ -832,10 +860,11 @@ export default function ManageCourses() {
                                                     type="text"
                                                     placeholder="Nombre del módulo"
                                                     value={nuevoNombreModulo}
-                                                    onChange={e =>
+                                                    onChange={e => {
                                                         setNuevoNombreModulo(
                                                             e.target.value
                                                         )
+                                                    }
                                                     }
                                                     className="border w-full border-gray-300 rounded-lg p-2 outline-none focus:border-azulSena"
                                                 />
@@ -877,24 +906,6 @@ export default function ManageCourses() {
                             </div>
                         </form>
                     )}
-                    <CldUploadWidget uploadPreset="senalearn">
-                        {({ open, results }) => {
-                            console.log(results);
-                            return (
-                                <button
-                                    class="bg-azulSena text-white p-2 rounded-lg hover:bg-black transition-all duration-150"
-                                    onClick={() => open()}
-                                >
-                                    Subir video
-                                </button>
-                            );
-                        }}
-                    </CldUploadWidget>
-                    <CldVideoPlayer
-                        width="1920"
-                        height="1080"
-                        src="https://res.cloudinary.com/dla5djfdc/video/upload/v1716305485/cursos/PLAN_DE_EJECUCION_BIM.docx_-_Word_2023-05-03_03-10-13_hqk4ui.mp4"
-                    />
                 </div>
             )}
         </div>
