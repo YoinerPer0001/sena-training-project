@@ -10,6 +10,7 @@ import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
 import { Edit } from 'lucide-react';
 import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
+import { Settings2 } from "lucide-react";
 
 export default function CoursesTable() {
     const url = 'http://localhost:3000/api/v1/courses';
@@ -105,7 +106,7 @@ export default function CoursesTable() {
                     variant="text"
                     color="primary"
                     size="medium"
-                    startIcon={<Edit size={20}/>}
+                    startIcon={<Settings2 size={20}/>}
                     onClick={() => {
                         router.push('/');
                     }}

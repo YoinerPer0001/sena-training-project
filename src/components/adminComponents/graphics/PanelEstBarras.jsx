@@ -6,6 +6,7 @@ import { useGetFetch } from '../fetchActions/GetFetch';
 import { Filter } from "lucide-react";
 import styles from './graphics.module.scss'
 import { useEffect, useState } from 'react';
+// import { Select, SelectItem } from "@nextui-org/react";
 
 const valueFormatter = (value) => `${value}`;
 
@@ -34,7 +35,7 @@ export default function BarrasGraphic() {
   useEffect(() => {
     if (!isLoading && data) {
       const newDataset = data.filter(dato => dato.mes && dato.cant >= 0)
-                             .map(dato => ({ mes: dato.mes, cant: dato.cant }));
+        .map(dato => ({ mes: dato.mes, cant: dato.cant }));
       setDataset(newDataset);
     }
   }, [data, isLoading]);
@@ -44,17 +45,31 @@ export default function BarrasGraphic() {
   };
 
   return (
-    
+
     <>
-      <div className='flex flex-row w-full justify-center items-center  rounded-md'>
+      <div className='flex flex-row w-full justify-center items-center rounded-md'>
         <span className={`text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
           <Filter className='px-1 text-xl' />
         </span>
-        <select onChange={onSelectChange} name="" id="">
-          {!isLoading && data[0]?.years.map((year) => (
-            <option key={year.year} value={year.year}>{year.year}</option>
+        <select onChange={onSelectChange} className=' text-gray-800 rounded-md py-2 px-4 focus:outline-none  '>
+          {!isLoading && data[0].years.map((year) => (
+            <option key={year.year} value={year.year}>
+              {year.year}
+            </option>
           ))}
         </select>
+        {/* <Select
+          labelPlacement={'outside'}
+          label="Filtrar por año"
+          className='w-40'
+          onChange={onSelectChange}
+        >
+          {!isLoading && data[0].years.map((year) => (
+            <SelectItem key={year.year} value={year.year}>
+              {year.year}
+            </SelectItem>
+          ))}
+        </Select> */}
       </div>
       <div className='flex flex-col' style={{ width: '100%', height: '90%' }}>
         <BarChart
