@@ -295,12 +295,17 @@ export default function ManageCourses() {
 
     const [nuevoNombreModulo, setNuevoNombreModulo] = useState("");
     const [editNombreMod, setEditNombreMod] = useState("");
+    const [createNameClass, setCreateNameClass] = useState("");
     const [mostrarAgregarModulo, setMostrarAgregarModulo] = useState(false);
     const [editIndexMod, setEditIndexMod] = useState(null);
+    const [createIndexClass, setCreateIndexClass] = useState(null);
 
     const handleEditClick = (index) => {
         setEditIndexMod(index);
     };
+    const handleCreateClick = (index) => {
+        setCreateIndexClass(index);
+    }
 
     const eliminarModulo = () => {
 
@@ -342,14 +347,27 @@ export default function ManageCourses() {
         }
     };
 
-    const agregarClase = indiceModulo => {
-        const nuevaClase = {
-            nombre: `Clase #${modulos[indiceModulo].clases.length + 1
-                }: Nueva clase`,
-        };
-        const nuevosModulos = [...modulos];
-        nuevosModulos[indiceModulo].clases.push(nuevaClase);
-        setModulos(nuevosModulos);
+    const createClass = (modulo) => {
+        try {
+            fetch('http://localhost:3000/api/v1/cont_mod/create', {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    Tip_Cont: 1,
+                    Id_Mod_FK: modulo,
+                    Tit_Cont: createNameClass,
+                    Duracion: 20,
+                }),
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
+
+        } catch (e) {
+            console.log("Error: " + e);
+        }
     };
 
     const eliminarClase = (indiceModulo, indiceClase) => {
@@ -784,7 +802,7 @@ export default function ManageCourses() {
                                                 <div>
                                                     {editIndexMod === indiceModulo ? (<div className="flex items-center gap-2">
                                                         <span className="font-semibold">Modulo: </span>
-                                                        <input className="p-2 rounded-lg border-1 outline-none border-gray-300 focus:border-azulSena" id={modulo.Id_Mod} type="text" defaultValue={modulo.Tit_Mod} placeholder="Introduce el nombre del modulo"/>
+                                                        <input className="p-2 rounded-lg border-1 outline-none border-gray-300 focus:border-azulSena" id={modulo.Id_Mod} type="text" defaultValue={modulo.Tit_Mod} placeholder="Introduce el nombre del modulo" />
                                                     </div>) : <h4 className="font-bold text-lg">{modulo.Tit_Mod}</h4>}
                                                 </div>
                                                 <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
@@ -831,13 +849,27 @@ export default function ManageCourses() {
                                                         </div>
                                                     )
                                                 )} */}
-                                                <div className="flex items-center justify-start gap-2 w-full">
-                                                    <div className="font-semibold min-w-[120px]">Nueva clase: </div>
-                                                    <input className="w-full rounded-lg p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase"/>
-                                                </div>
-                                                <button
+                                                {createIndexClass === indiceModulo ? (
+                                                    <>
+                                                        <div className="flex items-center justify-start gap-2 w-full">
+                                                            <div className="font-semibold min-w-[100px]">Nueva clase: </div>
+                                                            <input className="w-full rounded-lg p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase" onChange={(e) => setCreateNameClass(e.target.value)}/>
+                                                        </div>
+                                                        <button
+                                                            onClick={() =>
+                                                                createClass(
+                                                                    modulo.Id_Mod
+                                                                )
+                                                            }
+                                                            className="flex items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
+                                                        >
+                                                            <Save /> Guardar clase
+                                                        </button>
+                                                    </>
+
+                                                ) : (<button
                                                     onClick={() =>
-                                                        agregarClase(
+                                                        handleCreateClick(
                                                             indiceModulo
                                                         )
                                                     }
@@ -845,7 +877,8 @@ export default function ManageCourses() {
                                                 >
                                                     <PlusCircleIcon /> Añadir
                                                     clase
-                                                </button>
+                                                </button>)}
+
                                             </div>
                                         </div>
                                     ))}
