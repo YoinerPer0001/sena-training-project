@@ -10,6 +10,7 @@ import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
 import Image from 'next/image'
 import { Settings2 } from "lucide-react";
+import Link from 'next/link';
 
 
 
@@ -102,17 +103,15 @@ export default function UserTable() {
 
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => (
-                <Button
+                <Link
+                    href={'/admin/users/' + params.id}
                     variant="text"
                     color="primary"
                     size="medium"
-                    startIcon={<Settings2 />}
-                    onClick={() => {
-                        router.push('/')
-                    }}
                 >
+                    <Settings2 />
 
-                </Button>
+                </Link>
             ),
         },
     ];
