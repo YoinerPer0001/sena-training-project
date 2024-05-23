@@ -49,9 +49,9 @@ export default function BarrasGraphic() {
     <>
       <div className='flex flex-row w-full justify-center items-center rounded-md'>
         <span className={`text-[#21264F] h-full font-sans mx-1 flex justify-center items-center`}>
-          <Filter className='px-1 text-xl' />
+          <Filter size={20}/>
         </span>
-        <select onChange={onSelectChange} className=' text-gray-800 rounded-md py-2 px-4 focus:outline-none  '>
+        <select onChange={onSelectChange} className='border-1 border-gray-300 focus:border-azulSena cursor-pointer text-gray-800 rounded-md py-2 px-4 focus:outline-none  '>
           {!isLoading && data[0].years.map((year) => (
             <option key={year.year} value={year.year}>
               {year.year}

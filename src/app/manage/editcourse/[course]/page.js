@@ -30,9 +30,10 @@ import toast from "react-hot-toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
-import { CldUploadWidget, CldVideoPlayer } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
 import { useGetFetch } from "@/components/adminComponents/fetchActions/GetFetch";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+
 
 export default function ManageCourses() {
     const pathname = usePathname();
@@ -106,7 +107,7 @@ export default function ManageCourses() {
             setModulos(data);
         }
         // MODULOS DEL CURSO
-    }, [data]);
+    }, [data, modulos]);
 
 
 
@@ -309,9 +310,6 @@ export default function ManageCourses() {
     const handleCreateClick = (index) => {
         setCreateIndexClass(index);
     }
-    const eliminarModulo = () => {
-
-    };
 
 
     const agregarModulo = () => {
@@ -351,6 +349,12 @@ export default function ManageCourses() {
     };
 
     const createClass = (modulo) => {
+        const indices = modulos
+            .filter(mod => mod.Contenido_Modulos && mod.Contenido_Modulos.length > 0)
+            .map(mod => Math.max(...mod.Contenido_Modulos.map(cont => cont.Indice_Cont)));
+
+        const nuevoIndice = indices.length > 0 ? Math.max(...indices) + 1 : 1;
+        console.log(nuevoIndice)
         try {
             fetch('http://localhost:3000/api/v1/cont_mod/create', {
                 method: "POST",
@@ -363,7 +367,7 @@ export default function ManageCourses() {
                     Id_Mod_FK: modulo,
                     Tit_Cont: createNameClass,
                     Duracion: 20,
-                    Indice: modulos.length + 1
+                    Indice: nuevoIndice
                 }),
             })
                 .then(response => response.json())
@@ -387,13 +391,20 @@ export default function ManageCourses() {
         }
     };
 
-    const eliminarClase = (indiceModulo, indiceClase) => {
-        if (
-            window.confirm("¿Estás seguro de que deseas eliminar esta clase?")
-        ) {
-            const nuevosModulos = [...modulos];
-            nuevosModulos[indiceModulo].clases.splice(indiceClase, 1);
-            setModulos(nuevosModulos);
+    const eliminarClase = (clase) => {
+        console.log(clase)
+        if (window.confirm("¿Estás seguro de que deseas eliminar esta clase?")) {
+            fetch(`http://localhost:3000/api/v1/cont_mod/delete/${clase}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
+        } else {
+            alert('Cancelaste la eliminación')
         }
     };
 
@@ -458,6 +469,8 @@ export default function ManageCourses() {
             [indiceClase]: !prevState[indiceClase]
         }));
     };
+
+    
 
     return (
         <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
@@ -817,10 +830,10 @@ export default function ManageCourses() {
                                         >
                                             <div className="my-2 flex group items-center gap-2 flex-wrap">
                                                 <div>
-                                                    {editIndexMod === indiceModulo ? (<div className="flex items-center gap-2">
+                                                    {editIndexMod === indiceModulo ? (<div className="flex items-center gap-2 mx-2">
                                                         <span className="font-semibold">Modulo: </span>
                                                         <input className="p-2 rounded-lg border-1 outline-none border-gray-300 focus:border-azulSena" id={modulo.Id_Mod} type="text" defaultValue={modulo.Tit_Mod} placeholder="Introduce el nombre del modulo" />
-                                                    </div>) : <h4 className="font-bold text-lg">{modulo.Tit_Mod}</h4>}
+                                                    </div>) : <h4 className="font-bold text-lg mx-2">{modulo.Tit_Mod}</h4>}
                                                 </div>
                                                 <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
                                                     <button onClick={() => handleEditClick(indiceModulo)} className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
@@ -828,8 +841,8 @@ export default function ManageCourses() {
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2 items-start">
-                                                <Accordion variant="splitted">
-                                                    {modulo.Contenido_Modulos?.map((cont) => {
+                                                <Accordion variant="splitted" single>
+                                                    {modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => {
                                                         return (
                                                             <AccordionItem variant={"light"} key={cont.Id_Cont} aria-label="Accordion 1"
                                                                 title={
@@ -837,60 +850,34 @@ export default function ManageCourses() {
                                                                         <span className="flex items-center gap-2 text-sm font-medium"><Video size={20} />{cont.Tit_Cont}</span>
                                                                         <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
                                                                             <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
-                                                                            <button className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                                            <button value={cont.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                                         </div>
                                                                     </div>}>
-                                                                    <div className="flex items-center gap-2">
-                                                                        <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm"><Video /> Subir video</button>
-                                                                        <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm"><Link2 /> Recursos</button>
-                                                                    </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <CldUploadWidget uploadPreset="senalearn">
+                                                                        {({ open, results }) => {
+                                                                            // console.log(results);
+                                                                            return (
+                                                                                <button
+                                                                                    class="bg-azulSena text-sm flex items-center gap-1 text-white p-2 rounded-lg hover:bg-black transition-all duration-150"
+                                                                                    onClick={() => open()}
+                                                                                >
+                                                                                    <Video size={20} />Subir video
+                                                                                </button>
+                                                                            );
+                                                                        }}
+                                                                    </CldUploadWidget>
+                                                                    <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                                </div>
                                                             </AccordionItem>
                                                         )
                                                     })}
                                                 </Accordion>
-                                                {/* {modulo.clases.map(
-                                                    (clase, indiceClase) => (
-                                                        <div
-                                                            key={indiceClase}
-                                                            className="flex flex-col w-full justify-between p-2 bg-white rounded-lg border-1 border-azulSena"
-                                                        >
-                                                            <div className="flex justify-between items-center">
-                                                                <div>
-                                                                    <span className="font-semibold">
-                                                                        {
-                                                                            clase.nombre
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                                <div className="flex gap-2 items-center">
-                                                                    <button className="flex items-center gap-1 font-medium bg-azulSena text-white px-2 py-1 rounded-lg transition-all duration-150 hover:bg-black"
-                                                                        onClick={() => toggleContenidoVisible(indiceClase)}>
-                                                                        <Plus />
-                                                                        Agregar
-                                                                        contenido
-                                                                    </button>
-                                                                    <button
-                                                                        className="bg-red-500 text-white p-1 rounded-lg hover:bg-red-600 transition-all duration-150"
-                                                                        onClick={() =>
-                                                                            eliminarClase(
-                                                                                indiceModulo,
-                                                                                indiceClase
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <Trash2 />
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    )
-                                                )} */}
                                                 {createIndexClass === indiceModulo ? (
                                                     <>
-                                                        <div className="flex items-center justify-start gap-2 w-full">
-                                                            <div className="font-semibold min-w-[100px]">Nueva clase: </div>
-                                                            <input className="w-full rounded-lg p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase" onChange={(e) => setCreateNameClass(e.target.value)} />
+                                                        <div className="flex items-center justify-start gap-2 w-full mx-2">
+                                                            <div className="font-semibold">Nueva clase: </div>
+                                                            <input className="rounded-lg w-4/5 p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase" onChange={(e) => setCreateNameClass(e.target.value)} />
                                                         </div>
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <button
@@ -915,7 +902,7 @@ export default function ManageCourses() {
                                                             indiceModulo
                                                         )
                                                     }
-                                                    className="flex text-sm items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
+                                                    className="flex text-sm items-center gap-1 p-2 mx-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
                                                 >
                                                     <PlusCircleIcon size={20} /> Añadir
                                                     clase

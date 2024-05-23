@@ -24,7 +24,7 @@ const Page = () => {
                     <CldVideoPlayer
                         width="1920"
                         height="1080"
-                        src="https://res.cloudinary.com/dnarhjdqu/video/upload/v1715347433/Una_hackathon_de_Midudev_fue_cancelada_dvkhvx.mp4"
+                        src="https://res.cloudinary.com/dla5djfdc/video/upload/v1716317063/cursos/2024-03-03_22-18-01_fbbgg9.mkv"
                         className="rounded-lg w-3/4"
                     />
                 </div>
