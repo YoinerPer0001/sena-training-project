@@ -12,8 +12,8 @@ export default function Indicadores() {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className={`${styles.contPrinIzq_inf} w-full h-full grid gap-2`}>
-          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2">
+        <div className={`${styles.contPrinIzq_inf} w-full h-full grid gap-2 mb-2 `}>
+          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center shadow-sm items-center p-2">
             <span className="font-semibold text-center text-[#21264F]">Número Total de usuarios</span>
             <Stack
 
@@ -23,7 +23,7 @@ export default function Indicadores() {
               <Gauge valueMin={0} valueMax={1000} width={100} height={100} value={parseInt(data.total_usuarios)} />
             </Stack>
           </div>
-          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2">
+          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col shadow-sm justify-center items-center p-2">
             <span className="font-semibold text-center text-[#21264F]">Tasa de finalización de cursos %</span>
             <Stack sx={(theme) => ({
               [`& .${gaugeClasses.valueArc}`]: {
@@ -38,7 +38,7 @@ export default function Indicadores() {
               <Gauge valueMin={0} valueMax={100} width={100} height={100} value={parseFloat(data.tasaFinalizacion)} />
             </Stack>
           </div>
-          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2">
+          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col shadow-sm justify-center items-center p-2">
             <span className="font-semibold text-center text-[#21264F]">Progreso promedio de los usuarios %</span>
             <Stack sx={(theme) => ({
               [`& .${gaugeClasses.valueArc}`]: {
@@ -51,7 +51,7 @@ export default function Indicadores() {
               <Gauge valueMin={0} valueMax={100} width={100} height={100} value={parseFloat(data.ProgresoPromedio)} />
             </Stack>
           </div>
-          <div className="bg-[#ffffff] h-44 rounded-lg flex flex-col justify-center items-center p-2">
+          <div className="bg-[#ffffff] h-44 rounded-lg shadow-sm flex flex-col justify-center items-center p-2">
             <span className="font-semibold text-center text-[#21264F]">Tasa de abandono de cursos %</span>
             <Stack sx={(theme) => ({
               [`& .${gaugeClasses.valueArc}`]: {

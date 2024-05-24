@@ -12,7 +12,7 @@ export default function dashboardPage() {
       {/* {CONTENEDOR IZQUIERDO} */}
       <div className={`${styles.contPrinIzq} w-max border-b-3 flex flex-col md:lg:xl:pr-3 mr-3 `}>
 
-        <div className={`${styles.contPrinIzq_sup} h-full  inline-flex flex-col justify-around pt-2 items-end rounded-lg mb-2 w-full  bg-[#ffffff]`}>
+        <div className={`${styles.contPrinIzq_sup} h-full shadow-sm  inline-flex flex-col justify-around pt-2 items-end rounded-lg mb-2 w-full  bg-[#ffffff]`}>
           <BarrasGraphic />
         </div>
         {/* DIAGRAMAS REDONDOS */}

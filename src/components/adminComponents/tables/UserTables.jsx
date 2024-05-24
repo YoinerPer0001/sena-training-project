@@ -2,7 +2,6 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useGetFetch } from '../fetchActions/GetFetch';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import capitalize from 'capitalize';
 import { useRouter } from 'next/navigation';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
@@ -13,14 +12,9 @@ import { Settings2 } from "lucide-react";
 import Link from 'next/link';
 
 
-
-
-
 export default function UserTable() {
     const url = 'http://localhost:3000/api/v1/users';
     const { data, isLoading } = useGetFetch(url);
-
-    const router = useRouter();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -104,6 +98,7 @@ export default function UserTable() {
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => (
                 <Link
+                className='flex w-full h-full items-center justify-center'
                     href={'/admin/users/' + params.id}
                     variant="text"
                     color="primary"
