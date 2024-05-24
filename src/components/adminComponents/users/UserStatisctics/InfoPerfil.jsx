@@ -24,21 +24,18 @@ export const InfoPerfil = ({ id }) => {
                     </div>
                     <div className={`p-4 w-full flex-wrap gap-4 bg-white h-full mt-1 shadow-sm`}>
                         <dd class="order-1 text-2xl font-extrabold mb-4 border-b-1 text-gray-700">Certificados Generados</dd>
-                        {data.certificados.lista.map(certificado =>
-
-                            <div className='w-full flex justify-start items-start h-full'>
+                        <div className='w-full flex justify-start items-start h-full flex-col'>
+                            {data.certificados.lista.map(certificado =>
                                 <Link href="/"
-                                    class="bg-gray-100 flex-grow text-black border-l-8 border-green-500 rounded-md px-3 py-2 w-full ">
+                                    class="bg-gray-100 mb-2 text-black border-l-8 border-green-500 rounded-md px-3 py-2 w-full ">
                                     {certificado.Curso.Nom_Cur}
                                     <div className=''>
                                         <span className=' font-semibold text-gray-400 text-sm'>Fecha Gen:</span>
                                         <span className='text-gray-700 text-sm mx-2'>{certificado.Fec_Crea_Cert}</span>
                                     </div>
                                 </Link>
-
-                            </div>
-
-                        )}
+                            )}
+                        </div>
 
                     </div>
                 </div>
