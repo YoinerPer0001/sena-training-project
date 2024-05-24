@@ -20,6 +20,7 @@
     "@mui/x-data-grid": "^7.5.0",
     "@nextui-org/react": "^2.2.10",
     "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@ramonak/react-progress-bar": "^5.2.0",
     "@reduxjs/toolkit": "^2.2.2",
     "capitalize": "^2.0.4",
     "chart.js": "^4.4.3",

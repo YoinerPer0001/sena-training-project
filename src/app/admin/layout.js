@@ -19,7 +19,7 @@ export default function AdminLayout({ children }) {
       
       <div className="flex flex-col 2xl:pl-72 lg:md:xl:pl-52 sm:pl-0 pt-16 h-full w-full overflow-auto">
         {/* Navbar */}
-        <div className="w-screen h-16 bg-white 2xl:pl-72 lg:md:xl:pl-52 sm:pl-0 fixed top-0 left-0 z-10 flex justify-between flex-grow items-center">
+        <div className="w-screen h-16 shadow-sm bg-white 2xl:pl-72 lg:md:xl:pl-52 sm:pl-0 fixed top-0 left-0 z-10 flex justify-between flex-grow items-center">
           {/* Aquí va el contenido del Navbar */}
           <div className="pl-2 w-2/3 h-full flex justify-start items-center">
             <div className={`${status == true ? ' pl-16 w-24': 'pl-0 w-10'} lg:md:xl:hidden h-full flex items-center transition-all ease-in-out delay-75`}>
