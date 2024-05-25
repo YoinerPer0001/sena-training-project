@@ -10,6 +10,7 @@ import { esES } from '@mui/x-data-grid/locales';
 import Image from 'next/image'
 import { Settings2 } from "lucide-react";
 import Link from 'next/link';
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 
 
 export default function UserTable() {
@@ -17,7 +18,7 @@ export default function UserTable() {
     const { data, isLoading } = useGetFetch(url);
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div><Spinner /></div>;
     }
 
     const rows = data.map((item, index) => ({

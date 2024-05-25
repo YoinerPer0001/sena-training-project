@@ -1,6 +1,6 @@
-import { useGetFetch } from '@/hooks/fetchActions/GetFetch';
 import { AlertTriangle } from 'lucide-react';
-
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
+import { useGetFetch } from '@/hooks/fetchActions/GetFetch';
 export const UserStatistics = ({ id }) => {
 
     const { data, isLoading } = useGetFetch(`http://localhost:3000/api/statistics/user/${id}`)
@@ -53,7 +53,7 @@ export const UserStatistics = ({ id }) => {
 
                 </div>
 
-            ) : <div>Loading...</div>}
+            ) : <div><Spinner /></div>}
         </>
     )
 }

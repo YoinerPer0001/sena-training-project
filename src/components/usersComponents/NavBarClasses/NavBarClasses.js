@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-export const NavBarClasses = () => {
+export const NavBarClasses = ({Nom_Cur}) => {
   return (
     <nav className='bg-azulSena p-3 text-white flex items-center justify-center gap-6 w-screen relative z-10'>
         <div>
@@ -9,7 +9,7 @@ export const NavBarClasses = () => {
         </div>
         <span>|</span>
         <div>
-            Fundamentos del diseño gráfico
+            {Nom_Cur}
         </div>
     </nav>
   )

@@ -6,7 +6,7 @@ import UserTable from '@/components/adminComponents/tables/UserTables';
 import { UserStatistics } from '@/components/adminComponents/users/UserStatisctics/UserStatistics';
 import { InfoPerfil } from '@/components/adminComponents/users/UserStatisctics/InfoPerfil';
 
-export default function userDetailDash() {
+export default function UserDetailDash() {
     const { id } = useParams();
 
 
