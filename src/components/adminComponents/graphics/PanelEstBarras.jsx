@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 import { Filter } from "lucide-react";
 import styles from './graphics.module.scss'
 import { useEffect, useState } from 'react';

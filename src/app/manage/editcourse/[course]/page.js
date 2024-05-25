@@ -31,7 +31,7 @@ import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
 import { CldUploadWidget } from "next-cloudinary";
-import { useGetFetch } from "@/components/adminComponents/fetchActions/GetFetch";
+import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 
 

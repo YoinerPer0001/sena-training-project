@@ -2,7 +2,7 @@
 import Stack from '@mui/material/Stack';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import styles from '../../../app/admin/dashboard/dashboard.module.scss'
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 
 export default function Indicadores() {
   const { data, isLoading } = useGetFetch('http://localhost:3000/api/statistics/panel');

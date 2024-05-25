@@ -14,12 +14,12 @@ export default function userDetailDash() {
     return (
         <div className={`${styles.contPrincipal} flex w-full p-2 bg-[#F1F5F6]  h-full`}>
             {/* {contenedor izquierdo} */}
-            <div className={`${styles.contIzquierdo}  w-2/3 mr-1 flex flex-col justify-between`}>
+            <div className={`${styles.contIzquierdo}  w-2/3 mr-1 flex flex-col justify-start`}>
 
                 {/* {user statistics} */}
                 <UserStatistics id={id} />
 
-                <div className=' w-full h-auto mr-1 flex p-2 '>
+                <div className=' w-full h-auto mr-1 flex p-2'>
                     <InscriptionTable id={id} />
                 </div>
 

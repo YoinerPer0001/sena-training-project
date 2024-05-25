@@ -1,6 +1,6 @@
 'use client';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import capitalize from 'capitalize';
@@ -102,13 +102,14 @@ export default function CoursesTable() {
             headerName: '',
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => (
+              
                 <Button
                     variant="text"
                     color="primary"
                     size="medium"
                     startIcon={<Settings2 size={20}/>}
                     onClick={() => {
-                        router.push('/');
+                        router.push(`/admin/courses/${params.id}`);
                     }}
                 />
             ),
