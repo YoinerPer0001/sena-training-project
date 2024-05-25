@@ -8,6 +8,7 @@ import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
 import Image from 'next/image'
 import { lime, purple } from '@mui/material/colors';
+import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 
 
 
@@ -40,7 +41,7 @@ export default function InscriptionTable({ id }) {
     );
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div><Spinner /></div>;
     }
 
 
@@ -94,9 +95,9 @@ export default function InscriptionTable({ id }) {
                 <ProgressBar
                     animateOnRender= "true"
                     labelAlignment='center'
-                    borderRadius='0'
+                    borderRadius='8px'
                     labelColor={parseFloat(params.value) >= 80 ? '#15803D' : parseFloat(params.value) <= 40 ? '#EF4444' : '#FFFFFF'}
-                    className='mt-4'
+                    className='mt-4 rounded-lg'
                     bgColor={parseFloat(params.value) >= 80 ? '#DCFCE7' : parseFloat(params.value) <= 40 ? '#EF4444' : '#F9B588'} completed={parseInt(params.value) || 1} width='100%' />
 
 
@@ -112,7 +113,7 @@ export default function InscriptionTable({ id }) {
 
 
 
-        <div className=' overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
+        <div className='overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
             <Box
                 sx={{
                     '& .super-app-theme--header': {
@@ -134,9 +135,7 @@ export default function InscriptionTable({ id }) {
                 }}
             >
                 <ThemeProvider theme={theme}>
-
                     <DataGrid
-
                         rows={rows}
                         columns={columns}
                         initialState={{

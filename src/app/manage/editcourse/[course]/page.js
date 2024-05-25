@@ -7,6 +7,7 @@ import {
     AlertCircle,
     ArrowLeftToLine,
     ChevronDown,
+    ChevronLeft,
     Edit,
     Eye,
     File,
@@ -32,7 +33,9 @@ import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
 import { CldUploadWidget } from "next-cloudinary";
 import { useGetFetch } from "@/components/adminComponents/fetchActions/GetFetch";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, Progress } from "@nextui-org/react";
+import useEditCourse from "@/utils/editCourseFunctions/editCourseInputs/editCourseInputs";
+import useContentCourseHandlers from "@/hooks/useContentCourseHandlers";
 
 
 export default function ManageCourses() {
@@ -48,9 +51,26 @@ export default function ManageCourses() {
     const idCourse = id[id.length - 1];
     const token = getCookie("sessionToken");
 
-    const [modulos, setModulos] = useState([]);
+    const {
+        modulos,
+        nuevoNombreModulo,
+        mostrarAgregarModulo,
+        setNuevoNombreModulo,
+        setMostrarAgregarModulo,
+        agregarModulo,
+        eliminarClase,
+        createClass,
+        handleCreateClick,
+        handleEditClick,
+        editIndexMod,
+        createIndexClass,
+        setCreateNameClass,
+        setCreateIndexClass,
+        subirVideoContenido
+    } = useContentCourseHandlers(token, idCourse)
 
-    const { data } = useGetFetch(`http://localhost:3000/api/v1/modulo_curso/${idCourse}`)
+    const { editCourse, handleChangeName, handleChangeDes, handleChangeCat } = useEditCourse();
+
 
     useEffect(() => {
         // FETCH CATEGORÍAS
@@ -103,11 +123,7 @@ export default function ManageCourses() {
                     setLoading(false);
                 }
             });
-        if (data) {
-            setModulos(data);
-        }
-        // MODULOS DEL CURSO
-    }, [data, modulos]);
+    }, []);
 
 
 
@@ -118,30 +134,6 @@ export default function ManageCourses() {
         setPage(2);
     };
 
-    // OBTENER DATOS DE LOS INPUTS y FUNCIÓN PARA EDITAR
-    const [editCourse, setEditCourse] = useState({});
-
-    const handleChangeName = e => {
-        setEditCourse(prevState => ({
-            ...prevState, // Mantener las propiedades existentes
-            Nom_Cur: e.target.value,
-        }));
-        console.log(editCourse);
-    };
-    const handleChangeDes = e => {
-        setEditCourse(prevState => ({
-            ...prevState, // Mantener las propiedades existentes
-            Des_Cur: e.target.value,
-        }));
-        console.log(editCourse);
-    };
-    const handleChangeCat = e => {
-        setEditCourse(prevState => ({
-            ...prevState, // Mantener las propiedades existentes
-            Id_Cat_FK: e.target.value,
-        }));
-        console.log(editCourse);
-    };
 
     const functionEditCourse = () => {
         try {
@@ -294,119 +286,6 @@ export default function ManageCourses() {
         }
     };
 
-    // AGREGAR CONTENIDO
-
-
-    const [nuevoNombreModulo, setNuevoNombreModulo] = useState("");
-    const [editNombreMod, setEditNombreMod] = useState("");
-    const [createNameClass, setCreateNameClass] = useState("");
-    const [mostrarAgregarModulo, setMostrarAgregarModulo] = useState(false);
-    const [editIndexMod, setEditIndexMod] = useState(null);
-    const [createIndexClass, setCreateIndexClass] = useState(null);
-
-    const handleEditClick = (index) => {
-        setEditIndexMod(index);
-    };
-    const handleCreateClick = (index) => {
-        setCreateIndexClass(index);
-    }
-
-
-    const agregarModulo = () => {
-        if (nuevoNombreModulo.trim() !== "") {
-            try {
-                fetch(`http://localhost:3000/api/v1/modulo_curso/create`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: "Bearer " + token,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        Id_Cur: idCourse,
-                        Tit_Mod: nuevoNombreModulo,
-                    }),
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log(response);
-                        if (response.type === 'success') {
-                            const nuevoModulo = {
-                                Id_Mod: response.data.insertedId,
-                                Tit_Mod: nuevoNombreModulo,
-                            };
-                            setModulos([...modulos, nuevoModulo]);
-                            setNuevoNombreModulo("")
-                            setMostrarAgregarModulo(false);
-                            toast.success('Se creo el modulo')
-                        } else {
-                            alert('error')
-                        }
-                    });
-            } catch (e) {
-                console.log("Error: " + e);
-            }
-        }
-    };
-
-    const createClass = (modulo) => {
-        const indices = modulos
-            .filter(mod => mod.Contenido_Modulos && mod.Contenido_Modulos.length > 0)
-            .map(mod => Math.max(...mod.Contenido_Modulos.map(cont => cont.Indice_Cont)));
-
-        const nuevoIndice = indices.length > 0 ? Math.max(...indices) + 1 : 1;
-        console.log(nuevoIndice)
-        try {
-            fetch('http://localhost:3000/api/v1/cont_mod/create', {
-                method: "POST",
-                headers: {
-                    Authorization: "Bearer " + token,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    Tip_Cont: 1,
-                    Id_Mod_FK: modulo,
-                    Tit_Cont: createNameClass,
-                    Duracion: 20,
-                    Indice: nuevoIndice
-                }),
-            })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                    if (response.type === "success") {
-                        const contMod = modulos.filter(mod => mod.Id_Mod !== modulo)
-                        const newContMod = [...contMod, {
-                            Tip_Cont: 1,
-                            Id_Mod_FK: modulo,
-                            Tit_Cont: createNameClass,
-                            Duracion: 20,
-                        }]
-                        setModulos(newContMod)
-                        setCreateIndexClass(null)
-                    }
-                })
-
-        } catch (e) {
-            console.log("Error: " + e);
-        }
-    };
-
-    const eliminarClase = (clase) => {
-        console.log(clase)
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta clase?")) {
-            fetch(`http://localhost:3000/api/v1/cont_mod/delete/${clase}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: "Bearer " + token,
-                    "Content-Type": "application/json",
-                },
-            })
-            .then(response => response.json())
-            .then(response => console.log(response))
-        } else {
-            alert('Cancelaste la eliminación')
-        }
-    };
 
     // SUBIR IMAGEN
     let image = null;
@@ -418,18 +297,21 @@ export default function ManageCourses() {
         form.append("file", file);
         setProgressBar(true);
 
-        // Sending file
         try {
             const res = await fetch("/api/upload", {
                 method: "POST",
-                body: form, // Aquí se pasa directamente el objeto FormData
+                body: form
             });
+
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
 
             const data = await res.json();
             image = data.file;
 
             if (data.message === "File uploaded successfully" && image) {
-                await fetch(
+                const updateResponse = await fetch(
                     `http://localhost:3000/api/v1/courses/update/${idCourse}`,
                     {
                         method: "PUT",
@@ -439,22 +321,25 @@ export default function ManageCourses() {
                         },
                         body: JSON.stringify({ Fot_Cur: image }),
                     }
-                )
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.type === "success") {
-                            setProgressBar(false);
-                            toast.success("Se guardo la imagen correctamente.");
-                            return router.refresh();
-                        }
-                    });
+                );
+
+                const updateData = await updateResponse.json();
+
+                if (updateData.type === "success") {
+                    setProgressBar(false);
+                    toast.success("Se guardo la imagen correctamente.");
+                    return location.reload();
+                } else {
+                    setProgressBar(false);
+                    console.error("Failed to update course with image:", updateData);
+                }
             } else {
                 setProgressBar(false);
-                return console.log("No se cargo la imagen");
+                console.error("No se cargo la imagen");
             }
         } catch (e) {
             setProgressBar(false);
-            console.log(e);
+            console.error("Error during form submission: ", e);
         }
     };
 
@@ -462,15 +347,16 @@ export default function ManageCourses() {
         dataCourse.Fot_Cur === null ? true : false
     );
 
-    const [contenidoVisible, setContenidoVisible] = useState({});
+    const [contenidoVisible, setContenidoVisible] = useState("");
     const toggleContenidoVisible = (indiceClase) => {
-        setContenidoVisible(prevState => ({
-            ...prevState,
-            [indiceClase]: !prevState[indiceClase]
-        }));
+        if(indiceClase == contenidoVisible) {
+            setContenidoVisible("");
+        } else {
+            setContenidoVisible(indiceClase)
+        }
     };
 
-    
+
 
     return (
         <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
@@ -699,65 +585,73 @@ export default function ManageCourses() {
                                     <label className="font-semibold text-lg">
                                         Portada del curso
                                     </label>
-                                    <div className="flex gap-4 justify-center flex-col items-center">
+                                    <div className="flex gap-2 justify-center flex-col items-center">
+                                        <p>El tamaño recomendado es de 1280x720. La imagen se recortara automáticamente a este tamaño.</p>
                                         {subirImagen === true ||
                                             dataCourse.Fot_Cur === null ? (
-                                            <div className="card w-full">
-                                                <FileUpload
-                                                    pt={{
-                                                        root: "py-4",
-                                                        message:
-                                                            "bg-red-200 text-red-500 p-2 rounded-lg",
-                                                        thumbnail: "rounded-lg",
-                                                        details:
-                                                            "p-2 rounded-lg w-full",
-                                                        fileName:
-                                                            "font-semibold",
-                                                        cancelIcon:
-                                                            "bg-red-200 text-red-500",
-                                                        file: "bg-white rounded-lg p-2 mt-2",
-                                                        progressbar:
-                                                            "h-4 w-full rounded-full",
-                                                    }}
-                                                    previewWidth={100}
-                                                    invalidFileSizeMessageDetail="El tamaño máximo es de 976.563 KB."
-                                                    chooseOptions={{
-                                                        label: "Escoger",
-                                                        icon: <Plus />,
-                                                        className:
-                                                            "p-2 bg-azulSena flex items-center gap-1 cursor-pointer hover:bg-black transition-all duration-150 mr-2 text-white rounded-lg",
-                                                    }}
-                                                    uploadOptions={{
-                                                        label: "Subir",
-                                                        icon: (
-                                                            <Upload size={20} />
-                                                        ),
-                                                        className:
-                                                            "p-2 bg-azulSena disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 cursor-pointer hover:bg-black transition-all duration-150 mr-2 text-white rounded-lg",
-                                                    }}
-                                                    cancelOptions={{
-                                                        label: "Cancelar",
-                                                        icon: <X size={20} />,
-                                                        className:
-                                                            "p-2 bg-red-500 disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 cursor-pointer hover:bg-red-600 transition-all duration-150 mr-2 text-white rounded-lg",
-                                                    }}
-                                                    removeIcon={<XCircle />}
-                                                    name="files"
-                                                    className="w-full"
-                                                    customUpload={true}
-                                                    uploadHandler={formSubmit}
-                                                    accept="image/*"
-                                                    maxFileSize={1000000}
-                                                    emptyTemplate={
-                                                        <p className="mt-4 p-10 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center">
-                                                            <ImagePlus />{" "}
-                                                            Arrastre y suelte
-                                                            archivos aquí para
-                                                            cargarlos.
-                                                        </p>
-                                                    }
-                                                />
-                                            </div>
+                                            <>
+                                                <div className="card w-full">
+                                                    <FileUpload
+                                                        pt={{
+                                                            badge: "w-0",
+                                                            root: "py-4",
+                                                            message:
+                                                                "bg-red-200 text-red-500 p-2 rounded-lg",
+                                                            thumbnail: "rounded-lg",
+                                                            details:
+                                                                "p-2 rounded-lg w-full",
+                                                            fileName:
+                                                                "font-semibold",
+                                                            cancelIcon:
+                                                                "bg-red-200 text-red-500",
+                                                            file: "bg-white rounded-lg p-2 mt-2",
+                                                            progressbar:
+                                                                "h-4 w-full rounded-full",
+                                                        }}
+                                                        previewWidth={100}
+                                                        invalidFileSizeMessageDetail="El tamaño máximo es de 976.563 KB."
+                                                        chooseOptions={{
+                                                            label: "Escoger",
+                                                            icon: <Plus />,
+                                                            className:
+                                                                "p-2 bg-azulSena flex items-center gap-1 cursor-pointer hover:bg-black transition-all duration-150 mr-2 text-white rounded-lg",
+                                                        }}
+                                                        uploadOptions={{
+                                                            label: "Subir",
+                                                            icon: (
+                                                                <Upload size={20} />
+                                                            ),
+                                                            className:
+                                                                "p-2 bg-azulSena disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 cursor-pointer hover:bg-black transition-all duration-150 mr-2 text-white rounded-lg",
+                                                        }}
+                                                        cancelOptions={{
+                                                            label: "Cancelar",
+                                                            icon: <X size={20} />,
+                                                            className:
+                                                                "p-2 bg-red-500 disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 cursor-pointer hover:bg-red-600 transition-all duration-150 mr-2 text-white rounded-lg",
+                                                        }}
+                                                        onUpload={() => { router.push("/") }}
+                                                        removeIcon={<XCircle />}
+                                                        name="files"
+                                                        className="w-full"
+                                                        customUpload={true}
+                                                        uploadHandler={formSubmit}
+                                                        accept="image/*"
+                                                        maxFileSize={1000000}
+                                                        emptyTemplate={
+                                                            <p className="mt-4 p-10 border-1 border-azulSena rounded-lg text-center flex items-center gap-2 text-azulSena justify-center">
+                                                                <ImagePlus />{" "}
+                                                                Arrastre y suelte
+                                                                archivos aquí para
+                                                                cargarlos.
+                                                            </p>
+                                                        }
+                                                    />
+                                                </div>
+                                                {progressBar && <div className="card">
+                                                    <ProgressBar color="#39a900" pt={{ container: 'bg-azulSena', root: 'bg-gray-300 rounded-lg' }} mode="indeterminate" style={{ height: '6px', width: '250px' }}></ProgressBar>
+                                                </div>}
+                                            </>
                                         ) : (
                                             <div className="w-full flex flex-col gap-2 items-center">
                                                 <Image
@@ -769,18 +663,24 @@ export default function ManageCourses() {
                                                 />
                                             </div>
                                         )}
-                                        <button
-                                            className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white"
-                                            onClick={() =>
-                                                setSubirImagen(!subirImagen)
-                                            }
-                                        >
-                                            {subirImagen
-                                                ? "Cancelar"
-                                                : dataCourse.Fot_Cur !== null
-                                                    ? "Cambiar Portada"
-                                                    : "Subir Imagen"}
-                                        </button>
+
+                                        {dataCourse.Fot_Cur !== null && (
+                                            <button
+                                                className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white"
+                                                onClick={() => setSubirImagen(!subirImagen)}
+                                            >
+                                                {subirImagen ? "Cancelar" : "Cambiar Portada"}
+                                            </button>
+                                        )}
+
+                                        {subirImagen && dataCourse.Fot_Cur === null && (
+                                            <button
+                                                className="p-2 hover:bg-black transition-all duration-150 bg-azulSena rounded-lg text-white"
+                                                onClick={() => setSubirImagen(false)}
+                                            >
+                                                Cancelar
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
 
@@ -826,7 +726,7 @@ export default function ManageCourses() {
                                     {modulos.map((modulo, indiceModulo) => (
                                         <div
                                             key={indiceModulo}
-                                            className="border-1 border-azulSena p-3 rounded-lg"
+                                            className="border-1 border-azulSena p-3 rounded-lg bg-white"
                                         >
                                             <div className="my-2 flex group items-center gap-2 flex-wrap">
                                                 <div>
@@ -840,42 +740,50 @@ export default function ManageCourses() {
                                                     <button value={modulo.Id_Mod} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-col gap-2 items-start">
-                                                <Accordion variant="splitted" single>
-                                                    {modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => {
-                                                        return (
-                                                            <AccordionItem variant={"light"} key={cont.Id_Cont} aria-label="Accordion 1"
-                                                                title={
-                                                                    <div className="flex items-center justify-between gap-2">
-                                                                        <span className="flex items-center gap-2 text-sm font-medium"><Video size={20} />{cont.Tit_Cont}</span>
+                                            <div className="flex flex-col gap-2 items-start w-full">
+                                                {modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => {
+                                                    return (
+                                                        <>
+                                                            <div onClick={() => toggleContenidoVisible(cont.Id_Cont)} className="flex cursor-pointer flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
+                                                                <div className="flex items-center justify-between gap-2 w-full">
+                                                                    <div className="flex items-center gap-4">
+                                                                        <span className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{cont.Tit_Cont}</span>
                                                                         <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
                                                                             <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
                                                                             <button value={cont.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                                         </div>
-                                                                    </div>}>
-                                                                <div className="flex items-center gap-2">
-                                                                    <CldUploadWidget uploadPreset="senalearn">
-                                                                        {({ open, results }) => {
-                                                                            // console.log(results);
-                                                                            return (
-                                                                                <button
-                                                                                    class="bg-azulSena text-sm flex items-center gap-1 text-white p-2 rounded-lg hover:bg-black transition-all duration-150"
-                                                                                    onClick={() => open()}
-                                                                                >
-                                                                                    <Video size={20} />Subir video
-                                                                                </button>
-                                                                            );
-                                                                        }}
-                                                                    </CldUploadWidget>
-                                                                    <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                                    </div>
+                                                                    <button>
+                                                                        {contenidoVisible == cont.Id_Cont ? <ChevronDown /> : <ChevronLeft />}
+                                                                    </button>
                                                                 </div>
-                                                            </AccordionItem>
-                                                        )
-                                                    })}
-                                                </Accordion>
+                                                                {contenidoVisible == cont.Id_Cont &&
+                                                                    <>
+                                                                        <hr className="w-full border-gray-300" />
+                                                                        <div className="flex items-center justify-end gap-2 w-full">
+                                                                            <CldUploadWidget onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn" options={{multiple: false, sources: ["local", "url", "google_drive" ]}}>
+                                                                                {({ open, results }) => {
+                                                                                    console.log(results)
+                                                                                    return (
+                                                                                        <button
+                                                                                            class="bg-azulSena text-sm flex items-center gap-1 text-white p-2 rounded-lg hover:bg-black transition-all duration-150"
+                                                                                            onClick={() => open()}
+                                                                                        >
+                                                                                            <Video size={20} />Subir video
+                                                                                        </button>
+                                                                                    );
+                                                                                }}
+                                                                            </CldUploadWidget>
+                                                                            <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                                        </div>
+                                                                    </>}
+                                                            </div>
+                                                        </>
+                                                    )
+                                                })}
                                                 {createIndexClass === indiceModulo ? (
                                                     <>
-                                                        <div className="flex items-center justify-start gap-2 w-full mx-2">
+                                                        <div className="flex items-center justify-start gap-2 w-full">
                                                             <div className="font-semibold">Nueva clase: </div>
                                                             <input className="rounded-lg w-4/5 p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce el nombre de la clase" onChange={(e) => setCreateNameClass(e.target.value)} />
                                                         </div>
@@ -902,7 +810,7 @@ export default function ManageCourses() {
                                                             indiceModulo
                                                         )
                                                     }
-                                                    className="flex text-sm items-center gap-1 p-2 mx-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
+                                                    className="flex text-sm items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
                                                 >
                                                     <PlusCircleIcon size={20} /> Añadir
                                                     clase
@@ -966,6 +874,7 @@ export default function ManageCourses() {
                                     <PlusCircleIcon /> Añadir modulo
                                 </button>
                             </div>
+                            <button onClick={() => console.log(modulos)}>Mostrar modulos</button>
                         </form>
                     )}
                 </div>
