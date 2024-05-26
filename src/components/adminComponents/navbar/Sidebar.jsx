@@ -19,14 +19,34 @@ export const Sidebar = ({ estadoSidebar }) => {
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const handleLogout = () => {
-        dispatch(logout())
-        deleteCookie('sessionToken')
-        localStorage.removeItem('sessionToken')
-        localStorage.removeItem('name')
-        return router.push('/auth/login')
-
+    const logoutToken = async ()=>{
+        try {
+            await fetch('http://localhost:3000/api/v1/user/logout',
+        {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + localStorage.getItem('sessionToken'),
+            }
+        });
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     }
+
+    const handleLogout = async () => {
+
+        dispatch(logout());
+        deleteCookie('sessionToken');
+        await logoutToken()
+        localStorage.removeItem('sessionToken');
+        localStorage.removeItem('name');
+        
+       
+        router.push('/auth/login');
+    };
+
 
     return (
         <>

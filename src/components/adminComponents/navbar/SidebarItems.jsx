@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import { usePathname } from "next/navigation";
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 import {
     LineChart,
     Home,
@@ -36,7 +36,7 @@ const listIcons = [
 
 
 export const SidebarItems = () => {
-
+    
     const [windowSize, setWindowSize] = useState({
         width: typeof window !== 'undefined' ? window.innerWidth : 0,
         height: typeof window !== 'undefined' ? window.innerHeight : 0,
@@ -45,7 +45,7 @@ export const SidebarItems = () => {
     const pathActual = usePathname();
 
     const storedData = localStorage.getItem('name');
-    const { Id_Rol_FK } = storedData ? JSON.parse(storedData) : { Id_Rol_FK: 0 };
+    const { Id_Rol_FK } = storedData ? JSON.parse(storedData) : { Id_Rol_FK: 1 };
     
     const url = `http://localhost:3000/api/v1/opciones_roles/rol/${Id_Rol_FK}`
     const { data, isLoading } = useGetFetch(url);

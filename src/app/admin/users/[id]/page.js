@@ -19,7 +19,7 @@ export default function UserDetailDash() {
                 {/* {user statistics} */}
                 <UserStatistics id={id} />
 
-                <div className=' w-full h-auto mr-1 flex p-2 '>
+                <div className=' w-full h-auto mr-1 flex p-2'>
                     <InscriptionTable id={id} />
                 </div>
 

@@ -1,6 +1,6 @@
 'use client';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 import Box from '@mui/material/Box';
 import capitalize from 'capitalize';
 import { useRouter } from 'next/navigation';

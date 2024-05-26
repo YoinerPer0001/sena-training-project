@@ -1,0 +1,36 @@
+
+
+@media (max-width: 480px) {
+    //celulares
+
+    .contInferior {
+        flex-direction: column;
+
+    }
+
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+    .contInferior {
+        flex-direction: column;
+
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    //tablets
+    .contInferior {
+        flex-direction: column;
+
+    }
+
+
+}
+
+@media (min-width: 1024) and (max-width: 1200px) {
+    //tablets
+
+}

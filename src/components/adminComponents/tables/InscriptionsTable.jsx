@@ -1,6 +1,6 @@
 'use client';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useGetFetch } from '../fetchActions/GetFetch';
+import { useGetFetch } from '../../../hooks/fetchActions/GetFetch';
 import ProgressBar from "@ramonak/react-progress-bar";
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
@@ -8,7 +8,6 @@ import { esES as materialEsES } from '@mui/material/locale';
 import { esES } from '@mui/x-data-grid/locales';
 import Image from 'next/image'
 import { lime, purple } from '@mui/material/colors';
-import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 
 
 
@@ -41,7 +40,7 @@ export default function InscriptionTable({ id }) {
     );
 
     if (isLoading) {
-        return <div><Spinner /></div>;
+        return <div>Loading...</div>;
     }
 
 
@@ -95,10 +94,10 @@ export default function InscriptionTable({ id }) {
                 <ProgressBar
                     animateOnRender= "true"
                     labelAlignment='center'
-                    borderRadius='8px'
-                    labelColor={parseFloat(params.value) >= 80 ? '#15803D' : parseFloat(params.value) <= 40 ? '#EF4444' : '#FFFFFF'}
-                    className='mt-4 rounded-lg'
-                    bgColor={parseFloat(params.value) >= 80 ? '#DCFCE7' : parseFloat(params.value) <= 40 ? '#EF4444' : '#F9B588'} completed={parseInt(params.value) || 1} width='100%' />
+                    borderRadius='0'
+                    labelColor={parseFloat(params.value) >= 80 ? '#ffffff' : parseFloat(params.value) <= 40 ? '#ffffff' : '#FFFFFF'}
+                    className='mt-4'
+                    bgColor={parseFloat(params.value) >= 80 ? '#22C55E' : parseFloat(params.value) <= 40 ? '#EF4444' : '#FF6C37'} completed={parseInt(params.value) || 1} width='100%' />
 
 
             )
@@ -113,7 +112,8 @@ export default function InscriptionTable({ id }) {
 
 
 
-        <div className='overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
+        <div className=' overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
+            
             <Box
                 sx={{
                     '& .super-app-theme--header': {
@@ -135,7 +135,10 @@ export default function InscriptionTable({ id }) {
                 }}
             >
                 <ThemeProvider theme={theme}>
+
                     <DataGrid
+                    
+
                         rows={rows}
                         columns={columns}
                         initialState={{
@@ -143,12 +146,14 @@ export default function InscriptionTable({ id }) {
                             pagination: { paginationModel: { pageSize: 5 } },
                         }}
                         pageSizeOptions={[5, 10, 25]}
+                        
                         slots={{ toolbar: GridToolbar }}
                         slotProps={{
                             toolbar: {
                                 showQuickFilter: true,
                             },
                         }}
+                        
                     />
                 </ThemeProvider>
             </Box>
