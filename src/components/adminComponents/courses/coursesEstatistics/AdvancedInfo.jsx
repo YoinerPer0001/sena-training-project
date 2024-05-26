@@ -38,7 +38,7 @@ export const AdvancedInfo = ({ curso }) => {
 
                     <div className='text-white min-h-96 p-4 lg:w-96 sm:w-64 shadow-md bg-white  '>
                         <div className="w-full flex-col h-auto flex items-center justify-center">
-                            <Image className="rounded-full" src={data.InstInfo.Fot_User} width={100} height={100} />
+                            <Image className="rounded-full" src={data.InstInfo.Fot_User} width={100} height={100} alt="Foto de perfil"/>
                             <span className="font-semibold text-md text-[#9b9a9a]">Instructor</span>
                             <span className="font-semibold text-md text-azulSena">{capitalize(data.InstInfo.Nom_User) + " " + capitalize(data.InstInfo.Ape_User)}</span>
                             <span className=" text-md text-[#9b9a9a]">{capitalize(data.InstInfo.Ema_User)}</span>

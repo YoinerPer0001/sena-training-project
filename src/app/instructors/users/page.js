@@ -39,7 +39,7 @@ export default function Users() {
         } catch (error) {
             console.log(error)
         }
-    }, [])
+    }, [token])
 
 
     const handleChange = (e) => {

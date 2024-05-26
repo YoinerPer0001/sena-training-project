@@ -36,7 +36,7 @@ const listIcons = [
 
 
 export const SidebarItems = () => {
-    
+
     const [windowSize, setWindowSize] = useState({
         width: typeof window !== 'undefined' ? window.innerWidth : 0,
         height: typeof window !== 'undefined' ? window.innerHeight : 0,
@@ -44,9 +44,21 @@ export const SidebarItems = () => {
 
     const pathActual = usePathname();
 
-    const storedData = localStorage.getItem('name');
+    let storedData = null;
+
+    // Verificar si localStorage está definido
+    if (typeof localStorage !== 'undefined') {
+        try {
+            storedData = localStorage.getItem('name');
+        } catch (e) {
+            console.error("Se produjo un error al intentar acceder a localStorage:", e);
+        }
+    } else {
+        console.warn("localStorage no está definido en este entorno.");
+    }
+
     const { Id_Rol_FK } = storedData ? JSON.parse(storedData) : { Id_Rol_FK: 1 };
-    
+
     const url = `http://localhost:3000/api/v1/opciones_roles/rol/${Id_Rol_FK}`
     const { data, isLoading } = useGetFetch(url);
 

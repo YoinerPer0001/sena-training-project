@@ -11,7 +11,7 @@ export const UserStatistics = ({ id }) => {
             {!isLoading ? (
                 <div className=' w-full h-auto mb-2 mr-1 grid gap-4 lg:grid-flow-col sm:grid-flow-row p-2 '>
                     
-                        <div class='p-4 flex flex-col text-white min-h-32 w-full shadow-md  bg-gradient-to-r from-[#56DFC4] to-[#56DFC4] '>
+                        <div class='p-4 flex flex-col text-white min-h-32 w-full shadow-sm rounded-lg bg-gradient-to-r from-[#56DFC4] to-[#56DFC4] '>
                             <span className="font-semibold font-sans text-md text-white">Cursos inscritos</span>
                             <span className=" font-extrabold font-sans text-6xl text-white">{data.Inscripciones[0].cantidad}</span>
                         </div>
@@ -24,7 +24,7 @@ export const UserStatistics = ({ id }) => {
 
                   
                     
-                        <div class='p-4 flex flex-col w-full   min-h-32  shadow-md text-white bg-gradient-to-r from-[#FF5774] to-[#FF8398] '>
+                        <div class='p-4 flex flex-col w-full min-h-32 rounded-lg shadow-sm text-white bg-gradient-to-r from-[#FF5774] to-[#FF8398] '>
                             <span className="font-semibold font-sans text-md text-white"> Cursos completados</span>
                             <span className=" font-extrabold font-sans text-6xl text-white">{data.cursosCompletados}</span>
                         </div>
@@ -38,7 +38,7 @@ export const UserStatistics = ({ id }) => {
                    
                   
 
-                        <div class='p-4 flex flex-col w-full text-white min-h-32  shadow-md  bg-gradient-to-r from-[#FFB751] to-[#FFCA7D] '>
+                        <div class='p-4 flex flex-col w-full rounded-lg text-white min-h-32  shadow-sm  bg-gradient-to-r from-[#FFB751] to-[#FFCA7D] '>
                             <span className="font-semibold font-sans text-md text-white">Tiempo en plataforma (mins)</span>
                             <span className=" font-extrabold font-sans text-6xl text-white"> {data.tiempoProm != 'NaN' ? data.tiempoProm : <AlertTriangle className=' font-bold size-12 text-5xl' />}</span>
                         </div>

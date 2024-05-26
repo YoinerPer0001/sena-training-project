@@ -15,6 +15,7 @@ import { Settings2 } from "lucide-react";
 export default function CoursesTable() {
     const url = 'http://localhost:3000/api/v1/courses';
     const { data, isLoading } = useGetFetch(url);
+    const existingTheme = useTheme();
     const router = useRouter();
 
     if (isLoading) {
@@ -32,7 +33,7 @@ export default function CoursesTable() {
     }));
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const existingTheme = useTheme();
+    
 
     const theme = createTheme(
         {

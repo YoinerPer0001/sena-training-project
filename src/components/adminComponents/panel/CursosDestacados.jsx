@@ -18,7 +18,7 @@ export const CursosDestacados = () => {
                         {data.map(curso => {
                             i++;
                             return (
-                                <li className="py-3 sm:py-4">
+                                <li className="py-3 sm:py-4" key={curso.Id_Cur_FK}>
                                     <Link href={`http://localhost:3001/courses/${curso.Id_Cur_FK}`} className="flex items-center space-x-4">
                                         <span className=" h-10 w-10 flex justify-center items-center font-semibold rounded-full  text-white text-2xl bg-verdeSena text-center">{i}</span>
                                         <div className="flex-shrink-0">

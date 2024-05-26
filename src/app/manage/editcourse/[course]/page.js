@@ -31,9 +31,11 @@ import toast from "react-hot-toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
-import { CldUploadWidget } from "next-cloudinary";
+import { CldUploadWidget, CldUploadButton } from "next-cloudinary";
 import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import useContentCourseHandlers from "@/hooks/useContentCourseHandlers";
+import useEditCourse from "@/utils/editCourseFunctions/editCourseInputs/editCourseInputs";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 
 export default function ManageCourses() {
@@ -48,6 +50,7 @@ export default function ManageCourses() {
     const id = pathname.split("/");
     const idCourse = id[id.length - 1];
     const token = getCookie("sessionToken");
+
 
     const {
         modulos,
@@ -121,7 +124,7 @@ export default function ManageCourses() {
                     setLoading(false);
                 }
             });
-    }, []);
+    }, [idCourse]);
 
 
 
@@ -759,7 +762,10 @@ export default function ManageCourses() {
                                                                     <>
                                                                         <hr className="w-full border-gray-300" />
                                                                         <div className="flex items-center justify-end gap-2 w-full">
-                                                                            <CldUploadWidget onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn" options={{multiple: false, sources: ["local", "url", "google_drive" ]}}>
+                                                                            <CldUploadButton onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn">
+
+                                                                            </CldUploadButton>
+                                                                            {/* <CldUploadWidget onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn" options={{multiple: false, sources: ["local", "url", "google_drive" ]}}>
                                                                                 {({ open, results }) => {
                                                                                     console.log(results)
                                                                                     return (
@@ -771,7 +777,7 @@ export default function ManageCourses() {
                                                                                         </button>
                                                                                     );
                                                                                 }}
-                                                                            </CldUploadWidget>
+                                                                            </CldUploadWidget> */}
                                                                             <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
                                                                         </div>
                                                                     </>}

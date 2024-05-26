@@ -50,11 +50,11 @@ const Page = () => {
                 console.log(err);
                 setIsLoading(false);
             });
-    },[classId]);
+    },[classId, courseId]);
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/v1/cont_mod/${classId}`)
-    },[modulos])
+    },[modulos, classId])
 
     return (
         <>

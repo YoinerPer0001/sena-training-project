@@ -15,12 +15,24 @@ export const NavHome = () => {
   console.log(authState)
 
   const handleLogout = () => {
-    dispatch(logout())
-    deleteCookie('sessionToken')
-    localStorage.removeItem('sessionToken')
-    localStorage.removeItem('name')
-    return router.push('/auth/login')
-  }
+    dispatch(logout());
+    deleteCookie('sessionToken');
+
+    // Verificar si localStorage está definido
+    if (typeof localStorage !== 'undefined') {
+      try {
+        localStorage.removeItem('sessionToken');
+        localStorage.removeItem('name');
+        console.log("Elementos eliminados de localStorage.");
+      } catch (e) {
+        console.error("Se produjo un error al intentar acceder a localStorage:", e);
+      }
+    } else {
+      console.warn("localStorage no está definido en este entorno.");
+    }
+
+    return router.push('/auth/login');
+  };
   const handleSubmitTwo = () => {
     dispatch(login())
     console.log(authState)

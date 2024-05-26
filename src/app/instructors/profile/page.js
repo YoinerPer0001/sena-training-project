@@ -24,7 +24,10 @@ export default function Profile() {
     const router = useRouter();
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("name"));
+        let user;
+        if (typeof localStorage !== 'undefined') {
+            user = JSON.parse(localStorage.getItem("name"));
+        }
         if (user) {
             const idUser = user.Id_User;
             fetch(`http://localhost:3000/api/v1/users/${idUser}`, {
@@ -45,7 +48,7 @@ export default function Profile() {
         } else {
             console.log("User not found");
         }
-    }, []);
+    }, [router, token]);
 
     const handleChangeEmail = e => {
         setEditData(prevState => ({

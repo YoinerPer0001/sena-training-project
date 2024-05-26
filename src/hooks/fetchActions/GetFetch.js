@@ -11,14 +11,32 @@ export const useGetFetch = (url) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let sessionToken = null;
+
+        // Verificar si localStorage está definido
+        if (typeof localStorage !== 'undefined') {
+          try {
+            sessionToken = localStorage.getItem('sessionToken');
+          } catch (e) {
+            console.error("Se produjo un error al intentar acceder a localStorage:", e);
+          }
+        } else {
+          console.warn("localStorage no está definido en este entorno.");
+        }
+
         const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('sessionToken')}`
+            'Authorization': sessionToken ? `Bearer ${sessionToken}` : '',
           }
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const result = await response.json();
         setData(result.data);
         setIsLoading(false);

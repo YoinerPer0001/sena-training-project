@@ -94,7 +94,7 @@ export default function InscriptionTable({ id }) {
                 <ProgressBar
                     animateOnRender= "true"
                     labelAlignment='center'
-                    borderRadius='0'
+                    borderRadius='24px'
                     labelColor={parseFloat(params.value) >= 80 ? '#ffffff' : parseFloat(params.value) <= 40 ? '#ffffff' : '#FFFFFF'}
                     className='mt-4'
                     bgColor={parseFloat(params.value) >= 80 ? '#22C55E' : parseFloat(params.value) <= 40 ? '#EF4444' : '#FF6C37'} completed={parseInt(params.value) || 1} width='100%' />

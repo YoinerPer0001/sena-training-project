@@ -16,6 +16,7 @@ import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 export default function UserTable() {
     const url = 'http://localhost:3000/api/v1/users';
     const { data, isLoading } = useGetFetch(url);
+    const existingTheme = useTheme();
 
     if (isLoading) {
         return <div><Spinner /></div>;
@@ -112,8 +113,6 @@ export default function UserTable() {
         },
     ];
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const existingTheme = useTheme();
 
     const theme = createTheme(
         {

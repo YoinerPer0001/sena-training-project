@@ -13,7 +13,7 @@ import { AdvancedInfo } from '@/components/adminComponents/courses/coursesEstati
 import Link from 'next/link'
 
 
-export default function courseDetailsPage() {
+export default function CourseDetailsPage() {
   const now = new Date();
   const pastMonth = new Date(now);
   pastMonth.setMonth(now.getMonth() - 4);

@@ -52,5 +52,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/account/:patch*', '/courses/:patch*', '/admin/:patch*', '/instructors/:patch*']
+    matcher: ['/account/:patch*', '/courses/:patch*', '/admin/:patch*', '/instructors/:patch*', '/manage/:patch*', '/classes/:patch*', '/courses/:patch*', '/messages/:patch*']
 }

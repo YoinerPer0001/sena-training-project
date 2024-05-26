@@ -23,10 +23,22 @@ export const NavCourses = () => {
   }
 
   const logout = () => {
-    deleteCookie('sessionToken')
-    localStorage.removeItem('sessionToken')
-    return router.push('/auth/login')
-  }
+    deleteCookie('sessionToken');
+
+    // Verificar si localStorage está definido
+    if (typeof localStorage !== 'undefined') {
+        try {
+            localStorage.removeItem('sessionToken');
+            console.log("Token de sesión eliminado de localStorage.");
+        } catch (e) {
+            console.error("Se produjo un error al intentar acceder a localStorage:", e);
+        }
+    } else {
+        console.warn("localStorage no está definido en este entorno.");
+    }
+
+    return router.push('/auth/login');
+};
 
 
   return (

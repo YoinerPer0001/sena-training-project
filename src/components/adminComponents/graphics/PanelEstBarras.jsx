@@ -52,7 +52,7 @@ export default function BarrasGraphic() {
           <Filter size={20}/>
         </span>
         <select onChange={onSelectChange} className='border-1 border-gray-300 focus:border-azulSena cursor-pointer text-gray-800 rounded-md py-2 px-4 focus:outline-none  '>
-          {!isLoading && data[0].years.map((year) => (
+          {!isLoading && data[0]?.years?.map((year) => (
             <option key={year.year} value={year.year}>
               {year.year}
             </option>

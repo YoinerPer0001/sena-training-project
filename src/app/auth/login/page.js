@@ -25,9 +25,24 @@ export default function Login() {
         var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-
-        const data = JSON.parse(jsonPayload)
-        return localStorage.setItem('name', JSON.stringify(data.user));
+    
+        const data = JSON.parse(jsonPayload);
+    
+        // Verificar si localStorage está definido
+        if (typeof localStorage !== 'undefined') {
+            // Intentar acceder a localStorage
+            try {
+                localStorage.setItem('name', JSON.stringify(data.user));
+                console.log("El usuario ha sido guardado en localStorage.");
+            } catch (e) {
+                console.error("Se produjo un error al intentar acceder a localStorage:", e);
+            }
+        } else {
+            console.warn("localStorage no está definido en este entorno.");
+        }
+    
+        // Devolver el objeto data.user por si necesitas usarlo después
+        return data.user;
     }
     
 
@@ -59,18 +74,29 @@ export default function Login() {
     
             const responseJSON = await response.json();
             if (responseJSON.type == 'success') {
-                localStorage.setItem('sessionToken', responseJSON.data);
-                setCookie('sessionToken', responseJSON.data);
-                handleSubmitTwo()
-                parseJwt(responseJSON.data)
-                const dataUser = jwtDecode(responseJSON.data);
-                setLoading(false)
-                if(dataUser.user.Id_Rol_FK == 1){
-                    return router.push('/admin/dashboard')
-                }else{
-                    return router.push('/')
+                if (typeof localStorage !== 'undefined') {
+                    try {
+                        localStorage.setItem('sessionToken', responseJSON.data);
+                        console.log("El token de sesión ha sido guardado en localStorage.");
+                    } catch (e) {
+                        console.error("Se produjo un error al intentar acceder a localStorage:", e);
+                    }
+                } else {
+                    console.warn("localStorage no está definido en este entorno.");
                 }
-                
+            
+                setCookie('sessionToken', responseJSON.data);
+                handleSubmitTwo();
+                parseJwt(responseJSON.data);
+            
+                const dataUser = jwtDecode(responseJSON.data);
+                setLoading(false);
+            
+                if (dataUser.user.Id_Rol_FK == 1) {
+                    return router.push('/admin/dashboard');
+                } else {
+                    return router.push('/');
+                }
             }
             else if (responseJSON.code == 108) {
                 return

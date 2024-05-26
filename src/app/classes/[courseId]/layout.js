@@ -24,7 +24,7 @@ export default function CoursesLayout({ children }) {
                 console.log(err)
                 setIsLoading(false)
             })
-    }, [])
+    }, [courseId])
 
     return (
         <>
