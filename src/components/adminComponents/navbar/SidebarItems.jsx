@@ -79,8 +79,8 @@ export const SidebarItems = () => {
         <div className="w-full flex flex-col px-3 items-start justify-start">
             {windowSize.width > 1214 ? isLoading ? 'Cargando...' : data.map(opcion => (
                 <Link key={opcion.Opcion.id_opcion} href={opcion.Opcion.url}
-                    className={`w-full  px-2 inline-flex space-x-2 items-center border-slate-700 py-3  hover:bg-white/5 transition ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875] border-b'}`}>
-                    <div key={opcion.Opcion.id_opcion} className="flex flex-row w-full justify-start">
+                    className={`w-full  px-2 inline-flex space-x-2 items-center border-slate-700 py-3  hover:bg-[#00000050] transition rounded-lg ease-linear duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena hover:bg-verdeSena font-medium'}`}>
+                    <div key={opcion.Opcion.id_opcion} className="flex flex-row items-center w-full justify-start">
                         <div key={opcion.Opcion.id_opcion} className="mx-2">
                             {listIcons[opcion.Opcion.id_opcion - 1].icon}
                         </div>

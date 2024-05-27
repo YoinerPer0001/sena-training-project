@@ -5,7 +5,7 @@ export default function usersPage() {
   
   return (
     <div className={`h-full w-full flex`}>
-      <div className={`${styles.contUsersTable} max-h-full- min-w-full lg:md:xl:p-0 flex items-start p-1`}>
+      <div className={`${styles.contUsersTable} max-h-full- min-w-full flex items-start p-4`}>
         <UserTable />
       </div>
 

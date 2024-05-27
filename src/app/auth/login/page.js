@@ -11,6 +11,7 @@ import { CircleX } from 'lucide-react';
 import { useState } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
+import CircleSpinner from '@/components/usersComponents/CircleSpinner/CircleSpinner';
 
 export default function Login() {
     const classInputs = "my-2 px-3 py-2 rounded-lg outline outline-[1px] outline-gray-500 focus:outline-[#39A900] text-black"
@@ -138,7 +139,7 @@ export default function Login() {
                         <CircleX size={18}/> {msgError.state == true ? msgError.msg : ''}
                     </div>
                     <div className="mt-2">
-                        <button type="submit" className="inline-block bg-[#39A900] lg:text-white lg:bg-[#00324D] text-white  py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 cursor-pointer">Iniciar sesión</button>
+                        <button type="submit" className="inline-block bg-[#39A900] lg:text-white lg:bg-[#00324D] text-white  py-2 px-3 rounded-xl text-base font-semibold hover:bg-black transition-all duration-200 cursor-pointer">{loading ? <CircleSpinner /> : "Iniciar sesión" }</button>
                     </div>
                 </form>
                 {/* Olvidó su contraseña? */}
