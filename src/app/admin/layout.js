@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/adminComponents/navbar/Sidebar";
 import { usePathname } from "next/navigation";
 import { Bell, Menu  } from "lucide-react";
 import Image from 'next/image'
+import IconNotify from "@/components/adminComponents/navbar/IconNotify";
 
 
 export default function AdminLayout({ children }) {
@@ -37,7 +38,8 @@ export default function AdminLayout({ children }) {
             </div>
           </div>
           <div className=" lg:md:xl:w-1/6 sm:w-1/3  h-full  flex flex-row-reverse py-3 justify-center items-center">
-            <Bell className="text-2xl mx-3"/>
+            {/* {notification Icon} */}
+            <IconNotify/>
             <Image priority width={50} height={50} className="rounded-full lg:md:xl:hidden sm:block" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80" alt="logo.png" />
           </div>
 
