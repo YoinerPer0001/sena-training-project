@@ -63,8 +63,7 @@ export default function Content() {
                         <input className='p-2 rounded-lg border outline-none border-gray-200 focus:border-azulSena' name='search_filter_courses' type="text" placeholder="Filtrar por nombre" onChange={handleChange} />
                     </div>
                     <div className='flex gap-2'>
-                        <Link href={'/content/export'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><FileInput />Exportar PDF</Link>
-                        <Link href={'/content/create'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><CirclePlus />Crear nuevo curso</Link>
+                        <Link href={'/manage/create'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><CirclePlus />Crear nuevo curso</Link>
                     </div>
                 </div>
             </div>

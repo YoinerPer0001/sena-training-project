@@ -2,11 +2,12 @@
 import { Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
-
 import { useState, useEffect } from 'react'
+import { usePathname } from "next/navigation";
 
 export default function AccountLayout({ children }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname()
 
     const menuItems = [
         "Profile",
@@ -45,33 +46,21 @@ export default function AccountLayout({ children }) {
                         <Link href={'/'}>
                             <Image priority={true} src={'/logo-senalearn-(white).png'} width={50} height={50} alt="Logo SENA Learn" />
                         </Link>
-                        <NavbarItem>
-                            <Link className="text-white" href="#">
-                                Features
-                            </Link>
-                        </NavbarItem>
-                        <NavbarItem isActive>
-                            <Link href="#" aria-current="page">
-                                Customers
-                            </Link>
-                        </NavbarItem>
-                        <NavbarItem>
-                            <Link color="foreground" href="#">
-                                Integrations
-                            </Link>
-                        </NavbarItem>
+                        {pathname === '/manage/create' ? <NavbarItem>
+                            <div className="text-white font-semibold text-lg">
+                                Crear curso nuevo
+                            </div>
+                        </NavbarItem> : ''}
                     </NavbarContent>
 
-                    <NavbarContent justify="end">
-                        <NavbarItem className="hidden lg:flex">
-                            <Link href="#">Login</Link>
-                        </NavbarItem>
-                        <NavbarItem>
-                            <Button as={Link} color="warning" href="#" variant="flat">
-                                Sign Up
-                            </Button>
-                        </NavbarItem>
-                    </NavbarContent>
+
+                    {pathname !== '/manage/create' ?
+                        <NavbarContent justify="end">
+                            <NavbarItem className="hidden lg:flex">
+                                <button className="bg-azulSecundarioSena p-2 rounded-lg text-black hover:text-white font-semibold hover:bg-black transition-all duration-150">Enviar a revisión</button>
+                            </NavbarItem>
+                        </NavbarContent> : ''}
+
 
                     <NavbarMenu>
                         {menuItems.map((item, index) => (

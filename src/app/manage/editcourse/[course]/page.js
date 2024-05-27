@@ -6,6 +6,7 @@ import Image from "next/image";
 import {
     AlertCircle,
     ArrowLeftToLine,
+    BookCheck,
     ChevronDown,
     ChevronLeft,
     Edit,
@@ -31,11 +32,10 @@ import toast from "react-hot-toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
-import { CldUploadWidget, CldUploadButton } from "next-cloudinary";
 import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
 import useContentCourseHandlers from "@/hooks/useContentCourseHandlers";
 import useEditCourse from "@/utils/editCourseFunctions/editCourseInputs/editCourseInputs";
-import { Cloudinary } from "@cloudinary/url-gen";
+import UploadButtonWidget from "@/components/instructorsComponents/UploadButtonWidget/UploadButtonWidget";
 
 
 export default function ManageCourses() {
@@ -350,7 +350,7 @@ export default function ManageCourses() {
 
     const [contenidoVisible, setContenidoVisible] = useState("");
     const toggleContenidoVisible = (indiceClase) => {
-        if(indiceClase == contenidoVisible) {
+        if (indiceClase == contenidoVisible) {
             setContenidoVisible("");
         } else {
             setContenidoVisible(indiceClase)
@@ -745,42 +745,41 @@ export default function ManageCourses() {
                                                 {modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => {
                                                     return (
                                                         <>
-                                                            <div onClick={() => toggleContenidoVisible(cont.Id_Cont)} className="flex cursor-pointer flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
+                                                            <div className="flex flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
                                                                 <div className="flex items-center justify-between gap-2 w-full">
                                                                     <div className="flex items-center gap-4">
-                                                                        <span className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{cont.Tit_Cont}</span>
+                                                                        <span className="flex items-center gap-2 text-md font-semibold"><BookCheck size={20} />{cont.Tit_Cont}</span>
                                                                         <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
                                                                             <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
                                                                             <button value={cont.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                                         </div>
                                                                     </div>
-                                                                    <button>
+                                                                    <button onClick={() => toggleContenidoVisible(cont.Id_Cont)}>
                                                                         {contenidoVisible == cont.Id_Cont ? <ChevronDown /> : <ChevronLeft />}
                                                                     </button>
                                                                 </div>
-                                                                {contenidoVisible == cont.Id_Cont &&
-                                                                    <>
-                                                                        <hr className="w-full border-gray-300" />
-                                                                        <div className="flex items-center justify-end gap-2 w-full">
-                                                                            <CldUploadButton onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn">
-
-                                                                            </CldUploadButton>
-                                                                            {/* <CldUploadWidget onSuccess={(results) => subirVideoContenido(cont.Id_Cont, results.info.secure_url)} uploadPreset="senalearn" options={{multiple: false, sources: ["local", "url", "google_drive" ]}}>
-                                                                                {({ open, results }) => {
-                                                                                    console.log(results)
-                                                                                    return (
-                                                                                        <button
-                                                                                            class="bg-azulSena text-sm flex items-center gap-1 text-white p-2 rounded-lg hover:bg-black transition-all duration-150"
-                                                                                            onClick={() => open()}
-                                                                                        >
-                                                                                            <Video size={20} />Subir video
-                                                                                        </button>
-                                                                                    );
-                                                                                }}
-                                                                            </CldUploadWidget> */}
-                                                                            <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
-                                                                        </div>
-                                                                    </>}
+                                                                {cont.Url_Cont === null || cont.Url_Cont === '' ? <>
+                                                                    <hr className={`w-full border-gray-300 mb-2 ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`} />
+                                                                    <div className={`flex items-center justify-end gap-2 w-full ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`}>
+                                                                        <UploadButtonWidget
+                                                                            cont={cont}
+                                                                            subirVideoContenido={subirVideoContenido}
+                                                                            setContenidoVisible={setContenidoVisible}
+                                                                            label={'Subir video'}
+                                                                        />
+                                                                        <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                                    </div>
+                                                                </> : <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`}>
+                                                                        <Link href={`${cont.Url_Cont}`} className="p-2 rounded-lg underline">
+                                                                            {cont.Tip_Cont == '2' && <span className="flex items-center gap-2"><Video size={20}/> Ver video</span>}
+                                                                        </Link>
+                                                                        <UploadButtonWidget
+                                                                            cont={cont}
+                                                                            subirVideoContenido={subirVideoContenido}
+                                                                            setContenidoVisible={setContenidoVisible}
+                                                                            label={'Cambiar video'}
+                                                                        />
+                                                                    </div>}
                                                             </div>
                                                         </>
                                                     )
@@ -794,7 +793,6 @@ export default function ManageCourses() {
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <button
                                                                 onClick={() => {
-                                                                    console.log(modulo)
                                                                     createClass(
                                                                         modulo.Id_Mod
                                                                     )
@@ -878,7 +876,6 @@ export default function ManageCourses() {
                                     <PlusCircleIcon /> Añadir modulo
                                 </button>
                             </div>
-                            <button onClick={() => console.log(modulos)}>Mostrar modulos</button>
                         </form>
                     )}
                 </div>

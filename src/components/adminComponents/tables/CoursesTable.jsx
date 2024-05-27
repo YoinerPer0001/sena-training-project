@@ -31,10 +31,7 @@ export default function CoursesTable() {
         col5: capitalize(item.Instructor?.Nom_User == null ? 'Sin instructor' : item.Instructor.Nom_User) ,
         col6: item.ESTADO_REGISTRO
     }));
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     
-
     const theme = createTheme(
         {
             components: {
@@ -52,11 +49,11 @@ export default function CoursesTable() {
     const columns = [
         { field: 'col1', headerName: 'Titulo', width: 200, headerClassName: 'super-app-theme--header' },
         { field: 'col2', headerName: 'Fecha Creación', width: 150, headerClassName: 'super-app-theme--header' },
-        { field: 'col3', headerName: 'Categoria', width: 250, headerClassName: 'super-app-theme--header' },
+        { field: 'col3', headerName: 'Categoria', width: 200, headerClassName: 'super-app-theme--header' },
         {
             field: 'col4',
             headerName: 'Est. Publicación',
-            width: 150,
+            width: 180,
             headerClassName: 'super-app-theme--header',
             valueGetter: (params) => {
                 if (params === 1) {
@@ -123,13 +120,10 @@ export default function CoursesTable() {
             sx={{
                 '& .super-app-theme--header': {
                     backgroundColor: '#ffffff',
-                    borderRadius: '8px',
 
                 },
-
                 '& .MuiDataGrid-columnHeaderTitle': {
                     fontWeight: 'bold',
-                    borderRadius: '8px',
                 },
 
                 '& .MuiButtonBase-root': {

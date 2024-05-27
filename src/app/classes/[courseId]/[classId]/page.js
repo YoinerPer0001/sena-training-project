@@ -80,7 +80,7 @@ const Page = () => {
                 <div className="w-full flex flex-col gap-2 items-center">
                     {modulos?.map((modulo, index) => (
                         <div key={modulo.Id_Mod} className="w-full">
-                            <div onClick={() => toggleContenidoVisible(modulo.Id_Mod)} className="flex cursor-pointer flex-col group gap-3 items-start bg-gray-100 text-black p-3 rounded-lg w-full">
+                            <div onClick={() => toggleContenidoVisible(modulo.Id_Mod)} className="flex cursor-pointer flex-col group gap-3 items-start bg-white text-black p-3 rounded-lg w-full">
                                 <div className="flex items-center justify-between gap-2 w-full">
                                     <div className="flex items-center gap-4">
                                         <span className="flex items-center gap-2 text-md font-semibold">Modulo {index + 1}: {modulo.Tit_Mod}</span>
@@ -91,7 +91,7 @@ const Page = () => {
                                 </div>
                                 {contenidoVisible === modulo.Id_Mod && modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => (
                                     <div className="flex flex-col gap-2 items-start w-full" key={cont.Id_Cont}>
-                                        <div className={`flex cursor-pointer flex-col group gap-3 items-start text-black p-2 rounded-lg w-full ${classId == cont.Id_Cont ? 'bg-verdeSena' : 'bg-white'}`}>
+                                        <div className={`flex cursor-pointer flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full ${classId == cont.Id_Cont ? 'bg-verdeSena' : 'bg-white'}`}>
                                             <div className="flex items-center justify-between gap-2 w-full">
                                                 <div className="flex items-center gap-4">
                                                     <span className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{cont.Tit_Cont}</span>

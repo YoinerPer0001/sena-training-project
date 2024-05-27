@@ -60,15 +60,15 @@ export default function UserTable() {
         {
             field: 'col1',
             headerName: 'Nombre',
-            width: 200,
+            width: 150,
             headerClassName: 'super-app-theme--header'
         },
         { field: 'col2', headerName: 'Telefono', width: 150, headerClassName: 'super-app-theme--header', },
-        { field: 'col3', headerName: 'Email', width: 250, headerClassName: 'super-app-theme--header', },
+        { field: 'col3', headerName: 'Email', width: 150, headerClassName: 'super-app-theme--header', },
         {
             field: 'col4',
             headerName: 'Estado email',
-            width: 100,
+            width: 120,
             headerClassName: 'super-app-theme--header',
             renderCell: (params) => {
                 if (params.row.col4 === 1) {
@@ -130,7 +130,7 @@ export default function UserTable() {
 
     return (
 
-        <div className=' overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
+        <div className='overflow-hidden' style={{ backgroundColor: '#F6F4F2', overflow: 'hidden', width: '100%' }}>
             <Box
                 sx={{
                     '& .super-app-theme--header': {
