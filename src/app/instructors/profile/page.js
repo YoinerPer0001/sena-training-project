@@ -83,6 +83,12 @@ export default function Profile() {
     };
 
     const editFunction = () => {
+        if(Object.keys(editData).length === 0){
+            console.log("editData está vacío, no se ejecutará el fetch.");
+            return toast.error(
+                "No se pudo editar el perfil, intenta de nuevo."
+            );
+        }
         try {
             fetch(
                 `http://localhost:3000/api/v1/users/update/${dataUser.Id_User}`,
@@ -190,8 +196,9 @@ export default function Profile() {
                             </div>
                         </form>
                         <button
+                            disabled={`${Object.keys(editData).length === 0 ? true : false}`}
                             onClick={editFunction}
-                            className="bg-azulSena hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2"
+                            className={`bg-azulSena disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
                         >
                             Actualizar perfil
                         </button>

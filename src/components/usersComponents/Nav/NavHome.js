@@ -78,7 +78,11 @@ export const NavHome = () => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="settings" href='/instructors/profile'><div className='flex items-center gap-1'><Bolt size={18} /> Configuración</div></DropdownItem>
+              <DropdownItem key="settings" href='/instructors/profile'>
+                <div className='flex items-center gap-1'>
+                  <Bolt size={18} /> Mi cuenta
+                </div>
+              </DropdownItem>
               <DropdownItem key="logout" color="danger">
                 <div onClick={handleLogout} className='flex items-center gap-1'>
                   <LogOutIcon size={18} />Cerrar sesión
