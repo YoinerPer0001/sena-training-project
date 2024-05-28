@@ -42,19 +42,19 @@ export default function CourseDetailsPage() {
 
               <div className='w-full flex flex-col justify-start  items-center'>
                 <Link href={`http://localhost:3001/courses/${id}`}>
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">
+                  <button class="bg-azulSena hover:bg-black transition-all duration-150 rounded-lg text-white font-bold py-2 px-4">
                     Vista de estudiante
                   </button>
                 </Link>
                 <Link className='my-3' href={`http://localhost:3001/manage/editcourse/${id}`}>
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">
+                  <button class="bg-azulSena hover:bg-black transition-all duration-150 rounded-lg text-white font-bold py-2 px-4">
                     Editar
                   </button>
                 </Link>
 
               </div>
 
-              <div className='h-full flex flex-col justify-center items-center '>
+              <div className='h-full flex flex-col justify-center items-center rounded-lg'>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker defaultValue={dayjs(FechIn)} onChange={setFechIn} label="Desde" />

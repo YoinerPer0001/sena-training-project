@@ -39,7 +39,7 @@ function Page() {
           const name = course.Nom_Cur
           const parseName = name.replaceAll(' ', '-').toLowerCase()
           return (
-            <SignUpCards href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={`/port${index}.webp`} category={course.Categoria.Nom_Cat} />
+            <SignUpCards href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={course.Fot_Cur || '/defaultBackground.webp'} category={course.Categoria.Nom_Cat} />
           )
         })}
       </div>

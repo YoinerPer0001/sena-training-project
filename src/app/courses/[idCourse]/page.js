@@ -3,9 +3,10 @@ import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { CircleCheckBig, GraduationCap, ListChecks, BadgeAlert, BarChart, BookText, Clock, Video, FileType } from 'lucide-react';
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner"
-import styles from './CourseDetails.module.scss'
 import Image from "next/image";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import { useSelector } from "react-redux";
+import { getCookie } from "cookies-next";
 
 
 const colors = {
@@ -17,50 +18,106 @@ const colors = {
 
 
 export default function CourseDetails() {
-    const [dataCourse, setDataCourse] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [scroll, setScroll] = useState(false)
-    const router = useRouter()
-    const params = useParams()
+    const [dataCourse, setDataCourse] = useState({});
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+    const { idCourse } = useParams() // Usar router.query para obtener el idCourse de la URL
+    const token = getCookie('sessionToken');
+
+    const authState = useSelector(state => state.auth);
+    const user = authState.user;
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/v1/courses/${params.courseName}`)
+        if (!idCourse) return;
+
+        fetch(`http://localhost:3000/api/v1/courses/${idCourse}`)
             .then(data => data.json())
             .then(data => {
-                setLoading(false)
-                setDataCourse(data.data)
+                setLoading(false);
+                setDataCourse(data.data);
             })
-    }, [params])
+            .catch(err => console.error('Error fetching course data:', err));
+    }, [idCourse]);
 
-    const defaultContent =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+    const subscribe = async () => {
+        if (!token) {
+            return console.error('No se encontró el token');
+        }
+
+        try {
+            const inscriptionResponse = await fetch(`http://localhost:3000/api/v1/inscription/create`, {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Id_User: user.Id_User,
+                    Id_Cur: idCourse
+                })
+            });
+
+            const inscriptionData = await inscriptionResponse.json();
+
+            if (inscriptionData.type === 'success') {
+                const modulesResponse = await fetch(`http://localhost:3000/api/v1/modulo_curso/${idCourse}`);
+                const modules = await modulesResponse.json();
+                const modulesData = await modules.data
+
+                if (modulesData.length > 0 && modulesData[0].Contenido_Modulos.length > 0) {
+                    const firstClassId = modulesData[0].Contenido_Modulos[0].Id_Cont;
+                    router.push(`/classes/${idCourse}/${firstClassId}`);
+                } else {
+                    console.error('No se encontraron clases para el curso.');
+                }
+            } else if (inscriptionData.code === 409) {
+                throw new Error('Error en la inscripción, el usuario ya está inscrito');
+            } else {
+                throw new Error('Error en la inscripción');
+            }
+        } catch (err) {
+            console.log('Error en la inscripción: ', err);
+        }
+    };
+
     return (
         <main className="flex flex-col lg:flex-grow max-w-[1024px] my-0 mx-auto">
             <section className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 items-center my-6">
                     <div className="flex gap-2 justify-center md:justify-between w-full items-center">
                         <div className="flex flex-col gap-2 md:min-w-[541px]">
-                            <div className="flex justify-center w-full md:hidden"><GraduationCap size={36} color="#39a900" /></div>
+                            <div className="flex justify-center w-full md:hidden">
+                                <GraduationCap size={36} color="#39a900" />
+                            </div>
                             <div className="mb-4 md:w-5/6">
-                                {loading ? <div class="md:w-5/6">
-                                    <div class="bg-gray-200 rounded-full dark:bg-gray-700 w-full h-6 mb-4"></div>
-                                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
-                                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
-                                    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
-                                </div> : ''}
+                                {loading ? (
+                                    <div className="md:w-5/6">
+                                        <div className="bg-gray-200 rounded-full dark:bg-gray-700 w-full h-6 mb-4"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
+                                    </div>
+                                ) : (
+                                    ''
+                                )}
                                 <h1 className="font-bold text-2xl sm:text-3xl">{dataCourse.Nom_Cur}</h1>
                                 <p className="text-sm sm:text-base font-medium">{dataCourse.Des_Cur}</p>
                             </div>
                             <div className="flex flex-col gap-4 md:w-5/6 md:min-w-5/6">
                                 <div className="flex flex-col gap-2">
                                     <h4 className="text-base font-semibold">Requisitos:</h4>
-                                    <div className="text-sm lg:text-base font-semibold lg:font-medium p-3 border-1 border-azulSena rounded-lg flex items-center justify-start gap-2"><span><BadgeAlert /></span> Este curso no cuenta con requisitos previos.</div>
+                                    <div className="text-sm lg:text-base font-semibold lg:font-medium p-3 border-1 border-azulSena rounded-lg flex items-center justify-start gap-2">
+                                        <span><BadgeAlert /></span> Este curso no cuenta con requisitos previos.
+                                    </div>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                    <div className=" bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base"><BookText size={20} /> <p>23 clases</p></div>
-                                    <div className=" bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base"><Clock size={20} /> <p>Duración: <span>10h 24m</span></p></div>
-
+                                    <div className="bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base">
+                                        <BookText size={20} /> <p>23 clases</p>
+                                    </div>
+                                    <div className="bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base">
+                                        <Clock size={20} /> <p>Duración: <span>10h 24m</span></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +129,7 @@ export default function CourseDetails() {
                     </div>
                 </div>
                 <div className="w-full flex justify-center items center">
-                    <button className="w-full md:w-[200px] p-3 text-white rounded-lg font-semibold bg-[#00324D] hover:bg-black transition-all duration-200">¡Inscribirse!</button>
+                    <button onClick={subscribe} className="w-full md:w-[200px] p-3 text-white rounded-lg font-semibold bg-[#00324D] hover:bg-black transition-all duration-200">¡Inscribirse!</button>
                 </div>
 
                 {/* CONTENIDO DEL CURSO */}
@@ -135,5 +192,5 @@ export default function CourseDetails() {
                 </div>  
             </section>
         </main>
-    )
+    );
 }

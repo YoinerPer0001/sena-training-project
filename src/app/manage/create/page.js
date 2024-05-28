@@ -110,7 +110,7 @@ export default function CreateCourse() {
       .then((response) => {
         if (response.type === 'success') {
           toast.success('Curso creado correctamente')
-          router.push(`/admin/content/manage/${response.data.InsertedId}`)
+          router.push(`/manage/editcourse/${response.data.InsertedId}`)
         }
       });
 

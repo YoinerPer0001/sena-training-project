@@ -87,10 +87,8 @@ const useContentCourseHandlers = (token, idCourse) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    Tip_Cont: 1,
                     Id_Mod_FK: modulo,
                     Tit_Cont: createNameClass,
-                    Duracion: 20,
                     Indice: nuevoIndice
                 }),
             });
@@ -99,10 +97,9 @@ const useContentCourseHandlers = (token, idCourse) => {
     
             if (responseData.type === "success") {
                 const newClass = {
-                    Tip_Cont: 1,
                     Id_Mod_FK: modulo,
                     Tit_Cont: createNameClass,
-                    Duracion: 20,
+                    Indice: nuevoIndice
                 };
     
                 setModulos(prevModulos => {

@@ -9,6 +9,7 @@ import {
     BookCheck,
     ChevronDown,
     ChevronLeft,
+    CircleFadingPlus,
     Edit,
     Eye,
     File,
@@ -401,7 +402,7 @@ export default function ManageCourses() {
                     {page === 1 && (
                         <div>
                             <form
-                                className="my-4 flex flex-col w-3/4 lg:w-2/4 gap-8 mx-auto font-medium"
+                                className="my-4 flex flex-col max-w-[1024px] w-[1024px] lg:w-[1024px] gap-8 mx-auto font-medium"
                                 onSubmit={e => e.preventDefault()}
                             >
                                 <div className="flex flex-col gap-1">
@@ -586,7 +587,7 @@ export default function ManageCourses() {
                                     <label className="font-semibold text-lg">
                                         Portada del curso
                                     </label>
-                                    <div className="flex gap-2 justify-center flex-col items-center">
+                                    <div className="flex gap-2 justify-center flex-col items-start">
                                         <p>El tamaño recomendado es de 1280x720. La imagen se recortara automáticamente a este tamaño.</p>
                                         {subirImagen === true ||
                                             dataCourse.Fot_Cur === null ? (
@@ -701,7 +702,7 @@ export default function ManageCourses() {
                     )}
                     {page === 2 && (
                         <form
-                            className="my-4 flex flex-col w-full sm:w-3/4 lg:w-2/4 gap-8 mx-auto"
+                            className="my-4 flex flex-col max-w-[1024px] w-full sm:w-[1024px] lg:w-[1024px] gap-8 mx-auto"
                             onSubmit={e => e.preventDefault()}
                         >
                             <div className="flex flex-col gap-2 items-center">
@@ -770,16 +771,16 @@ export default function ManageCourses() {
                                                                         <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
                                                                     </div>
                                                                 </> : <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`}>
-                                                                        <Link href={`${cont.Url_Cont}`} className="p-2 rounded-lg underline">
-                                                                            {cont.Tip_Cont == '2' && <span className="flex items-center gap-2"><Video size={20}/> Ver video</span>}
-                                                                        </Link>
-                                                                        <UploadButtonWidget
-                                                                            cont={cont}
-                                                                            subirVideoContenido={subirVideoContenido}
-                                                                            setContenidoVisible={setContenidoVisible}
-                                                                            label={'Cambiar video'}
-                                                                        />
-                                                                    </div>}
+                                                                    <Link href={`${cont.Url_Cont}`} className="p-2 rounded-lg underline">
+                                                                        {cont.Tip_Cont == '2' && <span className="flex items-center gap-2"><Video size={20} /> Ver video</span>}
+                                                                    </Link>
+                                                                    <UploadButtonWidget
+                                                                        cont={cont}
+                                                                        subirVideoContenido={subirVideoContenido}
+                                                                        setContenidoVisible={setContenidoVisible}
+                                                                        label={'Cambiar video'}
+                                                                    />
+                                                                </div>}
                                                             </div>
                                                         </>
                                                     )
@@ -840,7 +841,7 @@ export default function ManageCourses() {
                                                     }
                                                     className="border w-full border-gray-300 rounded-lg p-2 outline-none focus:border-azulSena"
                                                 />
-                                                <div className="flex items-center gap-2">
+                                                <div className="flex items-center justify-center gap-2">
                                                     <button
                                                         onClick={agregarModulo}
                                                         className="p-2 flex items-center gap-1 disabled:cursor-not-allowed rounded-lg bg-azulSena text-white hover:bg-black transition-all duration-150 disabled:opacity-50 font-medium"
@@ -849,7 +850,7 @@ export default function ManageCourses() {
                                                             ""
                                                         }
                                                     >
-                                                        <PlusCircleIcon />{" "}
+                                                        <CircleFadingPlus />{" "}
                                                         Agregar módulo
                                                     </button>
                                                     <button
@@ -867,14 +868,16 @@ export default function ManageCourses() {
                                         </div>
                                     )}
                                 </div>
-                                <button
-                                    onClick={() =>
-                                        setMostrarAgregarModulo(true)
-                                    }
-                                    className="my-4 transition-all duration-150 flex items-center gap-2 text-white bg-azulSena hover:bg-black p-2 rounded-lg font-medium"
-                                >
-                                    <PlusCircleIcon /> Añadir modulo
-                                </button>
+                                <div className="flex w-full justify-center items-center">
+                                    <button
+                                        onClick={() =>
+                                            setMostrarAgregarModulo(true)
+                                        }
+                                        className="my-4 transition-all justify-center duration-150 flex items-center gap-2 text-white bg-azulSena hover:bg-black p-2 rounded-lg font-medium"
+                                    >
+                                        <PlusCircleIcon /> Añadir modulo
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     )}
