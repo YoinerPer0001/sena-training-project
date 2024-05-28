@@ -2,7 +2,6 @@
 import { useParams } from 'next/navigation'
 import styles from './userDashboard.module.scss'
 import InscriptionTable from '@/components/adminComponents/tables/InscriptionsTable';
-import UserTable from '@/components/adminComponents/tables/UserTables';
 import { UserStatistics } from '@/components/adminComponents/users/UserStatisctics/UserStatistics';
 import { InfoPerfil } from '@/components/adminComponents/users/UserStatisctics/InfoPerfil';
 
