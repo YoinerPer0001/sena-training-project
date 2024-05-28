@@ -5,7 +5,6 @@ export const CursosDestacados = () => {
 
     const { data, isLoading } = useGetFetch('http://localhost:3000/api/statistics/courses/featured')
     let i = 0;
-    console.log(data)
     return (
         <div className=" bg-white h-full rounded-lg border shadow-sm p-4 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between items-center mb-4">

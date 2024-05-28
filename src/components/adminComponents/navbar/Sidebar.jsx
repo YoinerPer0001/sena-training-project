@@ -61,11 +61,10 @@ export const Sidebar = ({ estadoSidebar }) => {
             // Dispatch para cerrar la sesión en el cliente
             dispatch(logout());
 
-            // Eliminar el token de sesión del cliente y del servidor
+            
             deleteCookie('sessionToken');
             await logoutToken(); // Suponiendo que logoutToken() maneja la eliminación del token en el servidor
 
-            // Eliminar el token de sesión del localStorage
             if (typeof localStorage !== 'undefined') {
                 localStorage.removeItem('sessionToken');
                 localStorage.removeItem('name');
@@ -73,11 +72,11 @@ export const Sidebar = ({ estadoSidebar }) => {
                 console.warn("localStorage no está definido en este entorno.");
             }
 
-            // Redirigir al usuario a la página de inicio de sesión
+            
             router.push('/auth/login');
         } catch (error) {
             console.error('Error durante el cierre de sesión:', error);
-            // Podrías mostrar un mensaje de error al usuario o realizar otras acciones de manejo de errores aquí
+            
         }
     };
 
