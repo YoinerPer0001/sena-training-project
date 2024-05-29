@@ -72,7 +72,7 @@ const IconNotify = () => {
                 )}
             </button>
 
-            <div className={`absolute right-0 mt-8 lg:mr-8 md:lg:xl:2xl:w-96 bg-white rounded-md shadow-lg overflow-hidden z-20 transition-all duration-300 ease-out ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+            <div className={`absolute right-0 shadow-xl shadow-[#00000050] mt-8 lg:mr-8 md:lg:xl:2xl:w-96 bg-white rounded-md overflow-hidden z-20 transition-all duration-300 ease-out ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                 {!isLoading && data.map(notificacion => (
                     !notificacion.leida && (
                         <div key={notificacion.Id_Not_Usu} className="flex items-center py-2 border-b border-gray-200">
@@ -91,8 +91,8 @@ const IconNotify = () => {
                         </div>
                     )
                 ))}
-                {data.length < 1 && <div className='w-full flex items-center py-4 px-4 text-sm text-center'>No se encontraron nuevas notificaciones</div>}
-                <Link href="#" className="block bg-azulSena text-white text-center font-bold py-2">Ver todas</Link>
+                {data.length < 1 && <div className='w-full flex items-center py-4 px-4 text-sm font-medium text-center justify-center'>No se encontraron nuevas notificaciones</div>}
+                <Link href="#" className="block bg-azulSena hover:bg-black transition-all duration-150 text-white text-center font-semibold py-2">Ver todas</Link>
             </div>
         </div>
     );
