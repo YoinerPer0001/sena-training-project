@@ -12,10 +12,7 @@ export default function createPage() {
     const [CamposState, setCamposState] = useState(false)
 
     const { data, isLoading, Error, postData } = usePostFetch(url);
-
-   
     
-
     const crearNot = async () => {
 
         if (Titulo.trim() === '' || Mensaje.trim() === '') {
@@ -49,7 +46,7 @@ export default function createPage() {
     }
 
     return (
-        <div className=" w-full lg:w-2/3 rounded-md shadow-md h-full flex flex-col justify-center items-center bg-white">
+        <div className=" w-full p-4 lg:w-2/3 rounded-md shadow-md h-full flex flex-col justify-center items-center bg-white">
             <h1 className="block tracking-wide text-gray-700  text-xl font-bold mb-2">Crear notificacion</h1>
             <form onSubmit={noSend} className="w-full max-w-lg">
                 <div className="flex flex-wrap -mx-3 mb-6">
@@ -60,7 +57,7 @@ export default function createPage() {
                         <input
                             value={Titulo}
                             onChange={(event) => setTitulo(event.target.value)}
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && border-red-500}  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                             type="text"
                             placeholder="Ingrese el titulo">
 
@@ -78,7 +75,7 @@ export default function createPage() {
                         <textarea
                             value={Mensaje}
                             onChange={(event) => setMensaje(event.target.value)}
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && border-red-500}   rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                             type="text"
                             placeholder="Ingrese el mensaje"></textarea>
                              {CamposState && <p className="text-red-500 text-xs italic">Este campo es obligatorio</p>}

@@ -6,22 +6,36 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
+import { usePostFetch } from "@/hooks/fetchActions/postFetch";
+import toast from "react-hot-toast";
 
 export default function selectUserPage() {
     const [SelectValue, setSelectValue] = useState(1)
     const [UserData, setUserData] = useState([])
-    const [VisibleInputCurso, setVisibleInputCurso] = useState(false)
+    const [CurseData, setCurseData] = useState([])
+    const [DatosEnviar, setDatosEnviar] = useState({})
+
+
     const { data, isLoading } = useGetFetch('http://localhost:3000/api/v1/users')
+    const { data: dataCourse, isLoading: courseloading } = useGetFetch('http://localhost:3000/api/v1/courses')
+    const { data: AsignResponse, isLoading: AsigIsloading, error, postData } = usePostFetch('http://localhost:3000/api/v1/notifications/user')
 
     useEffect(() => {
         if (!isLoading) {
             setUserData(data)
         }
-        console.log(data)
+
     }, [isLoading])
 
+    useEffect(() => {
+        if (!courseloading) {
+            setCurseData(dataCourse)
+        }
 
-    const { id } = useParams()
+    }, [courseloading])
+
+
+    const { id } = useParams() // id de notificacion
 
     const selectedOption = (event) => {
         setSelectValue(event.target.value)
@@ -31,41 +45,74 @@ export default function selectUserPage() {
         console.log(SelectValue)
     }, [SelectValue])
 
-    const handleClick = (event,value) => {
-        console.log(value)
+    const handleClick = (value) => {
+
+        if (SelectValue === 1) {
+            const datos = {
+                Id_User: value,
+                Id_Not: id
+            }
+            setDatosEnviar(datos)
+        }
     }
+
+    const AsigNot = ()=>{
+        postData(DatosEnviar)
+    }
+
+    useEffect(() => {
+        if(!AsigIsloading ){
+          
+            if(AsignResponse.type == 'success'){
+                toast.success("Se Envio la notificacion de manera exitosa")
+            }else{
+                toast.error("No se pudo enviar la notificacion")
+            }
+           
+        }
+    }, [AsignResponse])
+    
 
 
     return (
         <div className=" w-full p-4 lg:w-2/3 rounded-md shadow-md h-full flex flex-col justify-center items-center bg-white">
             <h1 className="block tracking-wide text-gray-700  text-xl font-bold mb-2">Elegir remitente</h1>
-            <div className="w-full justify-center p-4 h-full flex">
-                <div className="w-40 mx-4">
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={SelectValue}
-                        label="Age"
-                        onChange={selectedOption}
-                    >
-                        <MenuItem value={1}>Individual</MenuItem>
-                        <MenuItem value={2}>Por Curso</MenuItem>
-                        <MenuItem value={3}>Enviar a todos</MenuItem>
-                    </Select>
+            <div className="w-full justify-center p-4 h-full flex-col items-center ">
+                <div className="w-full flex flex-row mb-4 justify-center items-center">
+                    <div className="mx-4 w-40">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={SelectValue}
+                            label="Age"
+                            onChange={selectedOption}
+                        >
+                            <MenuItem value={1}>Individual</MenuItem>
+                            <MenuItem value={2}>Por Curso</MenuItem>
+                            <MenuItem value={3}>Enviar a todos</MenuItem>
+                        </Select>
+                    </div>
+                    {SelectValue != 3 && (
+                        <Autocomplete
+
+                            onChange={(evt, value) => handleClick(SelectValue == 1 ? value.Id_User : SelectValue == 2 && value.Id_Cur)}
+                            disablePortal
+                            id="combo-box-demo"
+                            options={!isLoading && SelectValue == 2 ? CurseData : UserData}
+                            getOptionLabel={SelectValue == 2 ? (curso) => !courseloading && curso.Nom_Cur || '' : (user) => !isLoading && user.Ema_User || ''}
+                            sx={{ width: 300 }}
+                            renderInput={(paramsxd) => <TextField {...paramsxd} label={SelectValue == 1 ? "Usuario" : SelectValue == 2 && "Curso"} />}
+                        />
+                    )}
                 </div>
-                {SelectValue == 1 && (
-                    <Autocomplete
-                        
-                        onChange={(ev, value)=>handleClick(ev,value.Id_User)}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={!isLoading && UserData}
-                        getOptionLabel={(user) => user.Ema_User}
-                        sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Estudiante" />}
-                    />
-                )}
+
+
+                <button
+                    onClick={() => AsigNot()}
+                    className="bg-verdeSena hover:bg-blue-700 text-white font-bold py-2 px-4 ml-4 rounded focus:outline-none focus:shadow-outline">Enviar</button>
+
             </div>
+
         </div>
     );
 }
