@@ -42,10 +42,10 @@ function Page() {
         <>
           <h1 className='text-center text-3xl font-bold'>Mis cursos</h1>
           <hr className='w-full mb-6 mt-2' />
-          <div className={styles.container_grid}>
+          <div className={inscriptions.length <= 0 ? 'flex justify-center items-center' : styles.container_grid}>
             {inscriptions.length <= 0 ? <div className='flex items-center gap-1'><span className='font-medium'>No te has inscrito en ningún curso.</span><Link href={"/courses/explore"} className='bg-azulSecundarioSena text-azulSena font-semibold hover:bg-black hover:text-white transition-all duration-150 px-2 py-1 rounded-lg'>Explorar</Link></div> : (
               inscriptions.map(inscription => {
-                <SignUpCards href={`/courses/${inscription.Curso.Id_Cur}`} key={inscription.Id_Cur_FK} title={inscription.Curso.Nom_Cur} img={inscription.Curso.Fot_Cur || '/defaultBackground.webp'} category={inscription.Curso.Id_Cat_FK} />
+                return <SignUpCards href={`/courses/${inscription.Id_Cur_FK}`} key={inscription.Id_Cur_FK} title={inscription.Curso.Nom_Cur} img={inscription.Curso.Fot_Cur || '/defaultBackground.webp'} category={inscription.Curso.Categoria.Nom_Cat} />  
               })
             )}
           </div>
