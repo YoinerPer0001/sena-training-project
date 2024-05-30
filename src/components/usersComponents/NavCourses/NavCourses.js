@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../../../features/auth/loginSlice'
 import { getCookie, deleteCookie } from 'cookies-next';
-import { Search, Menu, ChevronDown, LogOut, Bolt } from 'lucide-react';
+import { Search, Menu, ChevronDown, LogOut, Bolt, User2 } from 'lucide-react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 
 export const NavCourses = () => {
   const router = useRouter()
   const authState = useSelector(state => state.auth)
   const dispatch = useDispatch()
+  const user = authState.user
 
   const handleLogout = () => {
     deleteCookie('prueba')
@@ -27,18 +28,18 @@ export const NavCourses = () => {
 
     // Verificar si localStorage está definido
     if (typeof localStorage !== 'undefined') {
-        try {
-            localStorage.removeItem('sessionToken');
-            console.log("Token de sesión eliminado de localStorage.");
-        } catch (e) {
-            console.error("Se produjo un error al intentar acceder a localStorage:", e);
-        }
+      try {
+        localStorage.removeItem('sessionToken');
+        console.log("Token de sesión eliminado de localStorage.");
+      } catch (e) {
+        console.error("Se produjo un error al intentar acceder a localStorage:", e);
+      }
     } else {
-        console.warn("localStorage no está definido en este entorno.");
+      console.warn("localStorage no está definido en este entorno.");
     }
 
     return router.push('/auth/login');
-};
+  };
 
 
   return (
@@ -81,12 +82,16 @@ export const NavCourses = () => {
             </div>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem key="settings" href='/profile'><div className='flex items-center gap-1'><Bolt size={18}/> Configuración</div></DropdownItem>
-              <DropdownItem key="logout" color="danger">
-                <div onClick={handleLogout} className='flex items-center gap-1'>
-                  <LogOut size={18}/>Cerrar sesión
-                </div>
-              </DropdownItem>
+            <DropdownItem key="settings" href={`${user.Id_Rol_FK == 1 || user.Id_Rol_FK == 2 ? '/instructors/profile' : '/profile'}`}>
+              <div className='flex items-center gap-1'>
+                <User2 size={18} /> Mi cuenta
+              </div>
+            </DropdownItem>
+            <DropdownItem key="logout" color="danger">
+              <div onClick={handleLogout} className='flex items-center gap-1'>
+                <LogOut size={18} />Cerrar sesión
+              </div>
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>

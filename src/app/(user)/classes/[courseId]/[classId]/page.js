@@ -86,8 +86,8 @@ const Page = () => {
             <section className="w-3/4 bg-black">
                 <div className="flex justify-center items-center">
                     <CldVideoPlayer
-                        width="1920"
-                        height="1080"
+                        width="1280"
+                        height="720"
                         src={videoSrc}
                         className="rounded-lg w-3/4"
                     />

@@ -20,6 +20,7 @@ const colors = {
 export default function CourseDetails() {
     const [dataCourse, setDataCourse] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isEnrolled, setIsEnrolled] = useState(false);
     const router = useRouter();
     const { idCourse } = useParams() // Usar router.query para obtener el idCourse de la URL
     const token = getCookie('sessionToken');
@@ -38,6 +39,22 @@ export default function CourseDetails() {
             })
             .catch(err => console.error('Error fetching course data:', err));
     }, [idCourse]);
+
+    useEffect(() => {
+        if (user && idCourse) {
+            async function checkEnrollment() {
+                const response = await fetch(`http://localhost:3000/api/v1/inscription/user/${user.Id_User}`, {
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                });
+                const data = await response.json();
+                const enrolled = data.data?.some((inscription) => inscription.Id_Cur_FK === idCourse);
+                setIsEnrolled(enrolled);
+            }
+            checkEnrollment();
+        }
+    }, [user, idCourse]);
 
     const subscribe = async () => {
         if (!token) {
@@ -81,27 +98,16 @@ export default function CourseDetails() {
     };
 
     return (
-        <main className="flex flex-col lg:flex-grow max-w-[1024px] my-0 mx-auto">
+        loading ? <div className="h-screen w-screen flex justify-center items-center"><Spinner /></div> : <main className="flex flex-col lg:flex-grow max-w-[1024px] my-0 mx-auto">
             <section className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 items-center my-6">
-                    <div className="flex gap-2 justify-center md:justify-between w-full items-center">
+                    <div className="flex gap-4 justify-center md:justify-between w-full items-center">
                         <div className="flex flex-col gap-2 md:min-w-[541px]">
                             <div className="flex justify-center w-full md:hidden">
                                 <GraduationCap size={36} color="#39a900" />
                             </div>
-                            <div className="mb-4 md:w-5/6">
-                                {loading ? (
-                                    <div className="md:w-5/6">
-                                        <div className="bg-gray-200 rounded-full dark:bg-gray-700 w-full h-6 mb-4"></div>
-                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"></div>
-                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
-                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[460px] mb-2.5"></div>
-                                    </div>
-                                ) : (
-                                    ''
-                                )}
-                                <h1 className="font-bold text-2xl sm:text-3xl">{dataCourse.Nom_Cur}</h1>
+                            <div className="mb-4 w-full">
+                                <h1 className="font-bold text-2xl lg:text-3xl">{dataCourse.Nom_Cur}</h1>
                                 <p className="text-sm sm:text-base font-medium">{dataCourse.Des_Cur}</p>
                             </div>
                             <div className="flex flex-col gap-4 md:w-5/6 md:min-w-5/6">
@@ -123,13 +129,15 @@ export default function CourseDetails() {
                         </div>
                         <div className="hidden md:block">
                             <picture>
-                                <Image className="rounded-lg" src={'/port3.webp'} alt={`Portada del curso: ${dataCourse.Nom_Cur}`} width={500} height={350} />
+                                <Image className="rounded-lg" src={dataCourse.Fot_Cur || '/defaultBackground.webp'} alt={`Portada del curso: ${dataCourse.Nom_Cur}`} width={500} height={350} />
                             </picture>
                         </div>
                     </div>
                 </div>
                 <div className="w-full flex justify-center items center">
-                    <button onClick={subscribe} className="w-full md:w-[200px] p-3 text-white rounded-lg font-semibold bg-[#00324D] hover:bg-black transition-all duration-200">¡Inscribirse!</button>
+                    <button onClick={subscribe} className="w-full md:w-[200px] p-3 text-white rounded-lg font-semibold bg-[#00324D] hover:bg-black transition-all duration-200"> {isEnrolled ? "Continuar curso" : (
+                        "¡Inscribirse!"
+                    )}</button>
                 </div>
 
                 {/* CONTENIDO DEL CURSO */}
@@ -183,13 +191,13 @@ export default function CourseDetails() {
                     </div>
                     <div className="w-full border-1 border-azulSena rounded-lg">
                         <ul className="font-medium text-sm p-4 w-full grid grid-cols-2 gap-4">
-                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Aprender a utilizar Figma, desde 0 a experto</li>
-                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Aprender a diseñar una página web responsive</li>
-                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Realizar un proyecto práctico para diseñar una página web, para tu portfolio y futuros proyectos</li>
-                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18}/></div> Entender cómo adaptar un diseño a los diferentes dispositivos</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18} /></div> Aprender a utilizar Figma, desde 0 a experto</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18} /></div> Aprender a diseñar una página web responsive</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18} /></div> Realizar un proyecto práctico para diseñar una página web, para tu portfolio y futuros proyectos</li>
+                            <li className="flex items-start gap-1 leading-4"><div><CircleCheckBig size={18} /></div> Entender cómo adaptar un diseño a los diferentes dispositivos</li>
                         </ul>
                     </div>
-                </div>  
+                </div>
             </section>
         </main>
     );

@@ -30,9 +30,9 @@ export default function AdminLayout({ children }) {
             </div>
             <div className="text-center flex w-2/3 h-full items-center">
               {pathname === '/admin/courses' ?
-               <span className="text-3xl mx-3 lg:md:xl:block hidden"> Gestión de Cursos</span>
-               : pathname === '/admin/users' ? <span className="text-3xl mx-3 lg:md:xl:block hidden"> Gestión de usuarios</span>
-               : pathname === '/admin/dashboard' ? <span className="text-3xl mx-3 lg:md:xl:block hidden">Panel</span> 
+               <span className="text-3xl mx-3 lg:md:xl:block hidden font-semibold"> Gestión de Cursos</span>
+               : pathname === '/admin/users' ? <span className="text-3xl mx-3 lg:md:xl:block hidden font-semibold"> Gestión de usuarios</span>
+               : pathname === '/admin/dashboard' ? <span className="text-3xl mx-3 lg:md:xl:block hidden font-semibold">Panel</span> 
                : ''
               }
             </div>

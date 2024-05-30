@@ -103,8 +103,10 @@ export default function Login() {
                 return
             } else if(responseJSON.code == 403) {
                 setErrorMsg({state: true, msg: 'Usuario o contraseña incorrecta.'})
+                setLoading(false)
             } else if(responseJSON.code == 500) {
                 setErrorMsg({state: true, msg: 'Ese correo no está registrado'})
+                setLoading(false)
             }
         } catch (error) {
             console.log(error)

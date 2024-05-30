@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../../../features/auth/loginSlice'
 import { getCookie, deleteCookie } from 'cookies-next';
-import { Bell, Bolt, ChevronDown, LogOutIcon, Mail } from 'lucide-react';
+import { Bell, Bolt, ChevronDown, LogOutIcon, Mail, User2 } from 'lucide-react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 
 export const NavHome = () => {
@@ -80,7 +80,7 @@ export const NavHome = () => {
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="settings" href='/instructors/profile'>
                 <div className='flex items-center gap-1'>
-                  <Bolt size={18} /> Mi cuenta
+                  <User2 size={18} /> Mi cuenta
                 </div>
               </DropdownItem>
               <DropdownItem key="logout" color="danger">
