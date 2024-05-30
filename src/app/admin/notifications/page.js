@@ -3,6 +3,7 @@ import { usePostFetch } from "@/hooks/fetchActions/postFetch"
 import { Target } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { Spinner } from "@/components/usersComponents/Spinner/Spinner"
 
 export default function createPage() {
     const router = useRouter();
@@ -12,6 +13,10 @@ export default function createPage() {
     const [CamposState, setCamposState] = useState(false)
 
     const { data, isLoading, Error, postData } = usePostFetch(url);
+
+    if(isLoading){
+        <Spinner/>
+    }
     
     const crearNot = async () => {
 
@@ -30,16 +35,18 @@ export default function createPage() {
         
 
     }
-    console.log(data)
 
-    if(!isLoading && data.data.insertedId ){
+    useEffect(() => {
+        if(!isLoading && data.data.insertedId ){
         
-        if(data){
-            router.push(`/admin/notifications/${data.data.insertedId}/select`)
-        }else{
-
+            if(data){
+                router.push(`/admin/notifications/${data.data.insertedId}/select`)
+            }else{
+    
+            }
         }
-    }
+    }, [isLoading])
+    
     
     const noSend = (event) => {
         event.preventDefault()
@@ -57,7 +64,7 @@ export default function createPage() {
                         <input
                             value={Titulo}
                             onChange={(event) => setTitulo(event.target.value)}
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && border-red-500}  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && "border-red-500"}  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                             type="text"
                             placeholder="Ingrese el titulo">
 
@@ -75,7 +82,7 @@ export default function createPage() {
                         <textarea
                             value={Mensaje}
                             onChange={(event) => setMensaje(event.target.value)}
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && border-red-500}   rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && "border-red-500"}   rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                             type="text"
                             placeholder="Ingrese el mensaje"></textarea>
                              {CamposState && <p className="text-red-500 text-xs italic">Este campo es obligatorio</p>}

@@ -26,7 +26,7 @@ export default function AdminLayout({ children }) {
                     <div className={`w-16 h-16 rounded-full flex justify-center items-center ${page2 ? ' bg-verdeSena' : 'bg-[#ffffff]'} `}>
                         <UserPlus2 className={` size-8 w-16  ${page2 && 'text-white'}`} />
                     </div>
-                    <hr className={`w-full size-1 ${page2 && 'bg-verdeSena'}`} />
+                    <hr className={`w-full size-1 ${page3 && 'bg-verdeSena'}`} />
 
                 </div>
                 <div className=" flex flex-row items-center justify-start  w-full h-full">
