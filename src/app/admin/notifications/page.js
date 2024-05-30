@@ -82,7 +82,7 @@ export default function createPage() {
                         <textarea
                             value={Mensaje}
                             onChange={(event) => setMensaje(event.target.value)}
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${CamposState && "border-red-500"}   rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border h-60 ${CamposState && "border-red-500"}   rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                             type="text"
                             placeholder="Ingrese el mensaje"></textarea>
                              {CamposState && <p className="text-red-500 text-xs italic">Este campo es obligatorio</p>}
