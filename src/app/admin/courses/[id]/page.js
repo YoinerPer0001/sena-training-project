@@ -11,6 +11,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { AdvancedInfo } from '@/components/adminComponents/courses/coursesEstatistics/AdvancedInfo';
 import Link from 'next/link'
+import usePutFetch from '@/hooks/fetchActions/PutFetch';
+import toast from 'react-hot-toast';
+import { useGetFetch } from '@/hooks/fetchActions/GetFetch';
 
 
 export default function CourseDetailsPage() {
@@ -21,7 +24,34 @@ export default function CourseDetailsPage() {
 
   const [FechIn, setFechIn] = useState(pastMonth)
   const [FechFin, setFechFin] = useState(new Date())
+  const [CourseData, setCourseData] = useState({})
   const { id } = useParams();
+
+  const { data, isLoading } = useGetFetch(`http://localhost:3000/api/v1/courses/${id}`);
+  const { respuesta, UpisLoading, error, doPutFetch } = usePutFetch(`http://localhost:3000/api/v1/courses/update/`)
+
+  useEffect(() => {
+    if (!isLoading) {
+      setCourseData(data)
+    }
+    
+  })
+
+
+
+  const publicar = async () => {
+    const data = {
+      Est_Cur: 2
+    }
+    await doPutFetch(id, data)
+
+    if (respuesta && UpisLoading === false) {
+      toast.success("Publicado Exitosamente")
+      location.reload()
+    } else {
+      toast.error("Error al publicar")
+    }
+  }
 
   return (
     <div className={`w-full flex flex-col h-full bg-slate-100 p-3`}>
@@ -41,6 +71,13 @@ export default function CourseDetailsPage() {
             <div className='w-64 flex h-full justify-center  lg:border-l-2  p-4 flex-col items-center'>
 
               <div className='w-full flex flex-col justify-start  items-center'>
+                {!isLoading && CourseData.Est_Cur != 2 &&
+                  <button onClick={publicar} class="bg-verdeSena mb-2 hover:bg-black transition-all duration-150 rounded-lg text-white font-bold py-2 px-4">
+                    Publicar
+                  </button>
+                }
+
+
                 <Link href={`http://localhost:3001/courses/${id}`}>
                   <button class="bg-azulSena hover:bg-black transition-all duration-150 rounded-lg text-white font-bold py-2 px-4">
                     Vista de estudiante
@@ -55,6 +92,7 @@ export default function CourseDetailsPage() {
               </div>
 
               <div className='h-full flex flex-col justify-center items-center rounded-lg'>
+
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer components={['DatePicker']}>
                     <DatePicker defaultValue={dayjs(FechIn)} onChange={setFechIn} label="Desde" />
