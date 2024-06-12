@@ -21,6 +21,7 @@ export default function UserTable() {
     if (isLoading) {
         return <div><Spinner /></div>;
     }
+    console.log(data)
 
     const rows = data.map((item, index) => ({
         id: item.Id_User,

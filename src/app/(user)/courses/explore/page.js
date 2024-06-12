@@ -1,30 +1,29 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Explore.module.scss'
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import SignUpCards from '@/components/usersComponents/SignUpCard/SignUpCards'
 import { Spinner } from '@/components/usersComponents/Spinner/Spinner'
-import Link from 'next/link'
-
+import { useApp } from '@/features/AppContext/AppContext'
+import { FrownIcon } from 'lucide-react'
+import { getNumberOfClasses } from '@/utils/utils'
 
 function Page() {
   const [courses, setCourses] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const { searchTerm } = useApp()
 
   useEffect(() => {
-    try {
-      fetch('http://localhost:3000/api/v1/courses')
-        .then(data => data.json())
-        .then(data => {
-          setCourses(data.data)
-          setLoading(false)
-        })
-    } catch (error) {
-      console.log(error)
-    }
+    fetch('http://localhost:3000/api/v1/courses')
+      .then(data => data.json())
+      .then(data => {
+        setCourses(data.data)
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }, [])
 
   useEffect(() => {
@@ -36,19 +35,24 @@ function Page() {
           setLoading(false)
         }
       })
+      .catch(error => {
+        console.log(error)
+      })
   }, [])
 
   const handleCategoryClick = (categoryId) => {
     if (selectedCategory !== categoryId) {
-      setSelectedCategory(categoryId);
+      setSelectedCategory(categoryId)
     } else {
-      setSelectedCategory(null); // Deselect if category is already selected
+      setSelectedCategory(null) // Deselect if category is already selected
     }
-  };
+  }
 
-  const filteredCourses = selectedCategory
-    ? courses.filter(course => course.Categoria.Id_Cat === selectedCategory)
-    : courses;
+  const filteredCourses = courses.filter(course => {
+    const matchesCategory = selectedCategory ? course.Categoria.Id_Cat === selectedCategory : true
+    const matchesSearchTerm = course.Nom_Cur.toLowerCase().includes(searchTerm.toLowerCase())
+    return matchesCategory && matchesSearchTerm
+  })
 
   return (
     <>
@@ -67,11 +71,13 @@ function Page() {
       <div className={styles.container_grid}>
         {loading ? <Spinner /> : ''}
         {filteredCourses.map((course, index) => {
+          const totalClases = getNumberOfClasses(course)
           return (
-            <SignUpCards href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={course.Fot_Cur || '/defaultBackground.webp'} category={course.Categoria.Nom_Cat} />
+            <SignUpCards clases={totalClases} href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={course.Fot_Cur || '/defaultBackground.webp'} category={course.Categoria.Nom_Cat} />
           )
         })}
       </div>
+      {filteredCourses.length <= 0 && <div className='w-full flex flex-col items-center justify-center gap-2 font-medium text-azulSena'><FrownIcon size={28}/>Ups, no se encontraron cursos.</div>}
     </>
   )
 }

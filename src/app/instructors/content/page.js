@@ -6,25 +6,36 @@ import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 import { NoDataComponent } from '@/components/usersComponents/NoDataComponent/NoDataComponent';
 import { columnsContent, dataContent } from '@/utils/exampleData';
 import Link from 'next/link'
-import { Filter, FileInput, CirclePlus } from 'lucide-react';
+import { Filter, FileInput, CirclePlus, Eye } from 'lucide-react';
+import { useSelector } from 'react-redux'
 
 export default function Content() {
     const [firstData, setFirstData] = useState([])
     const [records, setRecords] = useState([])
     const [loading, setLoading] = useState(true)
+    const authState = useSelector(state => state.auth)
+    const user = authState.user
+    const token = authState.token
+
     useEffect(() => {
         try {
-            fetch('http://localhost:3000/api/v1/courses')
+            fetch(`http://localhost:3000/api/v1/courses/inst/${user.Id_User}`,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            })
                 .then(data => data.json())
                 .then(data => {
+                    console.log(data)
                     const cursos = data.data.map(curso => ({
                         'names': curso.Nom_Cur,
                         'categories': curso.Categoria.Nom_Cat,
-                        'instructors': curso.Instructor == null ? 'Sin instructor' : curso.Instructor.Nom_User,
                         'createdAt': curso.Fech_Crea_Cur,
                         'state': curso.Est_Cur == 2 ? <div className='bg-green-100 text-green-700 p-2 rounded-full font-semibold'>Publicado</div> : <div className='bg-gray-100 text-gray-600 p-2 rounded-full font-semibold'>Creado</div>,
                         'actions': <div className='flex gap-1'>
-                            <Link className='bg-azulSena hover:bg-black transition-all duration-150 p-2 text-white rounded-lg' href={`/manage/editcourse/${curso.Id_Cur}`}>Editar</Link>
+                            <Link className='bg-azulSena hover:bg-black transition-all duration-150 p-2 text-white rounded-lg' href={`/instructors/content/${curso.Id_Cur}`}><Eye size={18}/></Link>
                         </div>
                     }));
                     setRecords(cursos)

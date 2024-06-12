@@ -12,11 +12,6 @@ export const columnsContent = [
         sortable: true
     },
     {
-        "name": 'Instructor',
-        selector: row => row.instructors,
-        sortable: true
-    },
-    {
         "name": 'Fecha de creación',
         selector: row => row.createdAt,
         sortable: true

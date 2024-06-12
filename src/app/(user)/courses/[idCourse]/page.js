@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { getCookie } from "cookies-next";
+import { getNumberOfClasses } from "@/utils/utils";
 
 
 const colors = {
@@ -27,7 +28,7 @@ export default function CourseDetails() {
 
     const authState = useSelector(state => state.auth);
     const user = authState.user;
-
+    const totalClases = getNumberOfClasses(dataCourse)
     useEffect(() => {
         if (!idCourse) return;
 
@@ -119,7 +120,7 @@ export default function CourseDetails() {
                                 </div>
                                 <div className="flex items-start gap-2">
                                     <div className="bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base">
-                                        <BookText size={20} /> <p>23 clases</p>
+                                        <BookText size={20} /> <p>{totalClases} clases</p>
                                     </div>
                                     <div className="bg-azulSecundarioSena text-azulSena font-semibold flex items-center gap-1 px-2 py-1 rounded-md text-sm md:text-base">
                                         <Clock size={20} /> <p>Duración: <span>10h 24m</span></p>

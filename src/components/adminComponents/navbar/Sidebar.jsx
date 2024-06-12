@@ -14,12 +14,11 @@ import { Spinner } from '@/components/usersComponents/Spinner/Spinner';
 export const Sidebar = ({ estadoSidebar }) => {
   const authState = useSelector(state => state.auth);
   const router = useRouter();
-  const userRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const user = authState.user
 
   useEffect(() => {
-    console.log(authState)
       setLoading(false);
   }, [authState]);
  
@@ -62,18 +61,18 @@ export const Sidebar = ({ estadoSidebar }) => {
           <div className={`${styles.NavbarInfo} w-full h-full flex flex-col justify-start`}>
             <div className='w-full h-1/3 flex flex-col mb-20'>
               <div className='flex w-full items-center justify-center py-4'>
-                <Image priority src="/logo-senalearn-(white).png" alt="Logo de SENA Learn" width={30} height={30} />
+                <Image priority src={"/logo-senalearn-(white).png"} alt="Logo de SENA Learn" width={30} height={30} />
                 <span className="text-xl mx-2 text-center font-medium">SENALEARN</span>
               </div>
               <div id="logo" className="flex flex-col mt-10 justify-center items-center">
                 <Link href="/">
-                  <Image width={80} height={80} className="rounded-full" src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80" alt="logo.png" />
+                  <Image width={80} height={80} className="rounded-full" src={user?.Fot_User} alt="logo" />
                 </Link>
                 <div className='flex flex-col gap-1 mt-2'>
                   <span className='leading-3 text-center font-semibold'>
-                    {userRef.current?.Nom_User} {userRef.current?.Ape_User}
+                    {user?.Nom_User} {user?.Ape_User}
                   </span>
-                  <span className='leading-3 text-sm text-gray-400'>{userRef.current?.Ema_User}</span>
+                  <span className='leading-3 text-sm text-gray-400'>{user.Ema_User}</span>
                 </div>
               </div>
             </div>
@@ -90,7 +89,7 @@ export const Sidebar = ({ estadoSidebar }) => {
           <div className={`${styles.NavbarInfo} w-full h-full flex flex-col`}>
             <div className='w-full h-16 flex flex-col py-6'>
               <div className='flex w-full h-full items-center justify-center'>
-                <Image priority src="/logo-senalearn-(white).png" alt="Logo de SENA Learn" width={30} height={30} />
+                <Image priority src={"/logo-senalearn-(white).png"} alt="Logo de SENA Learn" width={30} height={30} />
               </div>
             </div>
             <div className='w-full flex flex-col h-full justify-between items-center'>

@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSelector, useDispatch } from 'react-redux'
+import { useApp } from '@/features/AppContext/AppContext';
 import { login, logout } from '../../../features/auth/loginSlice'
 import { getCookie, deleteCookie } from 'cookies-next';
 import { Search, Menu, ChevronDown, LogOut, Bolt, User2 } from 'lucide-react';
@@ -13,6 +14,13 @@ export const NavCourses = () => {
   const authState = useSelector(state => state.auth)
   const dispatch = useDispatch()
   const user = authState.user
+  console.log(user)
+
+  const { searchTerm, setSearchTerm } = useApp();
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleLogout = () => {
     deleteCookie('prueba')
@@ -59,8 +67,14 @@ export const NavCourses = () => {
       </NavbarBrand>
       <NavbarContent className="hidden md:flex gap-4">
         <NavbarItem className='flex items-center'>
-          <input type="text" placeholder='Buscar un curso' className='w-[350px] lg:w-[600px] py-2 px-2 outline-none border-r-0  rounded-l-lg' />
-          <button className='p-2 bg-[#6fccff] rounded-r-lg  text-xs hover:bg-black hover:border-black transition-all duration-200'>
+        <input
+            type="text"
+            placeholder='Buscar un curso'
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className='w-[350px] lg:w-[600px] py-2 px-2 outline-none border-r-0 rounded-l-lg'
+          />
+          <button className='p-2 bg-[#6fccff] rounded-r-lg text-xs hover:bg-black hover:border-black transition-all duration-200'>
             <Search color='#00324D' />
           </button>
         </NavbarItem>
@@ -82,7 +96,7 @@ export const NavCourses = () => {
             </div>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="settings" href={`${user.Id_Rol_FK == 1 || user.Id_Rol_FK == 2 ? '/instructors/profile' : '/profile'}`}>
+            <DropdownItem key="settings" href={'/profile'}>
               <div className='flex items-center gap-1'>
                 <User2 size={18} /> Mi cuenta
               </div>

@@ -5,14 +5,15 @@ import { useRouter } from 'next/navigation'
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../../../features/auth/loginSlice'
 import { getCookie, deleteCookie } from 'cookies-next';
-import { Bell, Bolt, ChevronDown, LogOutIcon, Mail, User2 } from 'lucide-react';
+import { Bell, Bolt, ChevronDown, GraduationCap, LogOutIcon, Mail, User2 } from 'lucide-react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 
 export const NavHome = () => {
   const router = useRouter()
   const authState = useSelector(state => state.auth)
   const dispatch = useDispatch()
-  console.log(authState)
+  const user = authState.user
+  console.log(user)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -33,10 +34,6 @@ export const NavHome = () => {
 
     return router.push('/auth/login');
   };
-  const handleSubmitTwo = () => {
-    dispatch(login())
-    console.log(authState)
-  }
 
 
   return (
@@ -53,7 +50,7 @@ export const NavHome = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className='font-medium text-white hover:bg-[#0b212e] transition-all duration-200 rounded-lg' isBlock color="foreground" href="#">
+          <Link className='font-medium text-white hover:bg-[#0b212e] transition-all duration-200 rounded-lg' isBlock color="foreground" href="/faqs">
             FAQS
           </Link>
         </NavbarItem>
@@ -61,7 +58,6 @@ export const NavHome = () => {
       {authState.isAuthenticated ?
         <NavbarContent as="div" justify="end">
           <button><Bell color='white' /></button>
-          <Link href='/messages'><Mail color='white' /></Link>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <div className='flex items-center gap-2 cursor-pointer'>
@@ -78,11 +74,23 @@ export const NavHome = () => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="settings" href='/instructors/profile'>
+              <DropdownItem key="settings" href={'/profile'}>
                 <div className='flex items-center gap-1'>
                   <User2 size={18} /> Mi cuenta
                 </div>
               </DropdownItem>
+              {user.Id_Rol_FK == 2 &&
+                <DropdownItem key="settings" href={'/instructors/content'} color='primary'>
+                  <div className='flex items-center gap-1'>
+                    <GraduationCap size={18} /> Instructores
+                  </div>
+                </DropdownItem>}
+                {user.Id_Rol_FK == 3 &&
+                <DropdownItem key="settings" href={'/admin/dashboard'} color='primary'>
+                  <div className='flex items-center gap-1'>
+                    <Bolt size={18} /> Administrar
+                  </div>
+                </DropdownItem>}
               <DropdownItem key="logout" color="danger">
                 <div onClick={handleLogout} className='flex items-center gap-1'>
                   <LogOutIcon size={18} />Cerrar sesión

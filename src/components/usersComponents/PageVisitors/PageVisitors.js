@@ -8,6 +8,7 @@ import { Carousel } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { useAllCourses } from '@/hooks/useAllCourses'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { getNumberOfClasses } from '@/utils/utils'
 
 
 const PageVisitors = () => {
@@ -38,10 +39,12 @@ const PageVisitors = () => {
         }
     ];
 
-    const courseTemplate = (course) => {
+    
 
+    const courseTemplate = (course) => {
+        const totalClases = getNumberOfClasses(course);
         return (
-            <SignUpCards href={`/courses/${course.Id_Cur}`} key={course.Id_Cur} title={course.Nom_Cur} img={`/defaultBackground.webp`} category={course.Categoria.Nom_Cat} />
+            <SignUpCards clases={totalClases} href={`/courses/${course.Id_Cur}`} key={course.Id_Cur} title={course.Nom_Cur} img={`/defaultBackground.webp`} category={course.Categoria.Nom_Cat} />
         )
     }
 

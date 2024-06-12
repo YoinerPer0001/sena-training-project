@@ -3,7 +3,7 @@ import styles from './SignUpCards.module.scss'
 import { BookText, Heart } from 'lucide-react';
 // import DarkButtons from '../DarkButtons';
 
-export default function SignUpCards({ title, img, category, href }) {
+export default function SignUpCards({ title, img, category, href, clases }) {
     return (
         <a href={href}>
             <article className={styles.article}>
@@ -24,7 +24,7 @@ export default function SignUpCards({ title, img, category, href }) {
                     </div>
                     <div className={styles.chapters}>
                         <BookText size={18}/>
-                        <span>44 capítulos</span>
+                        <span>{clases} clases</span>
                     </div>
                 </div>
             </article>
