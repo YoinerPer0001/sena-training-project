@@ -28,8 +28,7 @@ export default function CoursesLayout({ children }) {
 
     return (
         <>
-            <NavBarClasses Nom_Cur={dataCourse.Nom_Cur} />
-            <main className="w-full flex overflow-x-hidden h-full bg-gray-800">
+            <main className="w-screen flex flex-col md:flex-row overflow-x-hidden h-screen md:overflow-hidden">
                 {children}
             </main>
         </>

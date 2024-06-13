@@ -7,14 +7,14 @@ import styles from './LayoutCourses.module.scss'
 export default function CoursesLayout({ children }) {
 
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <NavCourses />
-            <main className={styles.main}>
+            <main className={`${styles.main} flex-1`}>
                 <AsideStudent />
-                <section className={styles.section}>
+                <section className={`${styles.section}`}>
                     {children}
                 </section>
             </main>
-        </>
+        </div>
     );
 }

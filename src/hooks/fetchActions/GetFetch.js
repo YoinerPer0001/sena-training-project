@@ -7,29 +7,17 @@ export const useGetFetch = (url) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const authState = useSelector(state => state.auth)
+  const token = authState.token
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let sessionToken = null;
-
-        // Verificar si localStorage está definido
-        if (typeof localStorage !== 'undefined') {
-          try {
-            sessionToken = localStorage.getItem('sessionToken');
-          } catch (e) {
-            console.error("Se produjo un error al intentar acceder a localStorage:", e);
-          }
-        } else {
-          console.warn("localStorage no está definido en este entorno.");
-        }
-
         const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': sessionToken ? `Bearer ${sessionToken}` : '',
+            'Authorization': token ? `Bearer ${token}` : '',
           }
         });
 

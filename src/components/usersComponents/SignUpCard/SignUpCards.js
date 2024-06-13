@@ -3,10 +3,10 @@ import styles from './SignUpCards.module.scss'
 import { BookText, Heart } from 'lucide-react';
 // import DarkButtons from '../DarkButtons';
 
-export default function SignUpCards({ title, img, category, href, clases }) {
+export default function SignUpCards({ title, img, category, href, clases, desc }) {
     return (
         <a href={href}>
-            <article className={styles.article}>
+            <article className={`${styles.article} shadow-md`}>
                 <div className={styles.category}>
                     <span className="font-semibold text-xs text-center uppercase">{category}</span>
                 </div>
@@ -15,6 +15,9 @@ export default function SignUpCards({ title, img, category, href, clases }) {
                 </picture>
                 <div className={styles.title_div}>
                     <h3 className="text-left p-1 line-clamp-1">{title}</h3>
+                    <span className='text-sm text-gray-700 font-medium'>
+                        {desc}
+                    </span>
                 </div>
                 <div className={styles.hr}></div>
                 <div className={styles.bottom}>

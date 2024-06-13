@@ -55,7 +55,8 @@ function Page() {
   })
 
   return (
-    <>
+    loading ? <Spinner /> : (
+      <>
       <div className='flex gap-1 items-center overflow-auto py-2'>
         <div className='font-semibold mr-3'>Categorias: </div>
         <div className='flex flex-wrap max-h-[40px] gap-2 overflow-hidden'>
@@ -69,16 +70,16 @@ function Page() {
       </div>
       <hr className='my-2' />
       <div className={styles.container_grid}>
-        {loading ? <Spinner /> : ''}
         {filteredCourses.map((course, index) => {
           const totalClases = getNumberOfClasses(course)
           return (
-            <SignUpCards clases={totalClases} href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={course.Fot_Cur || '/defaultBackground.webp'} category={course.Categoria.Nom_Cat} />
+            <SignUpCards desc={course.Desc_Cur} clases={totalClases} href={`/courses/${course.Id_Cur}`} key={index} title={course.Nom_Cur} img={course.Fot_Cur || '/defaultBackground.webp'} category={course.Categoria.Nom_Cat} />
           )
         })}
       </div>
-      {filteredCourses.length <= 0 && <div className='w-full flex flex-col items-center justify-center gap-2 font-medium text-azulSena'><FrownIcon size={28}/>Ups, no se encontraron cursos.</div>}
+      {filteredCourses.length <= 0 && !loading && <div className='w-full flex flex-col items-center justify-center gap-2 font-medium text-azulSena'><FrownIcon size={28}/>Ups, no se encontraron cursos.</div>}
     </>
+    )
   )
 }
 

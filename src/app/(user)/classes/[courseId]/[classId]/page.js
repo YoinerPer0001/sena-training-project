@@ -1,24 +1,26 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { ChevronDown, ChevronLeft, Edit, Link2, PlusCircleIcon, Save, Trash2, Video, X } from "lucide-react";
+import { Check, ChevronDown, ChevronLeft, Edit, Link2, PlusCircleIcon, Save, Trash2, Video, X } from "lucide-react";
 import { CldVideoPlayer } from 'next-cloudinary';
 import 'next-cloudinary/dist/cld-video-player.css';
 import { useParams } from 'next/navigation'
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
 
 const Page = () => {
+    const srcDefault = "https://res.cloudinary.com/dla5djfdc/video/upload/v1716317063/cursos/2024-03-03_22-18-01_fbbgg9.mkv";
 
-    const srcDefault = "https://res.cloudinary.com/dla5djfdc/video/upload/v1716317063/cursos/2024-03-03_22-18-01_fbbgg9.mkv"
-    
     const { courseId, classId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [modulos, setModulos] = useState([]);
     const [dataCourse, setDataCourse] = useState({});
     const [contenidoVisible, setContenidoVisible] = useState("");
     const [videoSrc, setVideoSrc] = useState(srcDefault);
-
+    const authState = useSelector(state => state.auth);
+    const user = authState.user;
+    const token = authState.token;
 
     const toggleContenidoVisible = (indiceModulo) => {
         setContenidoVisible(prev => (prev === indiceModulo ? "" : indiceModulo));
@@ -38,10 +40,10 @@ const Page = () => {
                 console.log(err);
                 setIsLoading(false);
             });
-
     }, [courseId]);
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`http://localhost:3000/api/v1/modulo_curso/${courseId}`)
             .then(response => response.json())
             .then(response => {
@@ -49,26 +51,26 @@ const Page = () => {
                     const data = response.data;
                     console.log(data);
                     setModulos(data);
-                    
+
                     // Buscar el contenido con el Id_Cont igual a classId
                     const contenido = data.find(modulo => modulo.Contenido_Modulos.some(contenido => contenido.Id_Cont === classId));
                     console.log(contenido);
-                    
+
                     // Verificar si se encontró el contenido y si tiene una URL definida
                     if (contenido && contenido.Contenido_Modulos && contenido.Contenido_Modulos.length > 0) {
                         const contenidoSeleccionado = contenido.Contenido_Modulos.find(cont => cont.Id_Cont === classId);
                         console.log(contenidoSeleccionado);
                         if (contenidoSeleccionado && contenidoSeleccionado.Url_Cont) {
                             setVideoSrc(contenidoSeleccionado.Url_Cont);
-                            setIsLoading(false);
                         } else {
                             setVideoSrc(srcDefault);
-                            setIsLoading(false);
                         }
+                        // Establecer el módulo como contenido visible por defecto
+                        setContenidoVisible(contenido.Id_Mod);
                     } else {
                         setVideoSrc(srcDefault);
-                        setIsLoading(false);
                     }
+                    setIsLoading(false);
                 } else {
                     alert('Ups');
                     setIsLoading(false);
@@ -80,59 +82,77 @@ const Page = () => {
             });
     }, [classId, courseId]);
 
+    const checkClass = (Id_Cont) => {
+        try {
+            fetch('http://localhost:3000/api/v1/usuarios/contenido/create', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+                body: JSON.stringify({
+                    Id_Cont: Id_Cont,
+                }),
+            })
+            .then(response => response.json())
+            .then(response => console.log(response))
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         isLoading ? <div className="h-screen w-screen flex justify-center items-center"><Spinner /></div> : (
             <>
-            <section className="w-3/4 bg-black">
-                <div className="flex justify-center items-center">
-                    <CldVideoPlayer
-                        width="1280"
-                        height="720"
-                        src={videoSrc}
-                        className="rounded-lg w-3/4"
-                    />
-                </div>
-            </section>
-            <section className="w-1/4 py-2 overflow-y-auto bg-white border-l-2 border-gray-700 relative">
-                <div className="relative w-full flex justify-center gap-2 items-center">
-                    <h4 className="font-bold text-xl text-center my-2">
-                        Contenido del curso
-                    </h4>
-                    <button className="p-1 text-black hover:bg-black hover:text-white transition-all duration-150 rounded-lg">
-                        <X />
-                    </button>
-                </div>
-                <div className="w-full flex flex-col gap-2 items-center">
-                    {modulos?.map((modulo, index) => (
-                        <div key={modulo.Id_Mod} className="w-full">
-                            <div onClick={() => toggleContenidoVisible(modulo.Id_Mod)} className="flex cursor-pointer flex-col group gap-3 items-start bg-azulSena text-white p-3 rounded-lg w-full">
-                                <div className="flex items-center justify-between gap-2 w-full">
-                                    <div className="flex items-center gap-4">
-                                        <span className="flex items-center gap-2 text-md font-semibold">Modulo {index + 1}: {modulo.Tit_Mod}</span>
+                <section className="w-full md:w-3/4 h-auto md:h-full bg-black">
+                    <div className="flex h-full justify-center items-center p-4">
+                        <CldVideoPlayer
+                            width="1280"
+                            height="720"
+                            src={videoSrc}
+                            className="rounded-lg w-3/4"
+                        />
+                    </div>
+                </section>
+                <section className="w-full md:w-1/4 py-2 h-full overflow-y-auto bg-azulSena text-white border-l-2 border-gray-700 relative">
+                    <div className="relative w-full flex justify-center gap-2 items-center">
+                        <h4 className="font-semibold text-xl text-center my-2">
+                            {dataCourse.Nom_Cur}
+                        </h4>
+                    </div>
+                    <div className="w-full flex flex-col gap-2 p-4 items-center">
+                        {modulos?.map((modulo, index) => (
+                            <div key={modulo.Id_Mod} className="w-full">
+                                <div className="flex flex-col group gap-3 items-start bg-white shadow-md text-black p-3 rounded-lg w-full">
+                                    <div className="flex items-center justify-between gap-2 w-full">
+                                        <div className="flex items-center gap-4">
+                                            <span className="flex items-center gap-2 text-md font-semibold">Modulo {index + 1}: {modulo.Tit_Mod}</span>
+                                        </div>
+                                        <div className="cursor-pointer" onClick={() => toggleContenidoVisible(modulo.Id_Mod)}>
+                                            {contenidoVisible === modulo.Id_Mod ? <ChevronDown /> : <ChevronLeft />}
+                                        </div>
                                     </div>
-                                    <div>
-                                        {contenidoVisible === modulo.Id_Mod ? <ChevronDown /> : <ChevronLeft />}
-                                    </div>
-                                </div>
-                                <div className={`${contenidoVisible === modulo.Id_Mod ? 'flex flex-col w-full bg-white rounded-lg' : 'hidden'}`}>
-                                    {contenidoVisible === modulo.Id_Mod && modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => (
-                                        <>
-                                            <div key={cont.Id_Cont} className={`flex cursor-pointer flex-col group gap-3 items-start odd:bg-white even:bg-gray-200 sm:text-sm lg:text-base shadow-sm text-black p-3 rounded-lg  w-full ${classId == cont.Id_Cont ? 'bg-azulSecundarioSena text-azulSena' : 'bg-white'}`}>
+                                    {contenidoVisible === modulo.Id_Mod && <hr className="w-full" />}
+                                    <div className={`${contenidoVisible === modulo.Id_Mod ? 'flex flex-col w-full gap-2 bg-white rounded-lg' : 'hidden'}`}>
+                                        {contenidoVisible === modulo.Id_Mod && modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => (
+                                            <div key={cont.Id_Cont} className={`flex cursor-pointer flex-col group gap-3 items-start sm:text-sm lg:text-base text-black p-3 rounded-lg  w-full ${classId == cont.Id_Cont ? 'bg-azulSecundarioSena text-azulSena hover:bg-azulSecundarioSena' : 'bg-white border hover:bg-gray-100'}`}>
                                                 <div className="flex items-center justify-between gap-2 w-full">
-                                                    <div className="flex items-center gap-4">
-                                                        <Link href={`./${cont.Id_Cont}`} className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{cont.Tit_Cont}</Link>
+                                                    <div className="flex items-center w-full gap-4">
+                                                        <Link href={`./${cont.Id_Cont}`} className="flex items-center w-full justify-between gap-2 font-semibold">
+                                                            <span className="flex items-center gap-2 text-sm 2xl:text-base font-semibold"><Video size={20} />{cont.Tit_Cont}</span>
+                                                            <button onClick={() => checkClass(cont.Id_Cont)} className="text-gray-800 p-1 hover:bg-gray-400 transition-all duration-150 rounded-full bg-gray-200"><Check size={20} strokeWidth={2.5}/></button>
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-        </>
+                        ))}
+                    </div>
+                </section>
+            </>
         )
     );
 };

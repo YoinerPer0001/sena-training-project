@@ -12,14 +12,14 @@ export const Footer = () => {
       <footer className={styles.footer}>
         <div className={styles.footer_top}>
           <ul className={styles.policies}>
-            <li><Link href="#">Política de privacidad</Link></li>
-            <li><Link href="#">Política de cookies</Link></li>
-            <li><Link href="#">Aviso legal</Link></li>
+            <li className='rounded-lg transition-all duration-150 p-1'><Link href="#">Política de privacidad</Link></li>
+            <li className='rounded-lg transition-all duration-150 p-1'><Link href="#">Política de cookies</Link></li>
+            <li className='rounded-lg transition-all duration-150 p-1'><Link href="#">Aviso legal</Link></li>
           </ul>
           <ul>
-            <li><Link href="#"><TwitterIcon/></Link></li>
-            <li><Link href="#"><Facebook/></Link></li>
-            <li><Link href="#"><Instagram/></Link></li>
+            <li className='rounded-full transition-all duration-150 p-1'><Link href="#"><TwitterIcon/></Link></li>
+            <li className='rounded-full transition-all duration-150 p-1'><Link href="#"><Facebook/></Link></li>
+            <li className='rounded-full transition-all duration-150 p-1'><Link href="#"><Instagram/></Link></li>
           </ul>
         </div>
         <div className={styles.footer_bottom}>

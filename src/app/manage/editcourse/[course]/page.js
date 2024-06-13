@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
     AlertCircle,
     ArrowLeftToLine,
     BookCheck,
+    Check,
     ChevronDown,
     ChevronLeft,
     CircleFadingPlus,
+    Dot,
     Edit,
     Eye,
     File,
@@ -40,7 +42,6 @@ import UploadButtonWidget from "@/components/instructorsComponents/UploadButtonW
 
 
 export default function ManageCourses() {
-    const pathname = usePathname();
     const router = useRouter();
 
     const [categories, setCategories] = useState();
@@ -48,8 +49,11 @@ export default function ManageCourses() {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
 
-    const id = pathname.split("/");
-    const idCourse = id[id.length - 1];
+    const [requisitosDB, setRequisitosDB] = useState([])
+    const [objetivosDB, setObjetivosDB] = useState([]);
+
+    const { course } = useParams()
+    const idCourse = course;
     const token = getCookie("sessionToken");
 
 
@@ -116,12 +120,30 @@ export default function ManageCourses() {
                         return {
                             IdObj: obj.Id_Objetivo,
                             Desc_Objetivo: obj.Desc_Objetivo,
+                            ESTADO_REGISTRO: obj.ESTADO_REGISTRO
                         };
                     });
-                    setObjetivos(objCursos);
+                    setObjetivosDB(objCursos);
                     setLoading(false);
                 } else {
-                    setObjetivos([{ IdObj: uuidv4(), Desc_Objetivo: "" }]);
+                    setLoading(false);
+                }
+            });
+        fetch(`http://localhost:3000/api/v1/curso/req-previos/${idCourse}`)
+            .then(response => response.json())
+            .then(response => {
+                const data = response.data;
+                if (data.length > 0) {
+                    const requisitos = data.map(req => {
+                        return {
+                            IdReq: req.Id_Req,
+                            Desc_Req: req.Desc_Req,
+                            ESTADO_REGISTRO: req.ESTADO_REGISTRO
+                        };
+                    });
+                    setRequisitosDB(requisitos);
+                    setLoading(false);
+                } else {
                     setLoading(false);
                 }
             });
@@ -167,6 +189,8 @@ export default function ManageCourses() {
                     if (data.type === "success") {
                         toast.success("Se guardaron los cambios correctamente");
                         return router.refresh();
+                    } else {
+                        toast.error("Hubo un error al guardar los cambios");
                     }
                 })
                 .catch(error => {
@@ -180,16 +204,118 @@ export default function ManageCourses() {
     };
 
     // AGREGAR REQUISITO
-    const [requisitos, setRequisitos] = useState([]); // Estado inicial con un campo de entrada
+    const [requisitos, setRequisitos] = useState([]);
+    const [editRequisito, setEditRequisito] = useState('');
+    const [reqEditId, setReqEditId] = useState('');
 
     const agregarRequisito = () => {
-        setRequisitos([...requisitos, { IdObj: uuidv4(), Desc_Req: "" }]); // Agrega un nuevo campo de entrada vacío al arreglo de requisitos
+        setRequisitos([...requisitos, { IdReq: uuidv4(), Desc_Req: "" }]);
     };
 
     const handleChange = (index, value) => {
         const nuevosRequisitos = [...requisitos];
-        nuevosRequisitos[index] = { Desc_Req: value };
+        nuevosRequisitos[index] = { ...nuevosRequisitos[index], Desc_Req: value };
         setRequisitos(nuevosRequisitos);
+    };
+
+    const handleChangeReqEdit = (value) => {
+        setEditRequisito(value);
+    };
+
+    const fetchEditarRequisito = async (id) => {
+        if (editRequisito === '') {
+            toast.error('El requisito no puede estar vacío.');
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/curso/req-previos/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    Desc_Req: editRequisito,
+                }),
+            });
+            const data = await response.json();
+            if (data.type === "success") {
+                setRequisitosDB(prevRequisitosDB =>
+                    prevRequisitosDB.map(req =>
+                        req.IdReq === id ? { ...req, Desc_Req: editRequisito } : req
+                    )
+                );
+                toast.success("Se guardaron los cambios correctamente");
+                setEditRequisito('');
+                setReqEditId('');
+                router.refresh();
+            } else {
+                toast.error("Hubo un error al guardar los cambios");
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+            toast.error("Hubo un error al comunicarse con el servidor");
+        }
+    };
+
+    const fetchAgregarRequisitos = async () => {
+        if (requisitos.some(req => req.Desc_Req === "")) {
+            toast.error('No se pueden agregar requisitos con descripción vacía');
+            return;
+        }
+        try {
+            const response = await fetch("http://localhost:3000/api/v1/curso/req-previos/create", {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    requisitos: requisitos,
+                    Id_Cur: idCourse,
+                }),
+            });
+            const data = await response.json();
+            if (data.type === 'success') {
+                toast.success("Se guardaron los cambios correctamente");
+                // Mapear los requisitos agregados para incluir ESTADO_REGISTRO y actualizar el estado local
+                const nuevosRequisitos = requisitos.map(req => ({
+                    ...req,
+                    ESTADO_REGISTRO: 1, // Asumimos que los nuevos requisitos tienen estado 1
+                }));
+                setRequisitosDB(prevRequisitosDB => [...prevRequisitosDB, ...nuevosRequisitos]);
+                setRequisitos([]);
+            } else {
+                toast.error("Hubo un error al guardar los cambios");
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+            toast.error("Hubo un error al comunicarse con el servidor");
+        }
+    };
+
+    const fetchEliminarRequisito = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/curso/req-previos/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            if (data.type === "success") {
+                setRequisitosDB(prevRequisitosDB =>
+                    prevRequisitosDB.filter(req => req.IdReq !== id)
+                );
+                toast.success("Se eliminó correctamente");
+            } else {
+                toast.error("Hubo un error al eliminar el requisito");
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+            toast.error("Hubo un error al comunicarse con el servidor");
+        }
     };
 
     const eliminarRequisito = index => {
@@ -198,11 +324,41 @@ export default function ManageCourses() {
         setRequisitos(nuevosRequisitos);
     };
 
-    const fetchAgregarRequisitos = () => {
+
+    // AGREGAR OBJETIVOS
+
+    const [objetivos, setObjetivos] = useState([]);
+    const [editObjetivo, setEditObjetivo] = useState('');
+    const [objEditId, setObjEditId] = useState('');
+
+    const agregarObjetivo = () => {
+        setObjetivos([...objetivos, { IdObj: uuidv4(), Desc_Objetivo: "" }]);
+        console.log(objetivos);
+    };
+
+    const handleChangeObjEdit = (value) => {
+        setEditObjetivo(value);
+    };
+
+    const handleChangeObj = (index, value) => {
+        const nuevosObjetivos = [...objetivos];
+        nuevosObjetivos[index] = { ...nuevosObjetivos[index], Desc_Objetivo: value };
+        setObjetivos(nuevosObjetivos);
+    };
+
+    const eliminarObjetivo = index => {
+        const nuevosObjetivos = [...objetivos];
+        nuevosObjetivos.splice(index, 1);
+        setObjetivos(nuevosObjetivos);
+    };
+
+    const fetchAgregarObjetivos = () => {
+        if (objetivos.some(req => req.Desc_Objetivo === "")) {
+            toast.error('No se pueden agregar objetivos con descripción vacía');
+            return;
+        }
         try {
-            if (requisitos.length > 1 || requisitos[0].Desc_Objetivo === "") {
-                return;
-            }
+
             fetch("http://localhost:3000/api/v1/obj_cursos/create", {
                 method: "POST",
                 headers: {
@@ -216,75 +372,57 @@ export default function ManageCourses() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    if (data.type === 'success') {
+                        toast.success("Se guardaron los cambios correctamente");
+                        // Mapear los requisitos agregados para incluir ESTADO_REGISTRO y actualizar el estado local
+                        const nuevosObjetivos = objetivos.map(obj => ({
+                            ...obj,
+                            ESTADO_REGISTRO: 1, // Asumimos que los nuevos requisitos tienen estado 1
+                        }));
+                        setObjetivosDB(prevObjetivosDB => [...prevObjetivosDB, ...nuevosObjetivos]);
+                        setObjetivos([]);
+                    } else {
+                        toast.error("Hubo un error al guardar los cambios");
+                    }
                 });
         } catch (e) {
             console.log("Error: " + e);
         }
     };
 
-    // AGREGAR OBJETIVOS
-
-    const [objetivos, setObjetivos] = useState([]);
-
-    const agregarObjetivo = () => {
-        setObjetivos([...objetivos, { IdObj: uuidv4(), Desc_Objetivo: "" }]);
-        console.log(objetivos);
-    };
-
-    const handleChangeObj = (index, value) => {
-        const nuevosObjetivos = [...objetivos];
-        nuevosObjetivos[index].Desc_Objetivo = value;
-        setObjetivos(nuevosObjetivos);
-    };
-
-    const eliminarObjetivo = idObj => {
-        if (objetivos.length > 1 || objetivos.length === 2) {
-            const objetivoAEliminar = objetivos.find(
-                objetivo => objetivo.IdObj === idObj
-            ); // Obtenemos el objetivo a eliminar por su índice
-            const nuevosObjetivos = objetivos.filter(
-                objetivo => objetivo.IdObj !== objetivoAEliminar.IdObj
-            ); // Filtramos los objetivos para excluir el objetivo a eliminar
-            setObjetivos(nuevosObjetivos);
-        } else {
-            toast.error("Debe haber al menos 1 objetivo.");
+    const fetchEditarObjetivo = async (id) => {
+        if (editObjetivo === '') {
+            toast.error('El requisito no puede estar vacío.');
+            return;
         }
-    };
-
-    const fetchAgregarObjetivos = () => {
         try {
-            const objetivosNoVacios = objetivos
-                .filter(objetivo => objetivo.Desc_Objetivo.trim() !== "")
-                .map(objetivo => objetivo.Desc_Objetivo);
-
-            console.log(objetivosNoVacios);
-
-            // verificar si hay algún objetivo para agregar
-            if (objetivosNoVacios.length === 0) {
-                console.log("No hay objetivos para agregar.");
-                return;
-            }
-            if (objetivos.length > 1 || objetivos[0].Desc_Objetivo === "") {
-                return;
-            }
-            fetch("http://localhost:3000/api/v1/obj_cursos/create", {
-                method: "POST",
+            const response = await fetch(`http://localhost:3000/api/v1/obj_cursos/update/${id}`, {
+                method: "PUT",
                 headers: {
                     Authorization: "Bearer " + token,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    objetivos: objetivosNoVacios,
-                    Id_Cur: idCourse,
+                    Desc_Objetivo: editObjetivo,
                 }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                });
-        } catch (e) {
-            console.log("Error: " + e);
+            });
+            const data = await response.json();
+            if (data.type === "success") {
+                setObjetivosDB(prevObjetivosDB =>
+                    prevObjetivosDB.map(obj =>
+                        obj.IdObj === id ? { ...obj, Desc_Objetivo: editObjetivo } : obj
+                    )
+                );
+                toast.success("Se guardaron los cambios correctamente");
+                setEditObjetivo('');
+                setObjEditId('');
+                router.refresh();
+            } else {
+                toast.error("Hubo un error al guardar los cambios");
+            }
+        } catch (error) {
+            console.log("Error: ", error);
+            toast.error("Hubo un error al comunicarse con el servidor");
         }
     };
 
@@ -402,7 +540,7 @@ export default function ManageCourses() {
                     {page === 1 && (
                         <div>
                             <form
-                                className="my-4 flex flex-col max-w-[1024px] w-[1024px] lg:w-[1024px] gap-8 mx-auto font-medium"
+                                className="my-4 flex flex-col max-w-[1024px] w-full lg:w-full gap-8 mx-auto text-sm md:text-base font-medium"
                                 onSubmit={e => e.preventDefault()}
                             >
                                 <div className="flex flex-col gap-1">
@@ -489,44 +627,80 @@ export default function ManageCourses() {
                                         </p>
                                     </div>
                                     <div className="flex flex-col gap-2 w-full">
+                                        {requisitosDB
+                                            .filter(requisito => requisito.ESTADO_REGISTRO === 1)
+                                            .map((requisito, index) => (
+                                                <div key={requisito.IdReq} className="flex gap-2 group">
+                                                    {requisito.IdReq !== reqEditId ? (
+                                                        <span className="flex items-center border min-w-2/4 w-full border-gray-300 rounded-lg gap-1 p-2">
+                                                            {/* Asegúrate de que el componente Dot esté importado */}
+                                                            <Dot size={24} color='#b0b0b0'/> {requisito.Desc_Req}
+                                                        </span>
+                                                    ) : (
+                                                        <input
+                                                            type="text"
+                                                            defaultValue={requisito.Desc_Req}
+                                                            placeholder="Ej: Tener acceso a internet."
+                                                            onChange={e => handleChangeReqEdit(e.target.value)}
+                                                            className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
+                                                        />
+                                                    )}
+                                                    <div className="flex opacity-100 sm:opacity-0 items-center gap-2 sm:group-hover:opacity-100">
+                                                        {requisito.IdReq !== reqEditId ? (
+                                                            <button
+                                                                onClick={() => setReqEditId(requisito.IdReq)}
+                                                                className="bg-azulSena text-white p-1 hover:bg-black transition-all duration-150 rounded-lg"
+                                                            >
+                                                                <Edit size={19} />
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() => fetchEditarRequisito(requisito.IdReq)}
+                                                                className="bg-azulSena text-white p-1 hover:bg-black transition-all duration-150 rounded-lg"
+                                                            >
+                                                                <Check size={19} />
+                                                            </button>
+                                                        )}
+                                                        <button
+                                                            className="bg-red-500 text-white p-1 hover:bg-red-600 transition-all duration-150 rounded-lg"
+                                                            onClick={() => fetchEliminarRequisito(requisito.IdReq)}
+                                                        >
+                                                            <Trash2 size={19} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         {requisitos.map((requisito, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex gap-2"
-                                            >
+                                            <div key={index} className="flex gap-2">
                                                 <input
                                                     type="text"
-                                                    value={requisito}
+                                                    value={requisito.Desc_Req}
                                                     placeholder="Ej: Tener acceso a internet."
-                                                    onChange={e =>
-                                                        handleChange(
-                                                            index,
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    onChange={e => handleChange(index, e.target.value)}
                                                     className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
                                                 />
-                                                {requisitos.length > 0 && (
+                                                <div className="flex items-center gap-2">
                                                     <button
                                                         className="bg-red-500 text-white p-2 hover:bg-red-600 transition-all duration-150 rounded-lg"
-                                                        onClick={() =>
-                                                            eliminarRequisito(
-                                                                index
-                                                            )
-                                                        }
+                                                        onClick={() => eliminarRequisito(index)}
                                                     >
                                                         <Trash2 />
                                                     </button>
-                                                )}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
-                                    <button
-                                        className="text-azulSena flex items-center gap-1 font-semibold transition-all duration-150 p-2 rounded-lg hover:bg-gray-300"
-                                        onClick={agregarRequisito}
-                                    >
-                                        <Plus /> Agregar requisito
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            className="text-azulSena flex items-center gap-1 font-semibold transition-all duration-150 p-2 rounded-lg hover:bg-gray-300"
+                                            onClick={agregarRequisito}
+                                        >
+                                            <Plus /> Agregar requisito
+                                        </button>
+                                        <button onClick={fetchAgregarRequisitos} disabled={requisitos.length > 0 ? false : true} className="bg-azulSena disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 text-white hover:bg-black transition-all duration-150 p-2 rounded-lg">
+                                            <Save size={20} /> Guardar
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="w-full flex flex-col items-start gap-2">
                                     <div className="flex flex-col">
@@ -541,46 +715,80 @@ export default function ManageCourses() {
                                         </p>
                                     </div>
                                     <div className="w-full flex flex-col gap-2 items-start">
+                                    {objetivosDB
+                                            .filter(objetivo => objetivo.ESTADO_REGISTRO === 1)
+                                            .map((objetivo, index) => (
+                                                <div key={objetivo.IdObj} className="flex gap-2 group w-full">
+                                                    {objetivo.IdObj !== objEditId ? (
+                                                        <span className="flex items-center border min-w-2/4 w-full border-gray-300 rounded-lg gap-1 p-2">
+                                                            {/* Asegúrate de que el componente Dot esté importado */}
+                                                            <Dot size={24} color='#b0b0b0'/> {objetivo.Desc_Objetivo}
+                                                        </span>
+                                                    ) : (
+                                                        <input
+                                                            type="text"
+                                                            defaultValue={objetivo.Desc_Objetivo}
+                                                            placeholder="Ej: Tener acceso a internet."
+                                                            onChange={e => handleChangeObjEdit(e.target.value)}
+                                                            className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
+                                                        />
+                                                    )}
+                                                    <div className="flex opacity-100 sm:opacity-0 items-center gap-2 sm:group-hover:opacity-100">
+                                                        {objetivo.IdObj !== objEditId ? (
+                                                            <button
+                                                                onClick={() => setObjEditId(objetivo.IdObj)}
+                                                                className="bg-azulSena text-white p-1 hover:bg-black transition-all duration-150 rounded-lg"
+                                                            >
+                                                                <Edit size={19} />
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() => fetchEditarObjetivo(objetivo.IdObj)}
+                                                                className="bg-azulSena text-white p-1 hover:bg-black transition-all duration-150 rounded-lg"
+                                                            >
+                                                                <Check size={19} />
+                                                            </button>
+                                                        )}
+                                                        <button
+                                                            className="bg-red-500 text-white p-1 hover:bg-red-600 transition-all duration-150 rounded-lg"
+                                                            onClick={() => fetchEliminarRequisito(objetivo.IdObj)}
+                                                        >
+                                                            <Trash2 size={19} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         {objetivos.map((objetivo, index) => (
-                                            <div
-                                                key={objetivo.IdObj}
-                                                className="flex gap-2 w-full"
-                                                id={objetivo.IdObj}
-                                            >
+                                            <div key={objetivo.IdObj} className="flex gap-2">
                                                 <input
                                                     type="text"
-                                                    defaultValue={
-                                                        objetivo.Desc_Objetivo
-                                                    }
-                                                    placeholder="Ej: Aprender los fundamentos de React."
-                                                    onChange={e =>
-                                                        handleChangeObj(
-                                                            index,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="rounded-lg p-2 w-full outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
+                                                    value={objetivo.Desc_Req}
+                                                    placeholder="Ej: Tener acceso a internet."
+                                                    onChange={e => handleChangeObj(index, e.target.value)}
+                                                    className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena flex-1"
                                                 />
-                                                {objetivos.length > 1 && (
+                                                <div className="flex items-center gap-2">
                                                     <button
-                                                        className="bg-red-500 text-white rounded-lg p-2 transition-all duration-150 hover:bg-red-600"
-                                                        onClick={() =>
-                                                            eliminarObjetivo(
-                                                                objetivo.IdObj
-                                                            )
-                                                        } // Pasar el ID del objetivo a eliminar
+                                                        className="bg-red-500 text-white p-2 hover:bg-red-600 transition-all duration-150 rounded-lg"
+                                                        onClick={() => eliminarObjetivo(index)}
                                                     >
                                                         <Trash2 />
                                                     </button>
-                                                )}
+                                                </div>
                                             </div>
                                         ))}
-                                        <button
-                                            className="text-azulSena flex items-center gap-1 font-semibold transition-all duration-150 p-2 rounded-lg hover:bg-gray-300"
-                                            onClick={agregarObjetivo}
-                                        >
-                                            <Plus /> Agregar objetivo
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                className="text-azulSena flex items-center gap-1 font-semibold transition-all duration-150 p-2 rounded-lg hover:bg-gray-300"
+                                                onClick={agregarObjetivo}
+                                            >
+                                                <Plus /> Agregar objetivo
+                                            </button>
+                                            <button onClick={fetchAgregarObjetivos} disabled={objetivos.length > 0 ? false : true} className="bg-azulSena disabled:cursor-not-allowed disabled:bg-gray-600 flex items-center gap-1 text-white hover:bg-black transition-all duration-150 p-2 rounded-lg">
+                                                <Save size={20} /> Guardar
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">

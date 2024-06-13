@@ -13,7 +13,7 @@ function AsideStudent() {
             <ul>
                 <li><a href="/courses/explore" className={`items-center justify-start ${pathname.includes('/courses/explore') ? styles.active : ''}`}><Compass /> <p>Explorar</p></a></li>
                 <li><a href="/courses/mycourses" className={`items-center justify-start ${pathname.includes('/courses/mycourses') ? styles.active : ''}`}><BookCheck /> <p>Mis cursos</p></a></li>
-                <li><a href="/courses/myprogress" className={`items-center justify-start ${pathname.includes('/courses/stats') ? styles.active : ''}`}><GraduationCap /> <p>Mi progreso</p></a></li>
+                <li><a href="/courses/myprogress" className={`items-center justify-start ${pathname.includes('/courses/myprogress') ? styles.active : ''}`}><GraduationCap /> <p>Mi progreso</p></a></li>
             </ul>
 
         </div>
