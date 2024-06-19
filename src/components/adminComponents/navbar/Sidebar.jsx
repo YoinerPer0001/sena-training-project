@@ -66,7 +66,7 @@ export const Sidebar = ({ estadoSidebar }) => {
               </div>
               <div id="logo" className="flex flex-col mt-10 justify-center items-center">
                 <Link href="/">
-                  <Image width={80} height={80} className="rounded-full" src={user?.Fot_User} alt="logo" />
+                  <Image width={80} height={80} className="rounded-full" src={user.Fot_User ?? "https://res.cloudinary.com/dla5djfdc/image/upload/v1712821257/blank-avatar-photo-place-holder-600nw-1095249842_a6kf0c.webp"} alt="logo" />
                 </Link>
                 <div className='flex flex-col gap-1 mt-2'>
                   <span className='leading-3 text-center font-semibold'>
@@ -85,7 +85,7 @@ export const Sidebar = ({ estadoSidebar }) => {
             </button>
           </div>
         </div>
-        <div className={`${styles.NavbarCelulares} ${estadoSidebar ? 'opacity-100 z-20' : 'opacity-0 z-0'} h-screen fixed left-0 top-0 bg-[#00324D] transition-all ease-in-out delay-150`}>
+        <div className={`${styles.NavbarCelulares} ${estadoSidebar ? 'opacity-100 z-20' : 'opacity-0 z-0'} h-screen xl:hidden fixed left-0 top-0 bg-[#00324D] transition-all ease-in-out delay-150`}>
           <div className={`${styles.NavbarInfo} w-full h-full flex flex-col`}>
             <div className='w-full h-16 flex flex-col py-6'>
               <div className='flex w-full h-full items-center justify-center'>

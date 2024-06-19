@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
-import { CircleCheckBig, GraduationCap, ListChecks, BadgeAlert, BarChart, BookText, Clock, Video, FileType, Dot } from 'lucide-react';
+import { CircleCheckBig, GraduationCap, ListChecks, BadgeAlert, BarChart, BookText, Clock, Video, FileType, Dot, FileCheck } from 'lucide-react';
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner"
 import Image from "next/image";
 import { Accordion, AccordionItem } from "@nextui-org/react";
@@ -186,22 +186,42 @@ export default function CourseDetails() {
                         <div>
                             <Accordion variant="splitted" selectionMode="multiple" className="rounded-2xl gap-3" defaultExpandedKeys={["1"]}>
                                 {dataCourse.Modulocursos.map(modulo => {
-                                    return (<AccordionItem key={modulo.Id_Mod} title={modulo.Tit_Mod} className="font-bold shadow-xs bg-azulSecundarioSena" subtitle={
-                                        <p className="flex font-medium">
-                                            {modulo.Contenido_Modulos.length} clases | <span className="text-azulSena ml-1">Duración: {modulo.Horas_Cont_Mod} horas</span>
-                                        </p>
-                                    }>
-                                        <ul className="flex flex-col gap-1 p-3 pt-0">
-                                            {modulo.Contenido_Modulos?.map(cont => {
-                                                return (
-                                                    <li key={cont.Id_Cont} className="flex gap-1 items-center font-medium"> <Video size={20} color="#39a900" /> {cont.Tit_Cont}</li>
-                                                )
-                                            })}
-                                        </ul>
-                                    </AccordionItem>)
+                                    // Combina y ordena contenidos y evaluaciones por updatedAt
+                                    const combinedItems = [...(modulo.Contenido_Modulos ?? []), ...(modulo.evaluacions ?? [])]
+                                        .sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+
+                                    return (
+                                        <AccordionItem key={modulo.Id_Mod} title={modulo.Tit_Mod} className="font-bold shadow-xs bg-azulSecundarioSena" subtitle={
+                                            <p className="flex font-medium">
+                                                {modulo.Contenido_Modulos.length} clases | <span className="text-azulSena ml-1">Duración: {modulo.Horas_Cont_Mod} horas</span>
+                                            </p>
+                                        }>
+                                            <ul className="flex flex-col gap-1 p-3 pt-0">
+                                                {combinedItems.map(item => {
+                                                    if (item.Id_Cont) {
+                                                        // Es un contenido de módulo
+                                                        return (
+                                                            <li key={item.Id_Cont} className="flex gap-1 items-center font-medium">
+                                                                <Video size={20} color="#39a900" /> {item.Tit_Cont}
+                                                            </li>
+                                                        );
+                                                    } else if (item.Id_Eva) {
+                                                        // Es una evaluación
+                                                        return (
+                                                            <li key={item.Id_Eva} className="flex gap-1 items-center font-medium">
+                                                                <FileCheck size={20} color="#39a900" /> {item.Tit_Eva}
+                                                            </li>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })}
+                                            </ul>
+                                        </AccordionItem>
+                                    );
                                 })}
                             </Accordion>
                         </div>
+
                     </div>
                     <div className="my-4 w-full">
                         <div className="flex items-center mb-4 justify-center gap-2">

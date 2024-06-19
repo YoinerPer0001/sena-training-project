@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner"
 
-export default function createPage() {
+export default function CreatePage() {
     const router = useRouter();
     const url = 'http://localhost:3000/api/v1/notifications/create'
     const [Titulo, setTitulo] = useState('')

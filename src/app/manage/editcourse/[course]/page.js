@@ -15,9 +15,11 @@ import {
     Edit,
     Eye,
     File,
+    FileCheck,
     ImagePlus,
     Info,
     Link2,
+    LucideListPlus,
     Plus,
     PlusCircle,
     PlusCircleIcon,
@@ -39,6 +41,7 @@ import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
 import useContentCourseHandlers from "@/hooks/useContentCourseHandlers";
 import useEditCourse from "@/utils/editCourseFunctions/editCourseInputs/editCourseInputs";
 import UploadButtonWidget from "@/components/instructorsComponents/UploadButtonWidget/UploadButtonWidget";
+import CreateQuiz from "@/components/instructorsComponents/CreateQuiz/CreateQuiz";
 
 
 export default function ManageCourses() {
@@ -47,7 +50,7 @@ export default function ManageCourses() {
     const [categories, setCategories] = useState();
     const [dataCourse, setDataCourse] = useState({});
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(2);
 
     const [requisitosDB, setRequisitosDB] = useState([])
     const [objetivosDB, setObjetivosDB] = useState([]);
@@ -58,7 +61,6 @@ export default function ManageCourses() {
 
 
     const {
-        modulos,
         nuevoNombreModulo,
         mostrarAgregarModulo,
         setNuevoNombreModulo,
@@ -72,8 +74,10 @@ export default function ManageCourses() {
         createIndexClass,
         setCreateNameClass,
         setCreateIndexClass,
-        subirVideoContenido
+        subirVideoContenido,
+        dataCourse2
     } = useContentCourseHandlers(token, idCourse)
+    console.log(dataCourse2)
 
     const { editCourse, handleChangeName, handleChangeDes, handleChangeCat } = useEditCourse();
 
@@ -149,7 +153,11 @@ export default function ManageCourses() {
             });
     }, [idCourse]);
 
-
+    useEffect(() => {
+        if (dataCourse2) {
+            setLoading(false)
+        }
+    }, [dataCourse2]);
 
     const handleClickPage1 = () => {
         setPage(1);
@@ -496,7 +504,33 @@ export default function ManageCourses() {
         }
     };
 
+    // MOSTRAR CREAR EVALUACION
+    const [crearEvaluacion, setCrearEvaluacion] = useState('');
+    const handleClickCrearEvaluacion = (idMod) => {
+        console.log(idMod, crearEvaluacion)
+        if (idMod == crearEvaluacion) {
+            setCrearEvaluacion('')
+        } else {
+            setCrearEvaluacion(idMod);
+        }
+    };
 
+    // MOSTRAR AGREGAR PREGUNTA
+    const [addQuestionForm, setQuestionForm] = useState('');
+
+    const handleShowAddQuestionForm = (idEva) => {
+        if (idEva == addQuestionForm) {
+            setQuestionForm('')
+        } else {
+            setQuestionForm(idEva);
+        }
+    }
+
+    if (!dataCourse2) {
+        return <div className="w-full h-full flex justify-center items-center">
+            <Spinner />
+        </div>;
+    }
 
     return (
         <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
@@ -634,7 +668,7 @@ export default function ManageCourses() {
                                                     {requisito.IdReq !== reqEditId ? (
                                                         <span className="flex items-center border min-w-2/4 w-full border-gray-300 rounded-lg gap-1 p-2">
                                                             {/* Asegúrate de que el componente Dot esté importado */}
-                                                            <Dot size={24} color='#b0b0b0'/> {requisito.Desc_Req}
+                                                            <Dot size={24} color='#b0b0b0' /> {requisito.Desc_Req}
                                                         </span>
                                                     ) : (
                                                         <input
@@ -715,14 +749,14 @@ export default function ManageCourses() {
                                         </p>
                                     </div>
                                     <div className="w-full flex flex-col gap-2 items-start">
-                                    {objetivosDB
+                                        {objetivosDB
                                             .filter(objetivo => objetivo.ESTADO_REGISTRO === 1)
                                             .map((objetivo, index) => (
                                                 <div key={objetivo.IdObj} className="flex gap-2 group w-full">
                                                     {objetivo.IdObj !== objEditId ? (
                                                         <span className="flex items-center border min-w-2/4 w-full border-gray-300 rounded-lg gap-1 p-2">
                                                             {/* Asegúrate de que el componente Dot esté importado */}
-                                                            <Dot size={24} color='#b0b0b0'/> {objetivo.Desc_Objetivo}
+                                                            <Dot size={24} color='#b0b0b0' /> {objetivo.Desc_Objetivo}
                                                         </span>
                                                     ) : (
                                                         <input
@@ -932,67 +966,118 @@ export default function ManageCourses() {
                                 </p>
                             </div>
                             <div>
-                                <div className="flex flex-col gap-10">
-                                    {modulos.map((modulo, indiceModulo) => (
+                                <div className="flex flex-col gap-5">
+                                    {dataCourse2.Modulocursos?.map((modulo, indiceModulo) => (
                                         <div
                                             key={indiceModulo}
                                             className="border-1 border-azulSena p-3 rounded-lg bg-white"
                                         >
                                             <div className="my-2 flex group items-center gap-2 flex-wrap">
                                                 <div>
-                                                    {editIndexMod === indiceModulo ? (<div className="flex items-center gap-2 mx-2">
+                                                    {editIndexMod === modulo.Id_Mod ? (<div className="flex items-center gap-2 mx-2">
                                                         <span className="font-semibold">Modulo: </span>
                                                         <input className="p-2 rounded-lg border-1 outline-none border-gray-300 focus:border-azulSena" id={modulo.Id_Mod} type="text" defaultValue={modulo.Tit_Mod} placeholder="Introduce el nombre del modulo" />
                                                     </div>) : <h4 className="font-bold text-lg mx-2">{modulo.Tit_Mod}</h4>}
                                                 </div>
                                                 <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
-                                                    <button onClick={() => handleEditClick(indiceModulo)} className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
+                                                    <button onClick={() => handleEditClick(modulo.Id_Mod)} className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
                                                     <button value={modulo.Id_Mod} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2 items-start w-full">
-                                                {modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => {
-                                                    return (
-                                                        <>
-                                                            <div className="flex flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
-                                                                <div className="flex items-center justify-between gap-2 w-full">
-                                                                    <div className="flex items-center gap-4">
-                                                                        <span className="flex items-center gap-2 text-md font-semibold"><BookCheck size={20} />{cont.Tit_Cont}</span>
-                                                                        <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
-                                                                            <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
-                                                                            <button value={cont.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                {[...modulo.Contenido_Modulos, ...modulo.evaluacions]
+                                                    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                                                    .map((item) => {
+                                                        if (item.Id_Cont && item.ESTADO_REGISTRO == 1) {
+                                                            // Es un contenido de módulo
+                                                            return (
+                                                                <div key={item.Id_Cont} className="flex flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
+                                                                    <div className="flex items-center justify-between gap-2 w-full">
+                                                                        <div className="flex items-center gap-4">
+                                                                            <span className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{item.Tit_Cont}</span>
+                                                                            <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
+                                                                                <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
+                                                                                <button value={item.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                                            </div>
                                                                         </div>
+                                                                        <button onClick={() => toggleContenidoVisible(item.Id_Cont)}>
+                                                                            {contenidoVisible == item.Id_Cont ? <ChevronDown /> : <ChevronLeft />}
+                                                                        </button>
                                                                     </div>
-                                                                    <button onClick={() => toggleContenidoVisible(cont.Id_Cont)}>
-                                                                        {contenidoVisible == cont.Id_Cont ? <ChevronDown /> : <ChevronLeft />}
-                                                                    </button>
+                                                                    {item.Url_Cont === null || item.Url_Cont === '' ? (
+                                                                        <>
+                                                                            <hr className={`w-full border-gray-300 mb-2 ${contenidoVisible == item.Id_Cont ? 'block' : 'hidden'}`} />
+                                                                            <div className={`flex items-center justify-end gap-2 w-full ${contenidoVisible == item.Id_Cont ? 'block' : 'hidden'}`}>
+                                                                                <UploadButtonWidget
+                                                                                    cont={item}
+                                                                                    subirVideoContenido={subirVideoContenido}
+                                                                                    setContenidoVisible={setContenidoVisible}
+                                                                                    label={'Subir video'}
+                                                                                />
+                                                                                <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                                            </div>
+                                                                        </>
+                                                                    ) : (
+                                                                        <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == item.Id_Cont ? 'block' : 'hidden'}`}>
+                                                                            <Link href={`${item.Url_Cont}`} className="p-2 rounded-lg underline">
+                                                                                {item.Tip_Cont == '2' && <span className="flex items-center gap-2"><Video size={20} /> Ver video</span>}
+                                                                            </Link>
+                                                                            <UploadButtonWidget
+                                                                                cont={item}
+                                                                                subirVideoContenido={subirVideoContenido}
+                                                                                setContenidoVisible={setContenidoVisible}
+                                                                                label={'Cambiar video'}
+                                                                            />
+                                                                        </div>
+                                                                    )}
                                                                 </div>
-                                                                {cont.Url_Cont === null || cont.Url_Cont === '' ? <>
-                                                                    <hr className={`w-full border-gray-300 mb-2 ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`} />
-                                                                    <div className={`flex items-center justify-end gap-2 w-full ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`}>
-                                                                        <UploadButtonWidget
-                                                                            cont={cont}
-                                                                            subirVideoContenido={subirVideoContenido}
-                                                                            setContenidoVisible={setContenidoVisible}
-                                                                            label={'Subir video'}
-                                                                        />
-                                                                        <button className="bg-azulSena p-2 rounded-lg text-white flex items-center gap-1 text-sm hover:bg-black transition-all duration-150"><Link2 size={20} /> Recursos</button>
+                                                            );
+                                                        } else if (item.Id_Eva && item.ESTADO_REGISTRO == 1) {
+                                                            // Es una evaluación
+                                                            return (
+                                                                <div key={item.Id_Eva} className="flex flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
+                                                                    <div className="flex items-center justify-between gap-2 w-full">
+                                                                        <div className="flex items-center gap-4">
+                                                                            <span className="flex items-center gap-2 text-md font-semibold"><FileCheck size={20} />{item.Tit_Eva}</span>
+                                                                            <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
+                                                                                <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
+                                                                                <button value={item.Id_Eva} onClick={(e) => eliminarEvaluacion(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <button onClick={() => toggleContenidoVisible(item.Id_Eva)}>
+                                                                            {contenidoVisible == item.Id_Eva ? <ChevronDown /> : <ChevronLeft />}
+                                                                        </button>
                                                                     </div>
-                                                                </> : <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == cont.Id_Cont ? 'block' : 'hidden'}`}>
-                                                                    <Link href={`${cont.Url_Cont}`} className="p-2 rounded-lg underline">
-                                                                        {cont.Tip_Cont == '2' && <span className="flex items-center gap-2"><Video size={20} /> Ver video</span>}
-                                                                    </Link>
-                                                                    <UploadButtonWidget
-                                                                        cont={cont}
-                                                                        subirVideoContenido={subirVideoContenido}
-                                                                        setContenidoVisible={setContenidoVisible}
-                                                                        label={'Cambiar video'}
-                                                                    />
-                                                                </div>}
-                                                            </div>
-                                                        </>
-                                                    )
-                                                })}
+                                                                    <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == item.Id_Eva ? 'block' : 'hidden'}`}>
+                                                                        <ol className="list-decimal w-full">
+                                                                            <h4 className="font-bold text-lg">Preguntas</h4>
+                                                                            {item.preguntasevals?.map((preg, index) => {
+                                                                                return (
+                                                                                    <li key={preg.Id_Preg_Eval} className="list-decimal font-medium flex items-start justify-start gap-2 w-full">
+                                                                                        <span className="font-bold">{index = 1}.</span> {preg.Text_Preg_Eval}
+                                                                                    </li>
+                                                                                )
+                                                                            })}
+                                                                            {item.preguntasevals.length == 0 && 'No hay preguntas'}
+                                                                            {addQuestionForm == item.Id_Eva && (
+                                                                                <div className="flex flex-col w-full items-end gap-2 mt-4">
+                                                                                    <div className="flex items-center gap-2 w-full">
+                                                                                        <label>Pregunta: </label>
+                                                                                        <input className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce la pregunta" onChange={(e) => setCreateQuestion(e.target.value)} /></div>
+                                                                                    <div className="flex items-center gap-2">
+                                                                                        <button className="bg-azulSena hover:bg-black transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2"><Save size={21} /> Guardar</button>
+                                                                                        <button className="bg-azulSena hover:bg-black transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2"><Save size={21} /> Cancelar</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+                                                                            <button onClick={() => handleShowAddQuestionForm(item.Id_Eva)} className="bg-azulSena mt-4 text-white flex items-center gap-1 rounded-lg p-2"><LucideListPlus /> Agregar pregunta</button>
+                                                                        </ol>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    })}
                                                 {createIndexClass === indiceModulo ? (
                                                     <>
                                                         <div className="flex items-center justify-start gap-2 w-full">
@@ -1002,11 +1087,8 @@ export default function ManageCourses() {
                                                         <div className="flex items-center gap-2 text-sm">
                                                             <button
                                                                 onClick={() => {
-                                                                    createClass(
-                                                                        modulo.Id_Mod
-                                                                    )
-                                                                }
-                                                                }
+                                                                    createClass(modulo.Id_Mod)
+                                                                }}
                                                                 className="flex items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
                                                             >
                                                                 <Save size={20} /> Guardar clase
@@ -1014,20 +1096,22 @@ export default function ManageCourses() {
                                                             <button onClick={() => setCreateIndexClass(null)} className="flex items-center gap-1 bg-red-500 hover:bg-red-600 rounded-lg p-2 transition-all duration-150 text-white">Cancelar</button>
                                                         </div>
                                                     </>
-
-                                                ) : (<button
-                                                    onClick={() =>
-                                                        handleCreateClick(
-                                                            indiceModulo
-                                                        )
-                                                    }
-                                                    className="flex text-sm items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
-                                                >
-                                                    <PlusCircleIcon size={20} /> Añadir
-                                                    clase
-                                                </button>)}
-
+                                                ) : (
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            onClick={() => handleCreateClick(indiceModulo)}
+                                                            className="flex text-sm items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black"
+                                                        >
+                                                            <Plus size={20} /> Clase
+                                                        </button>
+                                                        <button onClick={() => handleClickCrearEvaluacion(modulo.Id_Mod)} className="flex text-sm items-center gap-1 p-2 rounded-lg border-1 transition-all duration-150 text-white font-medium bg-azulSena hover:bg-black">
+                                                            <Plus size={20} /> Evaluación
+                                                        </button>
+                                                    </div>
+                                                )}
+                                                {crearEvaluacion == modulo.Id_Mod && <CreateQuiz setCrearEvaluacion={setCrearEvaluacion} idMod={modulo.Id_Mod} />}
                                             </div>
+
                                         </div>
                                     ))}
                                     {mostrarAgregarModulo && (
@@ -1076,6 +1160,7 @@ export default function ManageCourses() {
                                         </div>
                                     )}
                                 </div>
+
                                 <div className="flex w-full justify-center items-center">
                                     <button
                                         onClick={() =>

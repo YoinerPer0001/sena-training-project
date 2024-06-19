@@ -8,6 +8,8 @@ import { useParams } from 'next/navigation'
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
+import VideoClass from "@/components/usersComponents/VideoClass/VideoClass";
+import EvaluationSection from "@/components/usersComponents/EvaluationSection/EvaluationSection";
 
 const Page = () => {
     const srcDefault = "https://res.cloudinary.com/dla5djfdc/video/upload/v1716317063/cursos/2024-03-03_22-18-01_fbbgg9.mkv";
@@ -94,8 +96,8 @@ const Page = () => {
                     Id_Cont: Id_Cont,
                 }),
             })
-            .then(response => response.json())
-            .then(response => console.log(response))
+                .then(response => response.json())
+                .then(response => console.log(response))
         } catch (err) {
             console.log(err);
         }
@@ -104,17 +106,9 @@ const Page = () => {
     return (
         isLoading ? <div className="h-screen w-screen flex justify-center items-center"><Spinner /></div> : (
             <>
-                <section className="w-full md:w-3/4 h-auto md:h-full bg-black">
-                    <div className="flex h-full justify-center items-center p-4">
-                        <CldVideoPlayer
-                            width="1280"
-                            height="720"
-                            src={videoSrc}
-                            className="rounded-lg w-3/4"
-                        />
-                    </div>
-                </section>
-                <section className="w-full md:w-1/4 py-2 h-full overflow-y-auto bg-azulSena text-white border-l-2 border-gray-700 relative">
+                {/* <VideoClass src={videoSrc} /> */}
+                <EvaluationSection />
+                <section className="w-full md:w-1/4 py-2 h-full overflow-y-auto bg-azulSena text-white  relative">
                     <div className="relative w-full flex justify-center gap-2 items-center">
                         <h4 className="font-semibold text-xl text-center my-2">
                             {dataCourse.Nom_Cur}
@@ -134,17 +128,23 @@ const Page = () => {
                                     </div>
                                     {contenidoVisible === modulo.Id_Mod && <hr className="w-full" />}
                                     <div className={`${contenidoVisible === modulo.Id_Mod ? 'flex flex-col w-full gap-2 bg-white rounded-lg' : 'hidden'}`}>
-                                        {contenidoVisible === modulo.Id_Mod && modulo.Contenido_Modulos?.sort((a, b) => a.Indice_Cont - b.Indice_Cont).map((cont) => (
-                                            <div key={cont.Id_Cont} className={`flex cursor-pointer flex-col group gap-3 items-start sm:text-sm lg:text-base text-black p-3 rounded-lg  w-full ${classId == cont.Id_Cont ? 'bg-azulSecundarioSena text-azulSena hover:bg-azulSecundarioSena' : 'bg-white border hover:bg-gray-100'}`}>
-                                                <div className="flex items-center justify-between gap-2 w-full">
-                                                    <div className="flex items-center w-full gap-4">
-                                                        <Link href={`./${cont.Id_Cont}`} className="flex items-center w-full justify-between gap-2 font-semibold">
-                                                            <span className="flex items-center gap-2 text-sm 2xl:text-base font-semibold"><Video size={20} />{cont.Tit_Cont}</span>
-                                                            <button onClick={() => checkClass(cont.Id_Cont)} className="text-gray-800 p-1 hover:bg-gray-400 transition-all duration-150 rounded-full bg-gray-200"><Check size={20} strokeWidth={2.5}/></button>
-                                                        </Link>
+                                        {contenidoVisible === modulo.Id_Mod && modulo.Contenido_Modulos?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map((cont) => (
+                                            (cont.Tip_Cont && cont.Url_Cont) ? (
+                                                <div key={cont.Id_Cont} className={`flex cursor-pointer flex-col group gap-3 items-start sm:text-sm lg:text-base text-black p-3 rounded-lg w-full ${classId === cont.Id_Cont ? 'bg-azulSecundarioSena text-azulSena hover:bg-azulSecundarioSena' : 'bg-white border hover:bg-gray-100'}`}>
+                                                    <div className="flex items-center justify-between gap-2 w-full">
+                                                        <div className="flex items-center w-full gap-4">
+                                                            <Link href={`./${cont.Id_Cont}`} className="flex items-center w-full justify-between gap-2 font-semibold">
+                                                                <span className="flex items-center gap-2 text-sm 2xl:text-base font-semibold">
+                                                                    <Video size={20} />{cont.Tit_Cont}
+                                                                </span>
+                                                                <button onClick={() => checkClass(cont.Id_Cont)} className="text-gray-800 p-1 hover:bg-gray-400 transition-all duration-150 rounded-full bg-gray-200">
+                                                                    <Check size={20} strokeWidth={2.5} />
+                                                                </button>
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            ) : null
                                         ))}
                                     </div>
                                 </div>

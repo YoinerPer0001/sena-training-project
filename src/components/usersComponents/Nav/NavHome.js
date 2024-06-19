@@ -85,7 +85,7 @@ export const NavHome = () => {
                     <GraduationCap size={18} /> Instructores
                   </div>
                 </DropdownItem>}
-              {user.Id_Rol_FK == 3 &&
+              {user.Id_Rol_FK == 1 &&
                 <DropdownItem key="settings" href={'/admin/dashboard'} color='primary'>
                   <div className='flex items-center gap-1'>
                     <Bolt size={18} /> Administrar

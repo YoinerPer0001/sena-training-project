@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useApp } from '@/features/AppContext/AppContext';
 import { login, logout } from '../../../features/auth/loginSlice'
 import { getCookie, deleteCookie } from 'cookies-next';
-import { Search, Menu, ChevronDown, LogOut, Bolt, User2, GraduationCap } from 'lucide-react';
+import { Search, Menu, ChevronDown, LogOut, Bolt, User2, GraduationCap, LogOutIcon, Bell } from 'lucide-react';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar } from "@nextui-org/react";
 
 export const NavCourses = () => {
@@ -79,48 +79,62 @@ export const NavCourses = () => {
           </button>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent as="div" justify="end">
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <div className='flex items-center gap-2 cursor-pointer'>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                // color="secondary"
-                name="Jason Hughes"
-                size="sm"
-                src="https://res.cloudinary.com/dla5djfdc/image/upload/v1712821257/blank-avatar-photo-place-holder-600nw-1095249842_a6kf0c.webp"
-              />
-              <ChevronDown size={20} color='#fff' />
-            </div>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="settings" href={'/profile'}>
-              <div className='flex items-center gap-1'>
-                <User2 size={18} /> Mi cuenta
+      {authState.isAuthenticated ?
+        <NavbarContent as="div" justify="end">
+          <button><Bell color='white' /></button>
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <div className='flex items-center gap-2 cursor-pointer'>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  // color="secondary"
+                  name="Jason Hughes"
+                  size="sm"
+                  src="https://res.cloudinary.com/dla5djfdc/image/upload/v1712821257/blank-avatar-photo-place-holder-600nw-1095249842_a6kf0c.webp"
+                />
+                <ChevronDown size={20} color='#fff' />
               </div>
-            </DropdownItem>
-            {user.Id_Rol_FK == 2 &&
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem key="settings" href={'/profile'}>
+                <div className='flex items-center gap-1'>
+                  <User2 size={18} /> Mi cuenta
+                </div>
+              </DropdownItem>
+              {user.Id_Rol_FK == 2 &&
                 <DropdownItem key="settings" href={'/instructors/content'} color='primary'>
                   <div className='flex items-center gap-1'>
                     <GraduationCap size={18} /> Instructores
                   </div>
                 </DropdownItem>}
-              {user.Id_Rol_FK == 3 &&
+              {user.Id_Rol_FK == 1 &&
                 <DropdownItem key="settings" href={'/admin/dashboard'} color='primary'>
                   <div className='flex items-center gap-1'>
                     <Bolt size={18} /> Administrar
                   </div>
                 </DropdownItem>}
-            <DropdownItem key="logout" color="danger">
-              <div onClick={handleLogout} className='flex items-center gap-1'>
-                <LogOut size={18} />Cerrar sesión
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarContent>
+              <DropdownItem key="logout" color="danger">
+                <div onClick={handleLogout} className='flex items-center gap-1'>
+                  <LogOutIcon size={18} />Cerrar sesión
+                </div>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarContent> :
+        <NavbarContent as="div" justify="end">
+          <NavbarItem>
+            <Link className='font-medium text-white hover:bg-[#0b212e] transition-all duration-200 rounded-lg' isBlock color="foreground" href="/auth/login">
+              Iniciar sesión
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link className='font-medium text-white hover:bg-[#0b212e] transition-all duration-200 rounded-lg' isBlock color="foreground" href="/auth/register">
+              Registrarme
+            </Link>
+          </NavbarItem>
+        </NavbarContent>}
     </Navbar>
   )
 }

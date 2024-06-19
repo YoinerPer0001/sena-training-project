@@ -10,7 +10,7 @@ const FAQPage = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <NavHome />
-            <main className="flex-grow max-w-[1024px] mx-auto my-6">
+            <main className="flex-grow max-w-[1024px] mx-auto my-[80px]">
                 <header className="my-2">
                     <h1 className="font-bold text-3xl text-center my-2">Preguntas frecuentes</h1>
                     <p className="text-gray-600 font-medium">

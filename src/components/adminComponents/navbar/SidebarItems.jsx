@@ -87,9 +87,9 @@ export const SidebarItems = () => {
                         <span className="text-center  leading-5 text-white">{opcion.Opcion.nombre_opcion}</span>
                     </div>
                 </Link>
-            )) : isLoading ? 'Cargando...' : data.map(opcion => (
+            )) : isLoading ? '' : data.map(opcion => (
                 <div key={opcion.Opcion.id_opcion} className="w-full flex flex-col items-center justify-start pt-3">
-                    <Link key={opcion.Opcion.id_opcion + "k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-[#55768875]  rounded-lg'}`}>
+                    <Link key={opcion.Opcion.id_opcion + "k"} href={opcion.Opcion.url} className={`py-2 p-2 duration-150 ${pathActual === opcion.Opcion.url && 'bg-verdeSena  rounded-lg'}`}>
                         {listIcons[opcion.Opcion.id_opcion - 1].icon}
                     </Link>
                 </div>

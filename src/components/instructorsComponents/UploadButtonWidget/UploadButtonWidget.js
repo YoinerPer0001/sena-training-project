@@ -9,8 +9,7 @@ const UploadButtonWidget = memo(({ cont, subirVideoContenido, setContenidoVisibl
             subirVideoContenido(cont.Id_Cont, results.info.secure_url);
             setContenidoVisible('');
         }} uploadPreset="senalearn" options={{ multiple: false, sources: ["local", "url", "google_drive"] }}>
-            {({ open, results }) => {
-                console.log(results);
+            {({ open }) => {
                 return (
                     <button
                         className="bg-azulSena text-sm flex items-center gap-1 text-white p-2 rounded-lg hover:bg-black transition-all duration-150"

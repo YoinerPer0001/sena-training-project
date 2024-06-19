@@ -64,14 +64,13 @@ export default function Content() {
 
 
     return (
-        <div className="bg-gray-100 flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
+        <div className="flex flex-col h-full gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
             <div className={styles.container_button_add}>
                 <h3 className='font-bold text-3xl text-center my-2 '>Gestión de cursos</h3>
-                <hr />
                 <div className="flex items-center justify-between my-4">
                     <div className='flex items-center gap-2'>
-                        <Search color='rgb(0, 50, 77)'/>
-                        <input className='p-2 rounded-lg border outline-none border-gray-200 focus:border-azulSena' name='search_filter_courses' type="text" placeholder="Filtrar por nombre" onChange={handleChange} />
+                        <Search color='rgb(0, 50, 77)' strokeWidth={3}/>
+                        <input className='p-2 rounded-lg border outline-none border-gray-200 focus:border-azulSena' name='search_filter_courses' type="text" placeholder="Buscar curso..." onChange={handleChange} />
                     </div>
                     <div className='flex gap-2'>
                         <Link href={'/manage/create'} className='text-sm font-medium hover:bg-black transition-all duration-150 bg-azulSena p-2 rounded-lg flex items-center gap-1 text-white'><CirclePlus />Crear nuevo curso</Link>

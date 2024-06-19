@@ -116,18 +116,18 @@ export default function InstructorStatistics() {
             <section className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2 items-center my-6">
                     <h1 className="font-bold text-2xl lg:text-3xl">Estadísticas del Instructor</h1>
-                    <div className="flex flex-wrap items-center justify-center gap-2">
-                        <div className="text-sm sm:text-base font-medium bg-gradient-to-r from-green-600 to-green-500 p-2 rounded-lg flex items-center gap-2 justify-center text-white ">
-                            <p>Cantidad total de inscripciones:</p>
-                            <p className="text-2xl font-bold">{enrollmentsCount}</p>
+                    <div className="flex flex-wrap items-center justify-between w-full gap-2">
+                        <div className="bg-white text-sm sm:text-base font-medium border flex-col p-2 rounded-lg flex items-start gap-2 justify-center text-white ">
+                            <p className="text-gray-600 text-sm">Cantidad total de inscripciones:</p>
+                            <p className="text-3xl font-bold text-black">{enrollmentsCount}</p>
                         </div>
-                        <div className="text-sm sm:text-base font-medium bg-gradient-to-r from-sky-500 to-cyan-400 p-2 rounded-lg flex items-center gap-2 justify-center text-white ">
-                            <p>Progreso promedio de los estudiantes:</p>
-                            <p className="text-2xl font-bold">{averageProgress.toFixed(2)}%</p>
+                        <div className="bg-white text-sm sm:text-base font-medium border flex-col p-2 rounded-lg flex items-start gap-2 justify-center text-white ">
+                            <p className="text-gray-600 text-sm">Progreso promedio de los estudiantes:</p>
+                            <p className="text-3xl font-bold text-black">{averageProgress.toFixed(2)}%</p>
                         </div>
-                        <div className="text-sm rounded-lg p-2 sm:text-base font-medium bg-gradient-to-r from-blue-800 to-blue-700 min-w-[200px] text-white flex items-center gap-2 justify-center">
-                            <p>Total de clases:</p>
-                            <p className="text-2xl font-bold">{totalClasses}</p>
+                        <div className="bg-white text-sm rounded-lg p-2 sm:text-base font-medium border flex-col items-start min-w-[200px] text-white flex gap-2 justify-center">
+                            <p className="text-gray-600 text-sm">Total de clases:</p>
+                            <p className="text-3xl font-bold text-black">{totalClasses}</p>
                         </div>
                     </div>
 
@@ -137,7 +137,7 @@ export default function InstructorStatistics() {
                         </div>
                         <div>
                             {popularCourses.map(({ course, enrollmentsCount }) => (
-                                <div key={course.Id_Cur} className="p-4 border rounded-lg mb-4 flex items-center gap-2 justify-between flex-wrap">
+                                <div key={course.Id_Cur} className="p-4 bg-white border rounded-lg mb-4 flex items-center gap-2 justify-between flex-wrap">
 
                                     <div className="flex items-center justify-left gap-2">
                                         <Image className="rounded-lg" width={100} height={100} alt="Foto de portada del curso" src={course.Fot_Cur !== null ? course.Fot_Cur : '/defaultBackground.webp'} />

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { Bell } from 'lucide-react'
+import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import { useGetFetch } from '@/hooks/fetchActions/GetFetch'
 import { FaCircle } from "react-icons/fa";
@@ -9,23 +10,13 @@ const IconNotify = () => {
     const [visible, setVisible] = useState(false)
     const [Leidos, setLeidos] = useState(true)
     const [refresh, setRefresh] = useState(0)
-    
-    let storedData = null;
-    let sessionToken = null;
+    const authState = useSelector(state => state.auth)
 
-    if (typeof localStorage !== 'undefined') {
-        try {
-            storedData = localStorage.getItem('name');
-            sessionToken = localStorage.getItem('sessionToken');
-        } catch (e) {
-            console.error("Se produjo un error al intentar acceder a localStorage:", e);
-        }
-    } else {
-        console.warn("localStorage no está definido en este entorno.");
-    }
+    const sessionToken = authState.token
+    const user = authState.user
 
-    const { Id_User } = storedData ? JSON.parse(storedData) : { Id_User: 1 };
-    const { data, isLoading } = useGetFetch(`http://localhost:3000/api/v1/notifications/user/${Id_User}?refresh=${refresh}`)
+    const { Id_User } = user;
+    const { data, isLoading } = useGetFetch(`http://localhost:3000/api/v1/notifications/user/${Id_User}`)
 
     const visibleNot = () => {
         setVisible(!visible)
