@@ -1,27 +1,30 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 export const usePostFetch = (url) => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
+    const authState = useSelector(state => state.auth);
+    const sessionToken = authState.token;
 
     const postData = useCallback(async (datos) => {
         setIsLoading(true);
         setError(false);
 
-        let sessionToken = null;
+        // let sessionToken = null;
 
-        if (typeof localStorage !== 'undefined') {
-            try {
-                sessionToken = localStorage.getItem('sessionToken');
-            } catch (e) {
-                console.error("Se produjo un error al intentar acceder a localStorage:", e);
-            }
-        } else {
-            console.warn("localStorage no está definido en este entorno.");
-        }
+        // if (typeof localStorage !== 'undefined') {
+        //     try {
+        //         sessionToken = localStorage.getItem('sessionToken');
+        //     } catch (e) {
+        //         console.error("Se produjo un error al intentar acceder a localStorage:", e);
+        //     }
+        // } else {
+        //     console.warn("localStorage no está definido en este entorno.");
+        // }
 
         try {
             const respuesta = await fetch(url, {
@@ -51,7 +54,7 @@ export const usePostFetch = (url) => {
         }
 
         setIsLoading(false);
-    }, [url]);
+    }, [url, sessionToken]);
 
     return { data, isLoading, error, postData };
 };
