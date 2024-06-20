@@ -13,12 +13,10 @@ import { capitalizestr } from '@/utils/utils';
 import Link from 'next/link';
 
 export default function ProfileUser() {
-    const [dataUser, setDataUser] = useState({});
     const [editData, setEditData] = useState({});
     const [loading, setLoading] = useState(true);
     const authState = useSelector(state => state.auth)
     const user = authState.user
-    console.log(user)
 
     const token = getCookie("sessionToken");
     const router = useRouter();
@@ -59,14 +57,35 @@ export default function ProfileUser() {
         console.log(editData);
     };
 
+    const handleEditProfile = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(
+                `http://localhost:3000/api/v1/users/update/${user.Id_User}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(editData),
+                }
+            );
 
+            const data = await response.json();
 
-    // subir imagen
+            if (data.type === "success") {
+                toast.success("Perfil actualizado correctamente.");
+                router.reload();
+            } else {
+                console.error("Error al actualizar el perfil:", data.message);
+            }
+        } catch (error) {
+            console.error("Error al actualizar el perfil:", error);
+        }
+    };
 
-    let image = null;
-    const [progressBar, setProgressBar] = useState(false);
-
-    const formSubmit = async ({ files }) => {
+    const handleImageUpload = async ({ files }) => {
         const [file] = files;
         const form = new FormData();
         form.append("file", file);
@@ -83,7 +102,7 @@ export default function ProfileUser() {
             }
 
             const data = await res.json();
-            image = data.file;
+            const image = data.file;
 
             if (data.message === "File uploaded successfully" && image) {
                 const updateResponse = await fetch(
@@ -102,19 +121,19 @@ export default function ProfileUser() {
 
                 if (updateData.type === "success") {
                     setProgressBar(false);
-                    toast.success("Se guardo la imagen correctamente.");
-                    return location.reload();
+                    toast.success("Se guardó la imagen correctamente.");
+                    router.reload();
                 } else {
                     setProgressBar(false);
-                    console.error("Failed to update course with image:", updateData);
+                    console.error("Error al actualizar la imagen del perfil:", updateData);
                 }
             } else {
                 setProgressBar(false);
-                console.error("No se cargo la imagen");
+                console.error("No se cargó la imagen");
             }
         } catch (e) {
             setProgressBar(false);
-            console.error("Error during form submission: ", e);
+            console.error("Error durante la carga de la imagen: ", e);
         }
     };
 
@@ -127,8 +146,6 @@ export default function ProfileUser() {
                         <div className="flex max-w-[1024px] mx-auto w-full h-full justify-center items-start gap-2 p-4 max-h-full rounded-lg overflow-y-auto">
                             <div className=" w-[300px] flex flex-col items-center p-3 rounded-xl justify-center">
                                 <picture className="relative flex items-center justify-center">
-                                    <label for='input-upload-userphoto'><EditIcon /></label>
-                                    <input id='input-upload-userphoto' multiple='false' type='file' className='absolute bg-azulSena hover:bg-black transition-all duration-150 rounded-full p-1 text-white z-20 top-0 right-0' />
                                     <Image
                                         src={user?.Fot_User !== null ? user?.Fot_User : "https://res.cloudinary.com/dla5djfdc/image/upload/v1712821257/blank-avatar-photo-place-holder-600nw-1095249842_a6kf0c.webp"}
                                         alt="Profile"
@@ -189,13 +206,14 @@ export default function ProfileUser() {
                                                     className="outline-none border-1 font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                                 />
                                             </div>
+                                            <button
+                                                onClick={handleEditProfile}
+                                                disabled={Object.keys(editData).length === 0}
+                                                className={`bg-azulSena flex items-center gap-1 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
+                                            >
+                                                Guardar
+                                            </button>
                                         </form>
-                                        <button
-                                            disabled={`${Object.keys(editData).length === 0 ? true : false}`}
-                                            className={`bg-azulSena flex items-center gap-1 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
-                                        >
-                                            Guardar
-                                        </button>
                                     </div>
                                 </div>
                                 <div className="flex items-center w-full gap-2 border-gray-300 border-1 rounded-lg">
@@ -236,13 +254,14 @@ export default function ProfileUser() {
                                                     )}
                                                 </div>
                                             </div>
+                                            <button
+                                                onClick={handleEditProfile}
+                                                disabled={Object.keys(editData).length === 0}
+                                                className={`bg-azulSena flex items-center gap-1 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
+                                            >
+                                                Editar
+                                            </button>
                                         </form>
-                                        <button
-                                            disabled={`${Object.keys(editData)?.length === 0 ? true : false}`}
-                                            className={`bg-azulSena flex items-center gap-1 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
-                                        >
-                                            Editar
-                                        </button>
                                     </div>
                                 </div>
                                 <div className="flex items-center w-full gap-2 border-gray-300 border-1 rounded-lg">
@@ -250,33 +269,14 @@ export default function ProfileUser() {
                                         <h4 className="font-semibold text-xl text-left w-full">Cambiar contraseña</h4>
                                         <hr className="border-gray-200 w-full my-2" />
                                         <form className="flex flex-col items-start w-full">
-                                            <label className="text-sm font-semibold">
-                                                Contraseña actual:
-                                            </label>
-                                            <div className="flex items-center gap-2 w-full">
-                                                <div className="flex flex-col w-full">
-                                                    <input
-                                                        onChange={handleChangeEmail}
-                                                        name={"Ema_User"}
-                                                        type="password"
-                                                        placeholder="********"
-                                                        defaultValue={dataUser?.Ema_User}
-                                                        className="outline-none border-1 placeholder:font-regular font-medium border-azulSena px-2 py-1 rounded-lg w-full"
-                                                    />
-                                                    <span className='text-sm'>¿Olvidaste la contraseña? <Link href={'/resetpass'} className='underline font-medium text-sm text-verdeSena'>Restablecer contraseña</Link></span>
-                                                </div>
-                                            </div>
                                             <label className="text-sm font-semibold mt-2">
                                                 Nueva contraseña:
                                             </label>
                                             <div className="flex items-center gap-2 w-full">
                                                 <div className="flex flex-col w-full">
                                                     <input
-                                                        onChange={handleChangeEmail}
-                                                        name={"Ema_User"}
                                                         type="password"
                                                         placeholder="********"
-                                                        defaultValue={dataUser?.Ema_User}
                                                         className="outline-none border-1 placeholder:font-regular font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                                     />
 
@@ -288,27 +288,23 @@ export default function ProfileUser() {
                                             <div className="flex items-center gap-2 w-full">
                                                 <div className="flex flex-col w-full">
                                                     <input
-                                                        onChange={handleChangeEmail}
-                                                        name={"Ema_User"}
                                                         type="password"
                                                         placeholder="********"
-                                                        defaultValue={dataUser?.Ema_User}
                                                         className="outline-none border-1 placeholder:font-regular font-medium border-azulSena px-2 py-1 rounded-lg w-full"
                                                     />
 
                                                 </div>
                                             </div>
-                                        </form>
-                                        <span className='text-sm font-medium my-1 text-gray-600'>Nota: La contraseña debe tener un mínimo de 8 caracteres.</span>
-                                        <div className='flex items-center gap-2'>
+                                            <span className='text-sm font-medium my-1 text-gray-600'>Nota: La contraseña debe tener un mínimo de 8 caracteres.</span>
                                             <button
-                                                disabled={`${Object.keys(editData)?.length === 0 ? true : false}`}
+                                                onClick={handleEditProfile}
+                                                disabled={Object.keys(editData).length === 0}
                                                 className={`bg-azulSena flex items-center gap-1 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-black duration-200 transition-all text-white p-2 rounded-lg mt-2`}
                                             >
                                                 Cambiar
                                             </button>
                                             
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

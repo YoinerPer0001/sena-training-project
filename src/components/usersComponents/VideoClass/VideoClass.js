@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function VideoClass({src}) {
     return (
-        <section className="w-full md:w-3/4 h-auto md:h-full bg-black">
+        <section className='w-full p-4 flex flex-col text-white items-center justify-center md:w-3/4 h-auto md:h-full bg-black'>
             <div className="flex h-full justify-center items-center p-4">
                 <CldVideoPlayer
                     width="1280"

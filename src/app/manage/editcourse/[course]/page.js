@@ -11,6 +11,7 @@ import {
     ChevronDown,
     ChevronLeft,
     CircleFadingPlus,
+    ClipboardCheck,
     Dot,
     Edit,
     Eye,
@@ -37,7 +38,7 @@ import toast from "react-hot-toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
 import { v4 as uuidv4 } from "uuid";
-import { useGetFetch } from "@/hooks/fetchActions/GetFetch";
+import { AddQuestions } from "@/utils/utils";
 import useContentCourseHandlers from "@/hooks/useContentCourseHandlers";
 import useEditCourse from "@/utils/editCourseFunctions/editCourseInputs/editCourseInputs";
 import UploadButtonWidget from "@/components/instructorsComponents/UploadButtonWidget/UploadButtonWidget";
@@ -526,6 +527,56 @@ export default function ManageCourses() {
         }
     }
 
+    const [question, setQuestion] = useState('');
+    const handleChangeQuestion = (e) => {
+        setQuestion(e.target.value);
+        console.log
+    }
+
+    const [answers, setAnswers] = useState({
+        "Id_Preg_Eval": null,
+        "Respuestas": []
+    });
+
+    const handleChangeAnswers = (event) => {
+        const { id, value } = event.target; // Obtén el ID y el valor del input
+        const index = parseInt(id, 10); // Convierte el ID a un número, asumiendo que ID es un índice
+
+        setAnswers(prev => {
+            // Crea una copia del estado anterior
+            const updatedRespuestas = [...prev.Respuestas];
+            // Si el índice no existe, inicialízalo con un objeto vacío
+            if (!updatedRespuestas[index]) {
+                updatedRespuestas[index] = {
+                    Text_Resp_Eval: '',
+                    Resp_Correcta_Eval: 0
+                };
+            }
+            // Actualiza la propiedad 'Text_Resp_Eval' del objeto en el índice correspondiente
+            updatedRespuestas[index].Text_Resp_Eval = value;
+            return {
+                ...prev,
+                Respuestas: updatedRespuestas
+            };
+        });
+
+        console.log(answers); // Asumiendo que dataQuestion es otro estado o variable
+    }
+
+    const handleSelectChange = (event) => {
+        const { value } = event.target;
+
+        setAnswers(prev => ({
+            ...prev,
+            Respuestas: prev.Respuestas.map((respuesta, index) => ({
+                ...respuesta,
+                Resp_Correcta_Eval: index === parseInt(value) ? 1 : 0
+            }))
+        }));
+        console.log(answers); // Asumiendo que dataQuestion es otro estado o variable
+    };
+
+    ////////////////
     if (!dataCourse2) {
         return <div className="w-full h-full flex justify-center items-center">
             <Spinner />
@@ -980,8 +1031,8 @@ export default function ManageCourses() {
                                                     </div>) : <h4 className="font-bold text-lg mx-2">{modulo.Tit_Mod}</h4>}
                                                 </div>
                                                 <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
-                                                    <button onClick={() => handleEditClick(modulo.Id_Mod)} className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
-                                                    <button value={modulo.Id_Mod} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                    <button onClick={() => handleEditClick(modulo.Id_Mod)} className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"><Edit size={18} /></button>
+                                                    <button value={modulo.Id_Mod} className="bg-transparent text-red-500 md:bg-red-500 md:hover:bg-red-600 md:text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                 </div>
                                             </div>
                                             <div className="flex flex-col gap-2 items-start w-full">
@@ -996,8 +1047,8 @@ export default function ManageCourses() {
                                                                         <div className="flex items-center gap-4">
                                                                             <span className="flex items-center gap-2 text-md font-semibold"><Video size={20} />{item.Tit_Cont}</span>
                                                                             <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
-                                                                                <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
-                                                                                <button value={item.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                                                <button className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"><Edit size={18} /></button>
+                                                                                <button value={item.Id_Cont} onClick={(e) => eliminarClase(e.currentTarget.value)} className="bg-transparent text-red-500 md:bg-red-500 md:hover:bg-red-600 md:text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
                                                                             </div>
                                                                         </div>
                                                                         <button onClick={() => toggleContenidoVisible(item.Id_Cont)}>
@@ -1035,13 +1086,13 @@ export default function ManageCourses() {
                                                         } else if (item.Id_Eva && item.ESTADO_REGISTRO == 1) {
                                                             // Es una evaluación
                                                             return (
-                                                                <div key={item.Id_Eva} className="flex flex-col group gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
+                                                                <div key={item.Id_Eva} className="flex flex-col  gap-3 items-start border-1 border-gray-300 bg-gray-100 text-black p-2 rounded-lg w-full">
                                                                     <div className="flex items-center justify-between gap-2 w-full">
-                                                                        <div className="flex items-center gap-4">
-                                                                            <span className="flex items-center gap-2 text-md font-semibold"><FileCheck size={20} />{item.Tit_Eva}</span>
+                                                                        <div className="flex items-center gap-4 group">
+                                                                            <span className="flex items-center gap-2 text-md font-semibold"><ClipboardCheck size={21} />{item.Tit_Eva}</span>
                                                                             <div className="flex flex-wrap items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-100">
-                                                                                <button className="bg-azulSena hover:bg-black text-white transition-all duration-150 p-1 rounded-full"><Edit size={18} /></button>
-                                                                                <button value={item.Id_Eva} onClick={(e) => eliminarEvaluacion(e.currentTarget.value)} className="bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-all duration-150"><Trash2 size={18} /></button>
+                                                                                <button className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"><Edit size={18} /></button>
+                                                                                <button className="bg-transparent text-red-500 md:bg-red-500 md:hover:bg-red-600 md:text-white p-1 rounded-full transition-all duration-150" value={item.Id_Eva} onClick={(e) => eliminarEvaluacion(e.currentTarget.value)} ><Trash2 size={18} /></button>
                                                                             </div>
                                                                         </div>
                                                                         <button onClick={() => toggleContenidoVisible(item.Id_Eva)}>
@@ -1049,28 +1100,93 @@ export default function ManageCourses() {
                                                                         </button>
                                                                     </div>
                                                                     <div className={`flex items-center justify-between gap-1 w-full ${contenidoVisible == item.Id_Eva ? 'block' : 'hidden'}`}>
-                                                                        <ol className="list-decimal w-full">
+                                                                        <ol className="w-full">
                                                                             <h4 className="font-bold text-lg">Preguntas</h4>
-                                                                            {item.preguntasevals?.map((preg, index) => {
-                                                                                return (
-                                                                                    <li key={preg.Id_Preg_Eval} className="list-decimal font-medium flex items-start justify-start gap-2 w-full">
-                                                                                        <span className="font-bold">{index = 1}.</span> {preg.Text_Preg_Eval}
+                                                                            {item.preguntasevals?.map((preg, index) => (
+                                                                                <div key={preg.Id_Preg_Eval}>
+                                                                                    <li className="list-decimal font-bold flex items-start justify-start gap-2 w-full">
+                                                                                        <span className="font-bold">{index + 1}.</span> {preg.Text_Preg_Eval}
                                                                                     </li>
-                                                                                )
-                                                                            })}
+                                                                                    <ul>
+                                                                                        {preg.Respuestas.map(res => (
+                                                                                            <div key={res.Id_Res_Eval} className="group/edit block items-center gap-2">
+                                                                                                <li className="ml-6 flex items-center gap-8">
+                                                                                                    <div className="flex items-center">
+                                                                                                        <span className="font-medium text-black flex items-center gap-2">{res.Text_Resp_Eval}{res.Resp_Correcta_Eval == 1 && <div className=" bg-verdeSena text-white rounded-full"><Check size={17} /></div>}</span>
+                                                                                                    </div>
+                                                                                                    <div className="flex transition-all duration-75 items-center gap-1 md:opacity-0 md:group-hover/edit:opacity-100">
+                                                                                                        <button
+                                                                                                            value={res.Id_Res_Eval}
+                                                                                                            className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"
+                                                                                                        >
+                                                                                                            <Edit size={16} />
+                                                                                                        </button>
+                                                                                                        <button
+                                                                                                            value={res.Id_Res_Eval}
+                                                                                                            className="bg-transparent text-red-500 md:bg-red-500 md:hover:bg-red-600 md:text-white p-1 rounded-full transition-all duration-150"
+                                                                                                        >
+                                                                                                            <Trash2 size={16} />
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                </li>
+                                                                                            </div>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                </div>
+                                                                            ))}
                                                                             {item.preguntasevals.length == 0 && 'No hay preguntas'}
                                                                             {addQuestionForm == item.Id_Eva && (
                                                                                 <div className="flex flex-col w-full items-end gap-2 mt-4">
-                                                                                    <div className="flex items-center gap-2 w-full">
-                                                                                        <label>Pregunta: </label>
-                                                                                        <input className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce la pregunta" onChange={(e) => setCreateQuestion(e.target.value)} /></div>
+                                                                                    <h4 className="font-bold text-xl w-full">Agregar pregunta</h4>
+                                                                                    <div className="flex flex-col items-start gap-1 w-full">
+                                                                                        <label className="text-gray-700 font-semibold">Pregunta: </label>
+                                                                                        <textarea className="rounded-lg w-full p-2 outline-none border-1 border-gray-300 focus:border-azulSena" type="text" placeholder="Introduce la pregunta" onChange={handleChangeQuestion} />
+                                                                                    </div>
+                                                                                    <div className='flex flex-col sm:flex-row gap-2 w-full'>
+                                                                                        <div>
+                                                                                            <label className='font-semibold text-gray-600'>
+                                                                                                Opción 1:
+                                                                                            </label>
+                                                                                            <textarea onChange={handleChangeAnswers} id='0' type='text' className='w-full border-1 border-gray-300 focus:border-azulSena outline-none p-2 rounded-lg' />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label className='font-semibold text-gray-600'>
+                                                                                                Opción 2:
+                                                                                            </label>
+                                                                                            <textarea onChange={handleChangeAnswers} id='1' type='text' className='w-full border-1 border-gray-300 focus:border-azulSena outline-none p-2 rounded-lg' />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label className='font-semibold text-gray-600'>
+                                                                                                Opción 3:
+                                                                                            </label>
+                                                                                            <textarea onChange={handleChangeAnswers} id='2' type='text' className='w-full border-1 border-gray-300 focus:border-azulSena outline-none p-2 rounded-lg' />
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <label className='font-semibold text-gray-600'>
+                                                                                                Opción 4:
+                                                                                            </label>
+                                                                                            <textarea onChange={handleChangeAnswers} id='3' type='text' className='w-full border-1 border-gray-300 focus:border-azulSena outline-none p-2 rounded-lg' />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className='flex flex-col gap-1 w-full'>
+                                                                                        <label className='font-semibold text-gray-600'>
+                                                                                            Respuesta correcta:
+                                                                                        </label>
+                                                                                        <select onChange={handleSelectChange} className='p-2 border rounded-lg border-gray-300 focus:border-azulSena outline-none'>
+                                                                                            <option value={4}>-Seleccionar opción-</option>
+                                                                                            <option value={0}>Opción 1</option>
+                                                                                            <option value={1}>Opción 2</option>
+                                                                                            <option value={2}>Opción 3</option>
+                                                                                            <option value={3}>Opción 4</option>
+                                                                                        </select>
+                                                                                    </div>
                                                                                     <div className="flex items-center gap-2">
-                                                                                        <button className="bg-azulSena hover:bg-black transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2"><Save size={21} /> Guardar</button>
-                                                                                        <button className="bg-azulSena hover:bg-black transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2"><Save size={21} /> Cancelar</button>
+                                                                                        <button onClick={() => AddQuestions(question, item.Id_Eva, answers, token)} className="bg-azulSena hover:bg-black transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2"><Save size={21} /> Guardar</button>
+                                                                                        <button className="bg-red-500 hover:bg-red-600 transition-all duration-150 text-white flex items-center gap-1 rounded-lg p-2" onClick={() => setQuestionForm('')}><X size={21} /> Cancelar</button>
                                                                                     </div>
                                                                                 </div>
                                                                             )}
-                                                                            <button onClick={() => handleShowAddQuestionForm(item.Id_Eva)} className="bg-azulSena mt-4 text-white flex items-center gap-1 rounded-lg p-2"><LucideListPlus /> Agregar pregunta</button>
+                                                                            {addQuestionForm !== item.Id_Eva && <button onClick={() => handleShowAddQuestionForm(item.Id_Eva)} className="bg-azulSena mt-4 text-white flex items-center gap-1 rounded-lg p-2"><LucideListPlus /> Agregar pregunta</button>}
                                                                         </ol>
                                                                     </div>
                                                                 </div>
