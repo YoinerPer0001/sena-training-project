@@ -114,7 +114,10 @@ export default function CreateQuiz({ idMod, setCrearEvaluacion }) {
             if (responseAnswers.code === 403) {
                 toast.error('Todos los campos son obligatorios.');
                 throw new Error('Error al crear las respuestas');
-            } else if (responseAnswers.code !== 403 && responseAnswers.type !== 'success') {
+            }else if (responseAnswers.type === 'success'){
+                toast.success('Evaluación creada correctamente.');
+                location.reload()
+            } else if (responseAnswers.code !== 403) {
                 toast.error('Hubo un error al crear las respuestas.');
                 throw new Error('Error al crear las respuestas');
             }
@@ -123,7 +126,6 @@ export default function CreateQuiz({ idMod, setCrearEvaluacion }) {
         } finally {
             setLoading(false);
             setCrearEvaluacion('')
-            toast.success('Evaluación creada correctamente.');
         }
     };
 

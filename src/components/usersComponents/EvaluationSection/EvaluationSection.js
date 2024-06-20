@@ -90,14 +90,14 @@ export default function EvaluationSection({ titEval, evaluacion, userId, token }
                             </div>
                         ))}
                     </div>
-                    {!respuestasDelServidor && <button className='bg-verdeSena text-white p-2 rounded-lg font-medium mt-4' onClick={enviarEvaluacion}>Enviar Evaluación</button>}
+                    <button className='bg-verdeSena text-white p-2 rounded-lg font-medium mt-4' onClick={() => location.reload()}>Siguiente</button>
                 </div>
             </section>
         );
     }
 
     return (
-        <section className="w-full p-4 flex flex-col text-white items-center justify-center md:w-3/4 h-auto md:h-full bg-black">
+        <section className="w-full p-4 flex flex-col text-white items-center justify-center lg:w-3/4 h-auto md:h-full bg-black">
             <div className='w-3/4 mx-auto'>
                 <div className='my-4'>
                     <h4 className='text-white font-bold text-3xl mx-auto'>{titEval}</h4>

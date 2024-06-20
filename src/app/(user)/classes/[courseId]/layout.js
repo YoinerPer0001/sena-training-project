@@ -28,7 +28,7 @@ export default function CoursesLayout({ children }) {
 
     return (
         <>
-            <main className="w-screen flex flex-col md:flex-row overflow-x-hidden h-screen md:overflow-hidden">
+            <main className="w-screen flex flex-col lg:flex-row overflow-x-hidden h-screen lg:overflow-hidden">
                 {children}
             </main>
         </>

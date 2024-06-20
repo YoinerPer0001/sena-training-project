@@ -15,7 +15,7 @@ import { StepBack } from "lucide-react";
 import { useDeleteFetch } from "@/hooks/fetchActions/DeleteFetch";
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
 
-export default function selectUserPage() {
+export default function SelectUserPage() {
     const [SelectValue, setSelectValue] = useState(1)
     const [UserData, setUserData] = useState([])
     const [CurseData, setCurseData] = useState([])

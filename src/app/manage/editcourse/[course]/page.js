@@ -34,6 +34,7 @@ import {
 import Link from "next/link";
 import { Spinner } from "@/components/usersComponents/Spinner/Spinner";
 import { getCookie } from "cookies-next";
+import { RadioGroup, Radio } from "@nextui-org/radio";
 import toast from "react-hot-toast";
 import { FileUpload } from "primereact/fileupload";
 import { ProgressBar } from "primereact/progressbar";
@@ -515,6 +516,57 @@ export default function ManageCourses() {
             setCrearEvaluacion(idMod);
         }
     };
+
+    // EDITAR RESPUESTA
+    const [editRespIndex, setEditRespIndex] = useState('')
+    const handleClickEditResp = (index, text) => {
+        if (index == editRespIndex) {
+            setEditRespIndex('')
+        } else {
+            setEditRespuestaReq({...editRespuestaReq, "Text_Resp_Eval": text});
+            setEditRespIndex(index);
+        }
+    }
+    const [editRespuestaReq, setEditRespuestaReq] = useState({
+        "Text_Resp_Eval": null,
+        "Resp_Correcta_Eval": null
+    })
+    const handleChangeEditRespuesta = (e) => {
+        console.log(editRespuestaReq)
+        setEditRespuestaReq({...editRespuestaReq, "Text_Resp_Eval": e.target.value});
+    }
+    const handleChangeSelected = (select) => {
+        setEditRespuestaReq({...editRespuestaReq, "Resp_Correcta_Eval": select});
+        console.log(editRespuestaReq)
+    }
+
+    const fetchEditRespuesta = (idPregEval, idResp) => {
+        try {
+            fetch(`http://localhost:3000/api/v1/respuestasEval/update/${idResp}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...editRespuestaReq, "Id_Preg_Eval": idPregEval
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.type === 'success'){
+                    toast.success("Se guardaron los cambios correctamente");
+                    location.reload()
+                } else {
+                    toast.error("Hubo un error al guardar los cambios");
+                }
+            })
+        } catch (error) {
+            console.log("Error: ", error);
+            toast.error("Hubo un error al comunicarse con el servidor");
+        }
+    }
+    
 
     // MOSTRAR AGREGAR PREGUNTA
     const [addQuestionForm, setQuestionForm] = useState('');
@@ -1018,7 +1070,7 @@ export default function ManageCourses() {
                             </div>
                             <div>
                                 <div className="flex flex-col gap-5">
-                                    {dataCourse2.Modulocursos?.map((modulo, indiceModulo) => (
+                                    {dataCourse2.Modulocursos?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map((modulo, indiceModulo) => (
                                         <div
                                             key={indiceModulo}
                                             className="border-1 border-azulSena p-3 rounded-lg bg-white"
@@ -1109,13 +1161,32 @@ export default function ManageCourses() {
                                                                                     </li>
                                                                                     <ul>
                                                                                         {preg.Respuestas.map(res => (
-                                                                                            <div key={res.Id_Res_Eval} className="group/edit block items-center gap-2">
+                                                                                            <div key={res.Id_Res_Eval} className="group/edit block mb-1 items-center gap-2">
                                                                                                 <li className="ml-6 flex items-center gap-8">
-                                                                                                    <div className="flex items-center">
+                                                                                                    {editRespIndex !== res.Id_Res_Eval && <div className="flex items-center">
                                                                                                         <span className="font-medium text-black flex items-center gap-2">{res.Text_Resp_Eval}{res.Resp_Correcta_Eval == 1 && <div className=" bg-verdeSena text-white rounded-full"><Check size={17} /></div>}</span>
-                                                                                                    </div>
-                                                                                                    <div className="flex transition-all duration-75 items-center gap-1 md:opacity-0 md:group-hover/edit:opacity-100">
+                                                                                                    </div>}
+                                                                                                    {editRespIndex === res.Id_Res_Eval &&
+                                                                                                        <div className="flex items-center gap-2 w-full">
+                                                                                                            <div className="flex flex-col w-full">
+                                                                                                                <div className="w-full flex items-center justify-between py-2">
+                                                                                                                    <label className="font-medium">Respuesta:</label>
+                                                                                                                    <RadioGroup
+                                                                                                                        orientation="horizontal"
+                                                                                                                        onValueChange={handleChangeSelected}
+                                                                                                                        value={editRespuestaReq.Resp_Correcta_Eval}
+                                                                                                                    >
+                                                                                                                        <Radio classNames={{label: "font-medium"}} value="1">Correcta</Radio>
+                                                                                                                        <Radio classNames={{label: "font-medium"}} value="0">Incorrecta</Radio>
+                                                                                                                    </RadioGroup>
+                                                                                                                </div>
+                                                                                                                <textarea onChange={(e) => handleChangeEditRespuesta(e)} defaultValue={res.Text_Resp_Eval} className="p-2 rounded-lg border border-gray-600 focus:border-azulSena w-full" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    }
+                                                                                                    {editRespIndex !== res.Id_Res_Eval ? <div className="flex transition-all duration-75 items-center gap-1 md:opacity-0 md:group-hover/edit:opacity-100">
                                                                                                         <button
+                                                                                                            onClick={(e) => handleClickEditResp(e.currentTarget.value, res.Text_Resp_Eval)}
                                                                                                             value={res.Id_Res_Eval}
                                                                                                             className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"
                                                                                                         >
@@ -1127,7 +1198,22 @@ export default function ManageCourses() {
                                                                                                         >
                                                                                                             <Trash2 size={16} />
                                                                                                         </button>
-                                                                                                    </div>
+                                                                                                    </div> : <div className="flex transition-all duration-75 items-center gap-1 opacity-100">
+                                                                                                        <button
+                                                                                                            value={res.Id_Res_Eval}
+                                                                                                            onClick={() => fetchEditRespuesta(preg.Id_Preg_Eval, res.Id_Res_Eval)}
+                                                                                                            className="bg-transparent text-azulSena md:bg-azulSena md:hover:bg-black md:text-white p-1 rounded-full transition-all duration-150"
+                                                                                                        >
+                                                                                                            <Check size={16} />
+                                                                                                        </button>
+                                                                                                        <button
+                                                                                                            onClick={(e) => handleClickEditResp(e.currentTarget.value)}
+                                                                                                            value={res.Id_Res_Eval}
+                                                                                                            className="bg-transparent text-red-500 md:bg-red-500 md:hover:bg-red-600 md:text-white p-1 rounded-full transition-all duration-150"
+                                                                                                        >
+                                                                                                            <X size={16} />
+                                                                                                        </button>
+                                                                                                    </div>}
                                                                                                 </li>
                                                                                             </div>
                                                                                         ))}

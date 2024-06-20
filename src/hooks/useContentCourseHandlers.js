@@ -224,7 +224,8 @@ const useContentCourseHandlers = (token, idCourse) => {
         .then(response => response.json())
         .then(response => {
             if(response.type === 'success') {
-                return toast.success('Se subió el video correctamente.')
+                toast.success('Se subió el video correctamente.')
+                location.reload()
             } else {
                 return toast.error('No se pudo subir el video, intenta nuevamente.')
             }
